@@ -13,13 +13,13 @@
     <title>Sign up now!</title>
 </head>
 <body>
-    <div class="min-h-screen flex items-center justify-center bg-blue-400">
-        <div class="bg-white p-8 rounded shadow-2xl w-5/6 sm:max-w-lg md:w- md:max-w-lg lg:max-w-lg lg:bg-white px-16">
+    <div class="flex flex-col gap-8 min-h-screen items-center justify-center bg-blue-400">
+        <div class="w-full bg-white p-6 rounded shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg lg:bg-white px-16">
             <img class="object-contain h-16 w-full" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png" alt="Instagram">
             <h2 class="text-xl text-center px-2 pt-2">Sign up to see photos and videos from your friends.</h2>
             <a class="block text-center bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 mt-3 rounded" href="https://www.facebook.com/">Log in with Facebook</a>
             <div class="flex my-4">
-                // proberen lijntjes nog dunner te krijgen
+<!--                proberen lijntjes nog dunner te krijgen-->
                 <span class="w-2/5 bg-gray-300 h-0.5 block self-center"></span>
                 <p class="w-1/5 col-start-2 text-gray-300 col-end-3 font-semibold text-sm text-center">OR</p>
                 <span class="w-2/5 bg-gray-300 h-0.5 block self-center"></span>
@@ -34,6 +34,9 @@
                 </div>
                 <p class="mt-5 text-sm font-normal text-center">By signing up, you agree to our <b>Terms & Privacy Policy.</b></p>
             </form>
+        </div>
+        <div class="w-full bg-white p-8 rounded shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg lg:bg-white px-16">
+            <p class="text-normal text-center">Already have an account? <a class=" font-semibold text-blue-400" href="login.php">Log in</a> </p>
         </div>
     </div>
 </body>
