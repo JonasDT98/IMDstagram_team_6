@@ -1,4 +1,20 @@
 <?php
+
+    if(!empty($_POST)){
+            try {
+                $user = new User();
+                $user->setEmail($_POST['email']);
+                $user->setFullname($_POST['fullName']);
+                $user->setUsername($_POST['username']);
+                $user->setPassword($_POST['password']);
+
+                $user->save();
+
+            } catch (\Throwable $th){
+                $error = $th->getMessage;
+            }
+        }
+
 ?>
 
 <!doctype html>
@@ -26,10 +42,10 @@
             </div>
             <form method="post">
                 <div class="grid grid-rows-5 justify-items-center gap-y-1">
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" placeholder="Email address">
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullName" type="text" placeholder="Full name">
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" placeholder="Username">
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="password" type="password" placeholder="Password">
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" placeholder="Email address" required>
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullName" type="text" placeholder="Full name" required>
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" placeholder="Username" required>
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="password" type="password" placeholder="Password" required>
                     <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="btnRegister" type="submit" value="Register">
                 </div>
                 <p class="mt-5 text-sm font-normal text-center">By signing up, you agree to our <b>Terms & Privacy Policy.</b></p>
