@@ -1,17 +1,19 @@
 <?php
+    include_once (__DIR__ . "/classes/User.php");
 
     if(!empty($_POST)){
             try {
                 $user = new User();
                 $user->setEmail($_POST['email']);
-                $user->setFullname($_POST['fullName']);
+                $user->setFullname($_POST['fullname']);
                 $user->setUsername($_POST['username']);
                 $user->setPassword($_POST['password']);
 
                 $user->save();
-
+//                $success = "Registered";
             } catch (\Throwable $th){
-                $error = $th->getMessage;
+                $error = $th->getMessage();
+                echo $error;
             }
         }
 
@@ -24,11 +26,14 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/tailwind.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/tailwind.css">
     <title>Sign up now!</title>
 </head>
 <body>
+<?php if(isset($success)): ?>
+    <div class="success"> <?php echo $success; ?></div>
+<?php endif; ?>
     <div class="flex flex-col gap-8 min-h-screen items-center justify-center bg-blue-400">
         <div class="w-full bg-white p-6 rounded shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg lg:bg-white px-16">
             <img class="object-contain h-16 w-full" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png" alt="Instagram">
@@ -40,10 +45,10 @@
                 <p class="w-1/5 col-start-2 text-gray-300 col-end-3 font-semibold text-sm text-center">OR</p>
                 <span class="w-2/5 bg-gray-300 h-0.5 block self-center"></span>
             </div>
-            <form method="post">
+            <form action="signup.php" method="post">
                 <div class="grid grid-rows-5 justify-items-center gap-y-1">
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" placeholder="Email address" required>
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullName" type="text" placeholder="Full name" required>
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullname" type="text" placeholder="Full name" required>
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" placeholder="Username" required>
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="password" type="password" placeholder="Password" required>
                     <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="btnRegister" type="submit" value="Register">

@@ -8,6 +8,26 @@
         private $username;
         private $password;
 
+        public function save(){
+            $conn = Db::getConnection();
+
+            $statement = $conn->prepare("insert into user (fullname, username, email, password) values (:fullname, :username, :email, :password)");
+
+            $fullname = $this->getFullname();
+            $username = $this->getUsername();
+            $email = $this->getEmail();
+            $password = $this->getPassword();
+
+            $statement->bindValue(":fullname", $fullname);
+            $statement->bindValue(":username", $username);
+            $statement->bindValue(":email", $email);
+            $statement->bindValue(":password", $password);
+
+            $result = $statement->execute();
+            return $result;
+
+        }
+
         /**
          * @return mixed
          */
