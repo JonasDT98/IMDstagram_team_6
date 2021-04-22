@@ -11,7 +11,7 @@
         public function save(){
             $conn = Db::getConnection();
 
-            $statement = $conn->prepare("insert into user (fullname, username, email, password) values (:fullname, :username, :email, :password)");
+            $statement = $conn->prepare("insert into users (fullname, username, email, password) values (:fullname, :username, :email, :password)");
 
             $fullname = $this->getFullname();
             $username = $this->getUsername();
