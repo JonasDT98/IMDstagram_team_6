@@ -89,6 +89,9 @@
          */
         public function setPassword($password): void
         {
-            $this->password = $password;
+            $options = [
+                'cost' => 12,
+            ];
+            $this->password =  password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
         }
     }

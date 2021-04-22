@@ -2,6 +2,9 @@
     include_once (__DIR__ . "/classes/User.php");
 
     if(!empty($_POST)){
+
+
+
             try {
                 $user = new User();
                 $user->setEmail($_POST['email']);

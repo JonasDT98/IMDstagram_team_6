@@ -1,8 +1,6 @@
 <?php
 
-
-
-//    include_once (__DIR__ . "/../classes/db.php");
+    include_once (__DIR__ . "/classes/User.php");
 
 //        $conn = db::getConnection();
 //        $statement = $conn->prepare("select * from user");
