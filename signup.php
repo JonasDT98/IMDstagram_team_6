@@ -3,8 +3,6 @@
 
     if(!empty($_POST)){
 
-
-
             try {
                 $user = new User();
                 $user->setEmail($_POST['email']);
@@ -19,7 +17,6 @@
                 echo $error;
             }
         }
-
 ?>
 
 <!doctype html>
@@ -43,7 +40,6 @@
             <h2 class="text-xl text-center px-2 pt-2">Sign up to see photos and videos from your friends.</h2>
             <a class="block text-center bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 mt-3 rounded" href="https://www.facebook.com/">Log in with Facebook</a>
             <div class="flex my-4">
-<!--                proberen lijntjes nog dunner te krijgen-->
                 <span class="w-2/5 bg-gray-300 h-0.5 block self-center"></span>
                 <p class="w-1/5 col-start-2 text-gray-300 col-end-3 font-semibold text-sm text-center">OR</p>
                 <span class="w-2/5 bg-gray-300 h-0.5 block self-center"></span>
