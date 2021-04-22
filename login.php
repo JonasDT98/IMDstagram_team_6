@@ -27,7 +27,7 @@
             if (canLogin($username, $password)){
                 session_start();
                 $_SESSION["username"] = $username;
-                header("Location: home.php");
+                header("Location: php/home.php");
             }else{
                 $error = true;
             }
