@@ -19,7 +19,7 @@
                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                  alt="Logo">
             <form class="flex w-1/3 h-6 align-center justify-center mx-4">
-                <input class="text-center rounded" type="text" value="🔍 Search">
+                <input class="text-center rounded" type="text" placeholder="Search">
             </form>
             <div class="flex items-center justify-center w-1/3 gap-3">
                 <svg class="h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">

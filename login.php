@@ -51,6 +51,15 @@
         <img class="object-contain h-16 w-full mb-8" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png" alt="Instagram">
         <form action="login.php" method="post">
             <div class="grid grid-rows-3 justify-items-center gap-y-1">
+                <?php if(isset($error)): ?>
+                    <div class="flex items-center gap-3 w-full h-10 border border-red-300 rounded px-4 bg-red-200">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                        <ul>
+                            <li>User does not exist</li>
+                        </ul>
+                    </div>
+                <?php endif; ?>
                 <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" placeholder="Phone number, username or email address" required>
                 <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="password" type="password" placeholder="Password" required>
                 <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="btnLogin" type="submit" value="Log in">
@@ -71,13 +80,3 @@
 </div>
 </body>
 </html>
-
-
-
-<!--function checkLogin($password, $hash){-->
-<!--if(password_verify($password, $hash)){-->
-<!--return true;-->
-<!--}else{-->
-<!--return false;-->
-<!--}-->
-<!--}-->

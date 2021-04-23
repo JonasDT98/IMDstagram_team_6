@@ -46,13 +46,15 @@
             </div>
             <form action="signup.php" method="post">
                 <div class="grid grid-rows-6 justify-items-center gap-y-1">
-                    <div class="flex items-center gap-3 w-full h-10 border border-red-300 rounded px-4 bg-red-200">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                        <ul>
-                            <li>Errors can go here</li>
-                        </ul>
-                    </div>
+                    <?php if(isset($error)): ?>
+                        <div class="flex items-center gap-3 w-full h-10 border border-red-300 rounded px-4 bg-red-200">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            <ul>
+                                <li>Error can go here</li>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" placeholder="Email address" required>
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullname" type="text" placeholder="Full name" required>
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" placeholder="Username" required>
