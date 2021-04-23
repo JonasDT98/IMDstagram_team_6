@@ -11,7 +11,6 @@
                 $user->setPassword($_POST['password']);
 
                 $user->save();
-//                $success = "Registered";
             } catch (\Throwable $th){
                 $error = $th->getMessage();
                 echo $error;
@@ -28,12 +27,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/tailwind.css">
+    <link rel="icon" type="image/png" href="images/favicon.png"/>
     <title>Sign up now!</title>
 </head>
 <body>
-<?php if(isset($success)): ?>
-    <div class="success"> <?php echo $success; ?></div>
-<?php endif; ?>
     <div class="flex flex-col gap-8 min-h-screen items-center justify-center bg-blue-400">
         <div class="w-full bg-white p-6 rounded shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg lg:bg-white px-16">
             <img class="object-contain h-16 w-full" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png" alt="Instagram">

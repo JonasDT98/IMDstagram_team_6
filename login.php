@@ -1,7 +1,7 @@
 <?php
 
     include_once (__DIR__ . "/classes/User.php");
-    function canLogin($username, $password)
+    function canLogin($username, $password) //naar klasse verplaatsen
     {
         $conn = db::getConnection();
         $statement = $conn->prepare("select * from users where username = :username");
@@ -27,7 +27,7 @@
             if (canLogin($username, $password)){
                 session_start();
                 $_SESSION["username"] = $username;
-                header("Location: php/home.php");
+                header("Location: home.php");
             }else{
                 $error = true;
             }
@@ -43,6 +43,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/tailwind.css">
+    <link rel="icon" type="image/png" href="images/favicon.png"/>
     <title>Log in!</title>
 </head>
 <body>
