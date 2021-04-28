@@ -5,9 +5,6 @@
     if (!isset($_SESSION['username'])){
         header("Location: login.php");
     }
-    $username = $_SESSION['username'];
-$user = User::getUser("boom");
-var_dump($user);
 ?>
 <!doctype html>
 <html lang="en">

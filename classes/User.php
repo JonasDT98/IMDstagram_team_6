@@ -16,12 +16,17 @@
          * @param $username
          * @param $password
          */
-        public function __construct($email, $fullname, $username, $password)
+        public function __construct()
         {
-            $this->email = $email;
-            $this->fullname = $fullname;
-            $this->username = $username;
-            $this->password = $password;
+
+        }
+        public static function newUserWithoutId($email, $fullname, $username, $password)
+        {
+            $user =  new User();
+            $user->setEmail($email);
+            $user->setUsername($username);
+            $user->setFullname($fullname);
+            $user->setPassword($password);
         }
 
         public function save(){
@@ -130,16 +135,16 @@
             ];
             $this->password =  password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
         }
-        static function updateUser($oUsername, $nUsername, $email, $nPassword)
+        static function updateUser($id, $username, $email, $nPassword)
         {
             $conn = db::getConnection();
-            $statement = $conn->prepare("UPDATE users SET username = :nUsername, email = :email, password = :password WHERE username = :oUsername");
-            $statement->bindParam(':username', $nUsername);
-            $statement->bindParam(':email', $email);
-            $statement->bindParam(':password', $nPassword);
-            $statement->bindParam(':oUsername', $oUsername);
+            $statement = $conn->prepare("UPDATE users SET username=:username,email=:email,password=:password WHERE id=:id");
+            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+            $statement->bindParam(':username', $username, PDO::PARAM_STR);
+            $statement->bindParam(':email', $email, PDO::PARAM_STR);
+            $statement->bindParam(':password', $nPassword, PDO::PARAM_STR);
             $result = $statement->execute();
-            return $result;
+            var_dump($result);
         }
 
         /**
@@ -147,9 +152,9 @@
          */
         public function getId()
         {
-            $conn = db::getConnection();
-            $statement = $conn->prepare("SELECT id FROM users WHERE username = '$this->username'");
-            $this->id = $statement->execute();
+            //$conn = db::getConnection();
+            // = $conn->prepare("SELECT id FROM users WHERE username = '$this->username'");
+            //$this->id = $statement->execute();
             return $this->id;
         }
 
@@ -157,9 +162,9 @@
             $conn = db::getConnection();
             $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
             $statement->bindValue(':username', $username);
-            $result = $statement->execute();
-            var_dump($result);
-            $user = new User($result['email'], $result['fullname'], $result['username'], $result['password']);
-            return $user;
+            $statement->execute();
+
+            $result = $statement->fetch();
+            return new User($result['id'], $result['email'], $result['fullname'], $result['username'], $result['password']);
         }
     }

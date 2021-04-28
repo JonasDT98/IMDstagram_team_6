@@ -5,13 +5,24 @@ session_start();
 //$username = $_SESSION["username"];
 //$user = User::getUser($username);
 if(!empty($_POST)){
-    $nUsername = $_POST['username'];
-    $oUsername = $_SESSION["username"];
+    $username = $_SESSION['username'];
+    $user = User::getUser($username);
     $email = $_POST['email'];
     $nPassword = $_POST['nPassword'];
-    $oPassword = $_POST['oPassword'];
-    User::updateUser($oUsername, $nUsername, $email, $nPassword);
-    User::getUser($oUsername);
+    $nUsername = $_POST['username'];
+    $id = $user->getId();
+    if(empty($nPassword)){
+        $nPassword = $_POST['password'];
+        User::updateUser($id, $nUsername, $email, $nPassword);
+    }
+    elseif(!empty($nPassword) && $nPassword != $_POST['password']){
+        User::updateUser($id, $nUsername, $email, $nPassword);
+    }
+    else{
+        echo "New password cannot be the same as old one.";
+        $_SESSION['username'] = $nUsername;
+    }
+    $_SESSION['username'] = $nUsername;
 
 }
 
@@ -33,7 +44,8 @@ if(!empty($_POST)){
 <?php
 $username = $_SESSION["username"];
 $user = User::getUser($username);
-var_dump($user->getUsername());
+var_dump($user->getId());
+
 ?>
 
     <div class="flex flex-col gap-8 min-h-screen items-center justify-center bg-blue-400">
@@ -42,8 +54,8 @@ var_dump($user->getUsername());
             <form action="editProfile.php" method="post">
                 <div class="grid grid-rows-3 justify-items-center gap-y-1">
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" value="<?php  echo $user->getUsername()    ?>">
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="email" value="<?php  //echo $user->getEmail()    ?>">
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="password" type="password" value="<?php  //echo $user->getPassword()    ?>" >
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" value="<?php  echo $user->getEmail()    ?>">
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="password" type="password" value="<?php  echo $user->getPassword()    ?>" >
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="nPassword" type="password" placeholder="New Password" >
                     <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="btnSave" type="submit" value="Save">
                 </div>
