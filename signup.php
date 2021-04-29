@@ -41,7 +41,7 @@
                 <p class="w-1/5 col-start-2 text-gray-300 col-end-3 font-semibold text-sm text-center">OR</p>
                 <span class="w-2/5 bg-gray-300 h-0.5 block self-center"></span>
             </div>
-            <form action="signup.php" method="post">
+            <form action="home.php" method="post">
                 <div class="grid grid-rows-6 justify-items-center gap-y-1">
                     <?php if(isset($error)): ?>
                         <div class="flex items-center gap-3 w-full h-10 border border-red-300 rounded px-4 bg-red-200">
