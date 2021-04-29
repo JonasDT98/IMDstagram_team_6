@@ -7,6 +7,32 @@
         private $fullname;
         private $username;
         private $password;
+        public $id;
+
+        /**
+         * User constructor.
+         * @param $email
+         * @param $fullname
+         * @param $username
+         * @param $password
+         */
+        public function __construct($email, $fullname, $username, $password)
+        {
+            $this->email = $email;
+            $this->fullname = $fullname;
+            $this->username = $username;
+            $this->password = $password;
+        }
+
+        /**
+         * User constructor.
+         * @param $email
+         * @param $fullname
+         * @param $username
+         * @param $password
+         */
+
+
 
         public function save(){
             $conn = Db::getConnection();
@@ -29,7 +55,37 @@
         }
 
         //canlogin comes here
+        static function canLogin($username, $password) //naar klasse verplaatsen
+        {
+            $conn = db::getConnection();
+            $statement = $conn->prepare("select * from users where username = :username");
+            $statement->bindValue(":username", $username);
+            $statement->execute();
+            $user = $statement->fetch();
+            if (!$user){
+                return false;
+            }
 
+            $hash = $user["password"];
+            if(password_verify($password, $hash)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        static function updateUser($oUsername, $username, $email, $nPassword, $fullname)
+        {
+            $conn = db::getConnection();
+            $statement = $conn->prepare("UPDATE users SET username=:username,email=:email,password=:password,fullname=:fullname WHERE username=:oUsername");
+            $statement->bindParam(':oUsername', $oUsername, PDO::PARAM_STR);
+            $statement->bindParam(':username', $username, PDO::PARAM_STR);
+            $statement->bindParam(':fullname', $fullname, PDO::PARAM_STR);
+            $statement->bindParam(':email', $email, PDO::PARAM_STR);
+            $statement->bindParam(':password', $nPassword, PDO::PARAM_STR);
+            $result = $statement->execute();
+            var_dump($result);
+        }
         /**
          * @return mixed
          */
@@ -95,5 +151,29 @@
                 'cost' => 12,
             ];
             $this->password =  password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
+        }
+
+
+        /**
+         * @return mixed
+         */
+        public function getId()
+        {
+//            $username = $this->username;
+//            $conn = db::getConnection();
+//            $statement = $conn->prepare("SELECT id FROM users WHERE username = :username");
+//            $statement->bindParam(':username', $username, PDO::PARAM_INT);
+//            $statement->execute();
+//            $this->id = $statement->fetch();
+            return $this->id;
+        }
+
+        static function getUser($username){
+            $conn = db::getConnection();
+            $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
+            $statement->bindValue(':username', $username);
+            $statement->execute();
+            $result = $statement->fetch();
+            return new User($result['email'], $result['fullname'], $result['username'], $result['password']);
         }
     }
