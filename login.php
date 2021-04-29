@@ -2,29 +2,11 @@
 
     include_once (__DIR__ . "/classes/User.php");
 
-        function canLogin($username, $password){
-            $conn = db::getConnection();
-            $statement = $conn->prepare("select * from users where username = :username");
-            $statement->bindValue(":username", $username);
-            $statement->execute();
-            $user = $statement->fetch();
-            if (!$user){
-                return false;
-            }
-
-            $hash = $user["password"];
-            if(password_verify($password, $hash)){
-                return true;
-            }else{
-                return false;
-            }
-        }
-
         if(!empty($_POST)){
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            if (canLogin($username, $password)){
+            if (User::canLogin($username, $password)){
                 session_start();
                 $_SESSION["username"] = $username;
                 header("Location: home.php");
