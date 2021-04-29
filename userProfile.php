@@ -30,9 +30,11 @@ $profile = Post::profileData($user);
         <nav>
             <div class="w-full bg-white rounded-t shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
                 <div class="flex items-center">
-                    <img class="object-contain h-10 w-1/3"
+                    <a href="home.php" class="object-contain h-10 w-1/3">
+                    <img class="object-contain  w-4/6"
                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                          alt="Logo">
+                    </a>
                     <form class="flex w-1/3 h-6 align-center justify-center inline-block">
                         <input class="text-center rounded-md bg-gray-200" type="text" placeholder="Search">
                     </form>
