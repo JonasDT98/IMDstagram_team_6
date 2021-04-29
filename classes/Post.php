@@ -6,49 +6,47 @@ class Post{
 
     private $title;
     private $description;
-    private $tags;
-    private $file;
     private $username;
-  
     private $image;
     private $likes;
     private $comments;
     private $time_posted;
 
-    public function post(){
+    public function post()
+    {
 
-        $target_file = "images/upload/" . basename($_FILES["file"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $target_file = "images/upload/" . basename($_FILES["image"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
             echo "Ga niet aahja moet ne jpg of png zen";
-        }else{
-            if ($_FILES["file"]["size"] > 500000) {
+        } else {
+            if ($_FILES["image"]["size"] > 500000) {
                 echo "das te zwaar he pipo";
-            }else{
-                $filename = $_FILES["file"]["name"];
-                $tempname = $_FILES["file"]["tmp_name"];
+            } else {
+                $filename = $_FILES["image"]["name"];
+                $tempname = $_FILES["image"]["tmp_name"];
                 $folder = "images/upload/" . $filename;
                 move_uploaded_file($tempname, $folder);
 
                 $conn = Db::getConnection();
 
-                $statement = $conn->prepare("insert into post (title, description, tags, file) values (:title, :description, :tags, :file)");
+                $statement = $conn->prepare("insert into post (title, description, image) values (:title, :description, :image)");
 
+                //user_id
                 $title = $this->getTitle();
                 $description = $this->getDescription();
-                $tags = $this->getTags();
-                $file = $this->getFile();
+                $image = $this->getImage();
 
                 $statement->bindValue(":title", $title);
                 $statement->bindValue(":description", $description);
-                $statement->bindValue(":tags", $tags);
-                $statement->bindValue(":file", $file);
+                $statement->bindValue(":image", $image);
 
                 $result = $statement->execute();
                 return $result;
             }
         }
+    }
 
 
     public function __construct($username, $image, $description, $time_posted, $comments, $likes)
@@ -71,45 +69,45 @@ class Post{
     }
 
     public static function showPosts()
-    {
+        {
 
-        $conn = Db::getConnection();
-        $query = $conn->query("SELECT post.id, users.username, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id ORDER BY post.time_posted DESC LIMIT 20");
-        $posts = $query->fetchAll();
-        $fullPosts = array();
-        $comments = array();
-        $likes = array();
-        foreach ($posts as $post) {
-            $query = $conn->prepare("SELECT users.username, comments.description FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
-            $query->bindValue(":post_id", $post['id']);
-            $query->execute();
-            $fetchedComments = $query->fetchAll();
-
-            if (!empty($fetchedComments)) {
-                foreach ($fetchedComments as $fetchedComment) {
-                    array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description']));
-
-                }
-            }
-
-            $query = $conn->prepare("SELECT users.username FROM likes JOIN users on users.id = likes.user_id WHERE likes.post_id = :post_id");
-            $query->bindValue(":post_id", $post['id']);
-            $query->execute();
-            $fetchedlikes = $query->fetchAll();
-
-            if (!empty($fetchedlikes)) {
-                foreach ($fetchedlikes as $fetchedlike) {
-                    array_push($likes, $fetchedlikes['username']);
-                }
-            }
-
-            array_push($fullPosts, new Post($post['username'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes));
+            $conn = Db::getConnection();
+            $query = $conn->query("SELECT post.id, users.username, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id ORDER BY post.time_posted DESC LIMIT 20");
+            $posts = $query->fetchAll();
+            $fullPosts = array();
             $comments = array();
             $likes = array();
-        }
-        return $fullPosts;
+            foreach ($posts as $post) {
+                $query = $conn->prepare("SELECT users.username, comments.description FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
+                $query->bindValue(":post_id", $post['id']);
+                $query->execute();
+                $fetchedComments = $query->fetchAll();
 
-    }
+                if (!empty($fetchedComments)) {
+                    foreach ($fetchedComments as $fetchedComment) {
+                        array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description']));
+
+                    }
+                }
+
+                $query = $conn->prepare("SELECT users.username FROM likes JOIN users on users.id = likes.user_id WHERE likes.post_id = :post_id");
+                $query->bindValue(":post_id", $post['id']);
+                $query->execute();
+                $fetchedlikes = $query->fetchAll();
+
+                if (!empty($fetchedlikes)) {
+                    foreach ($fetchedlikes as $fetchedlike) {
+                        array_push($likes, $fetchedlikes['username']);
+                    }
+                }
+
+                array_push($fullPosts, new Post($post['username'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes));
+                $comments = array();
+                $likes = array();
+            }
+            return $fullPosts;
+        }
+
 
     /**
      * @return mixed
@@ -124,8 +122,9 @@ class Post{
      * @param mixed $title
      */
     public function setTitle($title): void
-    {
-        $this->title = $title;
+        {
+            $this->title = $title;
+        }
 
     public function getImage()
     {
@@ -172,6 +171,7 @@ class Post{
     public function setTags($tags): void
     {
         $this->tags = $tags;
+    }
       
     public function getLikes()
     {

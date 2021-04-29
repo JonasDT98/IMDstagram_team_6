@@ -23,16 +23,6 @@
             $this->password = $password;
         }
 
-        /**
-         * User constructor.
-         * @param $email
-         * @param $fullname
-         * @param $username
-         * @param $password
-         */
-
-
-
         public function save(){
             $conn = Db::getConnection();
 

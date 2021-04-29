@@ -9,13 +9,13 @@
     if (isset($_POST['submit'])){
 
         try {
-            $post = new Post();
+            $post = new Post($_SESSION['username'], $_FILES['image'],$_POST['description'],NULL,array(),array());
             $post->setTitle($_POST['title']);
             $post->setDescription($_POST['description']);
-            $post->setTags($_POST['tags']);
-            $post->setFile($_FILES['file']['name']);
+            $post->setImage($_FILES['image']['name']);
 
             $post->post();
+            var_dump($post);
         }catch (\Throwable $th){
             $error = $th->getMessage();
             echo $error;
@@ -78,11 +78,10 @@
                 <div class="grid grid-rows-6 justify-items-center gap-y-1">
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="title" type="text" placeholder="Title" required>
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="description" type="text" placeholder="Description" required>
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="tags" type="text" placeholder="Tags">
 
                     <label class="w-full flex flex-col items-center border border-gray-300 rounded px-4 cursor-pointer uppercase bg-gray-100">
                         <span class="py-3 text-gray-400">Select a file</span>
-                        <input class = "hidden" type="file" name="file" id="file">
+                        <input class = "hidden" type="file" name="image" id="image">
                     </label>
                     <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="submit" type="submit" value="Post">
                 </div>
