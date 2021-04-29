@@ -10,13 +10,15 @@ if(!empty($_POST)){
     $email = $_POST['email'];
     $nPassword = $_POST['nPassword'];
     $nUsername = $_POST['username'];
-    $id = $user->getId();
+    $fullname = $_POST['fullname'];
     if(empty($nPassword)){
-        $nPassword = $_POST['password'];
-        User::updateUser($id, $nUsername, $email, $nPassword);
+        User::updateUser($username, $nUsername, $email, $nPassword, $fullname);
     }
     elseif(!empty($nPassword) && $nPassword != $_POST['password']){
-        User::updateUser($id, $nUsername, $email, $nPassword);
+        $nPassword = $_POST['nPassword'];
+        $user->setPassword($nPassword);
+        $hPassword = $user->getPassword();
+        User::updateUser($username, $nUsername, $email, $hPassword, $fullname);
     }
     else{
         echo "New password cannot be the same as old one.";
@@ -44,7 +46,7 @@ if(!empty($_POST)){
 <?php
 $username = $_SESSION["username"];
 $user = User::getUser($username);
-var_dump($user->getId());
+var_dump($username);
 
 ?>
 
@@ -54,6 +56,7 @@ var_dump($user->getId());
             <form action="editProfile.php" method="post">
                 <div class="grid grid-rows-3 justify-items-center gap-y-1">
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" value="<?php  echo $user->getUsername()    ?>">
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullname" type="text" value="<?php  echo $user->getFullname()    ?>">
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" value="<?php  echo $user->getEmail()    ?>">
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="password" type="password" value="<?php  echo $user->getPassword()    ?>" >
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="nPassword" type="password" placeholder="New Password" >

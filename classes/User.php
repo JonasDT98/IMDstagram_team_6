@@ -16,18 +16,23 @@
          * @param $username
          * @param $password
          */
-        public function __construct()
+        public function __construct($email, $fullname, $username, $password)
         {
+            $this->email = $email;
+            $this->fullname = $fullname;
+            $this->username = $username;
+            $this->password = $password;
+        }
 
-        }
-        public static function newUserWithoutId($email, $fullname, $username, $password)
-        {
-            $user =  new User();
-            $user->setEmail($email);
-            $user->setUsername($username);
-            $user->setFullname($fullname);
-            $user->setPassword($password);
-        }
+        /**
+         * User constructor.
+         * @param $email
+         * @param $fullname
+         * @param $username
+         * @param $password
+         */
+
+
 
         public function save(){
             $conn = Db::getConnection();
@@ -38,7 +43,6 @@
             $username = $this->getUsername();
             $email = $this->getEmail();
             $password = $this->getPassword();
-            $id = $this->getId();
 
             $statement->bindValue(":fullname", $fullname);
             $statement->bindValue(":username", $username);
@@ -68,6 +72,19 @@
             }else{
                 return false;
             }
+        }
+
+        static function updateUser($oUsername, $username, $email, $nPassword, $fullname)
+        {
+            $conn = db::getConnection();
+            $statement = $conn->prepare("UPDATE users SET username=:username,email=:email,password=:password,fullname=:fullname WHERE username=:oUsername");
+            $statement->bindParam(':oUsername', $oUsername, PDO::PARAM_STR);
+            $statement->bindParam(':username', $username, PDO::PARAM_STR);
+            $statement->bindParam(':fullname', $fullname, PDO::PARAM_STR);
+            $statement->bindParam(':email', $email, PDO::PARAM_STR);
+            $statement->bindParam(':password', $nPassword, PDO::PARAM_STR);
+            $result = $statement->execute();
+            var_dump($result);
         }
         /**
          * @return mixed
@@ -135,26 +152,19 @@
             ];
             $this->password =  password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
         }
-        static function updateUser($id, $username, $email, $nPassword)
-        {
-            $conn = db::getConnection();
-            $statement = $conn->prepare("UPDATE users SET username=:username,email=:email,password=:password WHERE id=:id");
-            $statement->bindParam(':id', $id, PDO::PARAM_INT);
-            $statement->bindParam(':username', $username, PDO::PARAM_STR);
-            $statement->bindParam(':email', $email, PDO::PARAM_STR);
-            $statement->bindParam(':password', $nPassword, PDO::PARAM_STR);
-            $result = $statement->execute();
-            var_dump($result);
-        }
+
 
         /**
          * @return mixed
          */
         public function getId()
         {
-            //$conn = db::getConnection();
-            // = $conn->prepare("SELECT id FROM users WHERE username = '$this->username'");
-            //$this->id = $statement->execute();
+//            $username = $this->username;
+//            $conn = db::getConnection();
+//            $statement = $conn->prepare("SELECT id FROM users WHERE username = :username");
+//            $statement->bindParam(':username', $username, PDO::PARAM_INT);
+//            $statement->execute();
+//            $this->id = $statement->fetch();
             return $this->id;
         }
 
@@ -163,8 +173,7 @@
             $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
             $statement->bindValue(':username', $username);
             $statement->execute();
-
             $result = $statement->fetch();
-            return new User($result['id'], $result['email'], $result['fullname'], $result['username'], $result['password']);
+            return new User($result['email'], $result['fullname'], $result['username'], $result['password']);
         }
     }
