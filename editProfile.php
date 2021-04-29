@@ -9,13 +9,13 @@ if(!empty($_POST)){
     $user = User::getUser($username);
     $email = $_POST['email'];
     $nPassword = $_POST['nPassword'];
+    $oPassword = $_POST['oPassword'];
     $nUsername = $_POST['username'];
     $fullname = $_POST['fullname'];
     if(empty($nPassword)){
-        User::updateUser($username, $nUsername, $email, $nPassword, $fullname);
+        User::updateUser($username, $nUsername, $email, $oPassword, $fullname);
     }
-    elseif(!empty($nPassword) && $nPassword != $_POST['password']){
-        $nPassword = $_POST['nPassword'];
+    elseif(!empty($nPassword) && $nPassword != $oPassword){
         $user->setPassword($nPassword);
         $hPassword = $user->getPassword();
         User::updateUser($username, $nUsername, $email, $hPassword, $fullname);
@@ -58,7 +58,7 @@ var_dump($username);
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" value="<?php  echo $user->getUsername()    ?>">
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullname" type="text" value="<?php  echo $user->getFullname()    ?>">
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" value="<?php  echo $user->getEmail()    ?>">
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="password" type="password" value="<?php  echo $user->getPassword()    ?>" >
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="oPassword" type="password" value="<?php  echo $user->getPassword()    ?>" >
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="nPassword" type="password" placeholder="New Password" >
                     <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="btnSave" type="submit" value="Save">
                 </div>

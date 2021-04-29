@@ -4,12 +4,8 @@
     if(!empty($_POST)){
 
             try {
-                $user = new User();
-                $user->setEmail($_POST['email']);
-                $user->setFullname($_POST['fullname']);
-                $user->setUsername($_POST['username']);
+                $user = new User($_POST['email'], $_POST['fullname'], $_POST['username'], $_POST['password']);
                 $user->setPassword($_POST['password']);
-
                 $user->save();
             } catch (\Throwable $th){
                 $error = $th->getMessage();
