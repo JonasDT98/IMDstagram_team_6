@@ -11,6 +11,7 @@ class Post{
     private $likes;
     private $comments;
     private $time_posted;
+    private $postId;
 
     public function post()
     {
@@ -49,7 +50,7 @@ class Post{
     }
 
 
-    public function __construct($username, $image, $description, $time_posted, $comments, $likes)
+    public function __construct($username, $image, $description, $time_posted, $comments, $likes, $postId)
     {
         $this->setUsername($username);
         $this->setImage($image);
@@ -57,6 +58,7 @@ class Post{
         $this->setComments($comments);
         $this->setTimePosted($time_posted);
         $this->setLikes($likes);
+        $this->setPostId($postId);
     }
 
     public static function profileData($username) {
@@ -93,15 +95,15 @@ class Post{
                 $query = $conn->prepare("SELECT users.username FROM likes JOIN users on users.id = likes.user_id WHERE likes.post_id = :post_id");
                 $query->bindValue(":post_id", $post['id']);
                 $query->execute();
-                $fetchedlikes = $query->fetchAll();
+                $fetchedLikes = $query->fetchAll();
 
-                if (!empty($fetchedlikes)) {
-                    foreach ($fetchedlikes as $fetchedlike) {
-                        array_push($likes, $fetchedlikes['username']);
+                if (!empty($fetchedLikes)) {
+                    foreach ($fetchedLikes as $fetchedLike) {
+                        array_push($likes, $fetchedLike['username']);
                     }
                 }
 
-                array_push($fullPosts, new Post($post['username'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes));
+                array_push($fullPosts, new Post($post['username'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']));
                 $comments = array();
                 $likes = array();
             }
@@ -248,6 +250,22 @@ class Post{
     public function setTimePosted($time_posted): void
     {
         $this->time_posted = $time_posted;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPostId()
+    {
+        return $this->postId;
+    }
+
+    /**
+     * @param mixed $postId
+     */
+    public function setPostId($postId): void
+    {
+        $this->postId = $postId;
     }
 
 }

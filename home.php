@@ -124,11 +124,13 @@ $posts = Post::showPosts();
                     <p class="text-xs">POSTED ON <?php echo substr($post->getTimePosted(), -9, 6); ?></p>
                 </div>
                 <form class="pb-5" method="post">
-                    <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100" name="comment"
+                    <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100" id="addComment" data-postid="<?php echo $post->getPostId(); ?>" name="comment"
                            type="text" placeholder="Add a comment..." required>
+                    <button id="myBtn" ></button>
                 </form>
         </article>
     <?php endforeach; ?>
 </div>
+<script src="./js/app.js"></script>
 </body>
 </html>
