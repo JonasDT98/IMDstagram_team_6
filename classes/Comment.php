@@ -56,7 +56,7 @@ Class Comment {
 
     public function save() {
         $conn = Db::getConnection();
-        $query = $conn->prepare("insert into comments (description, postId, userId) values (:description, :postId, :userId)");
+        $query = $conn->prepare("insert into comments (description, post_id, user_id) values (:description, :postId, :userId)");
 
         $description = $this->getDescription();
         $postId = $this->getPostId();
@@ -67,7 +67,9 @@ Class Comment {
         $query->bindValue(":userId", $userId);
 
         $result = $query->execute();
+
         return $result;
+
     }
 
 }

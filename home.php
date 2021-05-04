@@ -123,10 +123,10 @@ $posts = Post::showPosts();
                 <div class="mx-4 mb-2">
                     <p class="text-xs">POSTED ON <?php echo substr($post->getTimePosted(), -9, 6); ?></p>
                 </div>
-                <form class="pb-5" method="post">
-                    <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100" id="addComment" data-postid="<?php echo $post->getPostId(); ?>" name="comment"
+                <form class="pb-5" method="post" action="">
+                    <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100" id="addComment" name="comment"
                            type="text" placeholder="Add a comment..." required>
-                    <button id="myBtn" ></button>
+                    <button class="w-full h-10 border border-gray-300" id="btnAddComment" data-postid="<?php echo $post->getPostId(); ?>" > Add comment </button>
                 </form>
         </article>
     <?php endforeach; ?>
