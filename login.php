@@ -2,6 +2,9 @@
 
     include_once (__DIR__ . "/classes/User.php");
 
+    session_start();
+    session_destroy();
+
         if(!empty($_POST)){
             $username = $_POST['username'];
             $password = $_POST['password'];
@@ -39,7 +42,7 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
                         <ul>
-                            <li>User does not exist</li>
+                            <li>Error, something went wrong!</li>
                         </ul>
                     </div>
                 <?php endif; ?>
