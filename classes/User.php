@@ -6,7 +6,7 @@ class User{
     private $fullname;
     private $username;
     private $password;
-    public $id;
+    private $profilePic;
 
     /**
      * User constructor.
@@ -15,12 +15,13 @@ class User{
      * @param $username
      * @param $password
      */
-    public function __construct($email, $fullname, $username, $password)
+    public function __construct($email, $fullname, $username, $password, $profilePic = NULL)
     {
         $this->email = $email;
         $this->fullname = $fullname;
         $this->username = $username;
         $this->password = $password;
+        $this->profilePic = $profilePic;
     }
 
     public function save(){
@@ -157,6 +158,42 @@ class User{
         return $this->id;
     }
 
+    public function getProfilePic()
+    {
+        return $this->profilePic;
+    }
+
+    /**
+     * @param mixed|null $profilePic
+     */
+    public function setProfilePic($profilePic, $username): void
+    {
+        $target_file = "images/profilePics/" . basename($_FILES["image"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+            echo "Ga niet aahja moet ne jpg of png zen";
+        } else {
+            if ($_FILES["image"]["size"] > 500000) {
+                echo "das te zwaar he pipo";
+            } else {
+                $filename = $_FILES["image"]["name"];
+                $tempname = $_FILES["image"]["tmp_name"];
+                $folder = "images/profilePics/" . $filename;
+                move_uploaded_file($tempname, $folder);
+
+                $conn = Db::getConnection();
+
+                $statement = $conn->prepare("update users set profilePic = :profilePic where username = :username");
+
+                $statement->bindValue(":profilePic", $profilePic);
+                $statement->bindValue(":username", $username);
+                $statement->execute();
+                $this->profilePic = $profilePic;
+            }
+        }
+    }
+
     public static function getUser($username): User
     {
         $conn = db::getConnection();
@@ -164,6 +201,6 @@ class User{
         $statement->bindValue(':username', $username);
         $statement->execute();
         $result = $statement->fetch();
-        return new User($result['email'], $result['fullname'], $result['username'], $result['password']);
+        return new User($result['email'], $result['fullname'], $result['username'], $result['password'], $result['profilePic']);
     }
 }
