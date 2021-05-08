@@ -146,18 +146,17 @@
         /**
          * @return mixed
          */
-        public function getId()
+        public static function getId($username)
         {
-//            $username = $this->username;
-//            $conn = db::getConnection();
-//            $statement = $conn->prepare("SELECT id FROM users WHERE username = :username");
-//            $statement->bindParam(':username', $username, PDO::PARAM_INT);
-//            $statement->execute();
-//            $this->id = $statement->fetch();
-            return $this->id;
+            $conn = db::getConnection();
+            $query = $conn->prepare("SELECT id from users where username = :username");
+            $query->bindValue(":username", $username);
+            $query->execute();
+            $userId = $query->fetch();
+            return $userId;
         }
 
-        static function getUser($username){
+        public static function getUser($username){
             $conn = db::getConnection();
             $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
             $statement->bindValue(':username', $username);

@@ -9,6 +9,7 @@
             if (User::canLogin($username, $password)){
                 session_start();
                 $_SESSION["username"] = $username;
+                $_SESSION['userid'] = User::getId($username);
                 header("Location: home.php");
             }else{
                 $error = true;

@@ -70,8 +70,8 @@ class Post{
         return $fetchedProfile;
     }
 
-    public static function showPosts()
-        {
+    public static function showFirstPosts(): array
+    {
 
             $conn = Db::getConnection();
             $query = $conn->query("SELECT post.id, users.username, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id ORDER BY post.time_posted DESC LIMIT 20");

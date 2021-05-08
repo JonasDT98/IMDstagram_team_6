@@ -1,15 +1,17 @@
 <?php
 include_once (__DIR__ . "/../classes/Comment.php");
 include_once (__DIR__ . "/../classes/db.php");
+include_once (__DIR__ . "/../classes/User.php");
 if (!empty($_POST)) {
 //    new Comment
     session_start();
-    $conn = DB::getConnection();
-    $query = $conn->prepare("SELECT id from users where username = :username");
-    $query->bindValue(":username", $_SESSION['username']);
-    $query->execute();
-    $userId = $query->fetch();
-    var_dump($_SESSION['username']);
+//    $conn = DB::getConnection();
+//    $query = $conn->prepare("SELECT id from users where username = :username");
+//    $query->bindValue(":username", $_SESSION['username']);
+//    $query->execute();
+//    $userId = $query->fetch();
+    $userId = User::getId($_SESSION['username']);
+
     $c = new Comment();
     $c->setPostId($_POST['postId']);
     $c->setDescription($_POST['text']);
