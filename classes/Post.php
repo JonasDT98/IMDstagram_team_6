@@ -80,14 +80,14 @@ class Post{
             $comments = array();
             $likes = array();
             foreach ($posts as $post) {
-                $query = $conn->prepare("SELECT users.username, comments.description FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
+                $query = $conn->prepare("SELECT users.username, comments.description, comments.time_comment FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
                 $query->bindValue(":post_id", $post['id']);
                 $query->execute();
                 $fetchedComments = $query->fetchAll();
 
                 if (!empty($fetchedComments)) {
                     foreach ($fetchedComments as $fetchedComment) {
-                        array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description']));
+                        array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description'], "time" => $fetchedComment['time_comment']));
 
                     }
                 }

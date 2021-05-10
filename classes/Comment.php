@@ -5,6 +5,23 @@ Class Comment {
     private $user_id;
     private $post_id;
     private $description;
+    private $time_comment;
+
+    /**
+     * @return mixed
+     */
+    public function getTimeComment()
+    {
+        return $this->time_comment;
+    }
+
+    /**
+     * @param mixed $time_comment
+     */
+    public function setTimeComment($time_comment): void
+    {
+        $this->time_comment = $time_comment;
+    }
 
     /**
      * @return mixed
@@ -69,6 +86,10 @@ Class Comment {
         $result = $query->execute();
 
         return $result;
+
+    }
+
+    public static function showTime($commentId) {
 
     }
 

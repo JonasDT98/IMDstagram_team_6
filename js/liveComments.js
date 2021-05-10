@@ -1,47 +1,64 @@
 console.log("is linked");
-let comments = document.querySelectorAll(".addComment");
+let newComments = document.querySelectorAll(".addComment");
 let showComments = document.querySelectorAll(".comments");
-for (let i = 0; i < comments.length; i++) {
-comments[i].addEventListener("keypress", function (e){
+for (let i = 0; i < newComments.length; i++) {
+    newComments[i].addEventListener("keypress", function (e) {
 
+        if (e.keyCode === 13) {
+            e.preventDefault();
 
-    if (e.keyCode === 13) {
+            let postId = this.dataset.postid;
+            let username = this.dataset.username;
+            let text = newComments[i].value;
 
-        e.preventDefault();
+            console.log(postId);
+            console.log(text);
+            console.log(username);
 
-        let postId = this.dataset.postid;
-        let username = this.dataset.username;
-        let text = comments[i].value;
+            const formData = new FormData();
 
-        console.log(postId);
-        console.log(text);
-        console.log(username);
+            formData.append("text", text);
+            formData.append("postId", postId);
 
-        const formData = new FormData();
-
-        formData.append("text", text);
-        formData.append("postId", postId);
-
-        fetch('ajax/saveComment.php', {
-            method: "POST",
-            body: formData
-        })
-            .then(response => response.json())
-            .then(result => {
-                console.log('Success:', result);
-                let newComment = document.createElement('li');
-                newComment.style.marginTop = "0.25rem";
-                newComment.style.fontSize = "0.875rem";
-                newComment.style.lineHeight = "1.25rem";
-                newComment.innerHTML = "<b>" + username + "</b>" + " " + result.body;
-                showComments[i].append(newComment);
-                comments[i].value = '';
+            fetch('ajax/saveComment.php', {
+                method: "POST",
+                body: formData
             })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-});
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Success:', result);
+                    let comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
+                    let newComment = document.createElement('li');
+                    let separation = document.createElement('span');
+                    //  <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 separation"></span>
+                    separation.style.width = "100%";
+                    separation.style.backgroundColor = "#F3F4F6";
+                    separation.style.height = "0.125rem";
+                    separation.style.display = "block";
+                    separation.style.alignSelf = "center";
+                    separation.style.marginBottom = "0.5rem";
+                    newComment.style.marginTop = "0.25rem";
+                    newComment.style.marginBottom = "0.25rem";
+                    newComment.style.fontSize = "0.875rem";
+                    newComment.style.lineHeight = "1.25rem";
+                    newComment.innerHTML = "<b>" + username + "</b>" + " " + result.body;
+                    console.log(comments.length);
+                    if (comments.length === 1) {
+                        comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
+
+                        comments[(comments.length) - 1].appendChild(separation);
+                        comments[(comments.length) - 1].appendChild(newComment);
+                    } else {
+
+                        comments[(comments.length) - 1].appendChild(newComment);
+                    }
+                    newComments[i].value = '';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    });
 }
 // document.querySelector("#btnAddComment").addEventListener("click", function (e) {
 //     e.preventDefault();

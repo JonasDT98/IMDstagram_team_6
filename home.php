@@ -10,7 +10,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 $posts = Post::showFirstPosts();
-
+var_dump($posts);
 ?>
 <!doctype html>
 <html lang="en">
@@ -118,15 +118,15 @@ $posts = Post::showFirstPosts();
                     <p class="text-xs">POSTED ON <?php echo substr($post->getTimePosted(), -9, 6); ?></p>
                 </div>
 
+                <ul class="mx-4 mb-2 comments">
                 <?php if (!empty($post->getComments())): ?>
-                    <span class="w-full bg-gray-100 h-0.5 block self-center mb-2"></span>
-                    <ul class="mx-4 mb-2 comments">
+                    <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 "></span>
                         <?php foreach ($post->getComments() as $comment) : ?>
                             <li class="text-sm mt-1" >
-                                <b><?php echo $comment['username']; ?></b> <?php echo $comment['comment']; ?></li>
+                                <b><?php echo $comment['username']; ?></b> <?php echo $comment['comment']; ?> <span><?php echo $comment['time']; ?></span></li>
                         <?php endforeach; ?>
-                    </ul>
                 <?php endif; ?>
+                </ul>
                 <form class="pb-5" method="post" action="">
                     <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100 addComment"
                            data-postid="<?php echo $post->getPostId(); ?>"
