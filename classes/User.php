@@ -143,20 +143,23 @@ class User{
         $this->password =  password_hash($password, PASSWORD_DEFAULT, $options);
     }
 
+        /**
+         * @return mixed
+         */
+        public static function getId($username)
+        {
+            $conn = db::getConnection();
+            $query = $conn->prepare("SELECT id from users where username = :username");
+            $query->bindValue(":username", $username);
+            $query->execute();
+            $userId = $query->fetch();
+            return $userId;
+        }
 
     /**
      * @return mixed
      */
-    public function getId()
-    {
-//            $username = $this->username;
-//            $conn = db::getConnection();
-//            $statement = $conn->prepare("SELECT id FROM users WHERE username = :username");
-//            $statement->bindParam(':username', $username, PDO::PARAM_INT);
-//            $statement->execute();
-//            $this->id = $statement->fetch();
-        return $this->id;
-    }
+   
 
     public function getProfilePic()
     {

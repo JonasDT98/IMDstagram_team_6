@@ -11,6 +11,7 @@ class Post{
     private $likes;
     private $comments;
     private $time_posted;
+    private $postId;
 
     public function post()
     {
@@ -52,7 +53,7 @@ class Post{
 
     }
 
-    public function __construct($username, $image, $description, $time_posted, $comments, $likes)
+    public function __construct($username, $image, $description, $time_posted, $comments, $likes, $postId)
     {
         $this->setUsername($username);
         $this->setImage($image);
@@ -60,6 +61,7 @@ class Post{
         $this->setComments($comments);
         $this->setTimePosted($time_posted);
         $this->setLikes($likes);
+        $this->setPostId($postId);
     }
 
     public static function profileData($username) {
@@ -71,8 +73,8 @@ class Post{
         return $fetchedProfile;
     }
 
-    public static function showPosts()
-        {
+    public static function showFirstPosts(): array
+    {
 
             $conn = Db::getConnection();
             $query = $conn->query("SELECT post.id, users.username, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id ORDER BY post.time_posted DESC LIMIT 20");
@@ -81,14 +83,14 @@ class Post{
             $comments = array();
             $likes = array();
             foreach ($posts as $post) {
-                $query = $conn->prepare("SELECT users.username, comments.description FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
+                $query = $conn->prepare("SELECT users.username, comments.description, comments.time_comment FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
                 $query->bindValue(":post_id", $post['id']);
                 $query->execute();
                 $fetchedComments = $query->fetchAll();
 
                 if (!empty($fetchedComments)) {
                     foreach ($fetchedComments as $fetchedComment) {
-                        array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description']));
+                        array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description'], "time" => $fetchedComment['time_comment']));
 
                     }
                 }
@@ -96,15 +98,15 @@ class Post{
                 $query = $conn->prepare("SELECT users.username FROM likes JOIN users on users.id = likes.user_id WHERE likes.post_id = :post_id");
                 $query->bindValue(":post_id", $post['id']);
                 $query->execute();
-                $fetchedlikes = $query->fetchAll();
+                $fetchedLikes = $query->fetchAll();
 
-                if (!empty($fetchedlikes)) {
-                    foreach ($fetchedlikes as $fetchedlike) {
-                        array_push($likes, $fetchedlikes['username']);
+                if (!empty($fetchedLikes)) {
+                    foreach ($fetchedLikes as $fetchedLike) {
+                        array_push($likes, $fetchedLike['username']);
                     }
                 }
 
-                array_push($fullPosts, new Post($post['username'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes));
+                array_push($fullPosts, new Post($post['username'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']));
                 $comments = array();
                 $likes = array();
             }
@@ -251,6 +253,22 @@ class Post{
     public function setTimePosted($time_posted): void
     {
         $this->time_posted = $time_posted;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPostId()
+    {
+        return $this->postId;
+    }
+
+    /**
+     * @param mixed $postId
+     */
+    public function setPostId($postId): void
+    {
+        $this->postId = $postId;
     }
 
 }

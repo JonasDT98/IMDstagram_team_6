@@ -1,13 +1,16 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include_once(__DIR__ . "/classes/Post.php");
+
 
 session_start();
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
 }
 
-$posts = Post::showPosts();
-
+$posts = Post::showFirstPosts();
+var_dump($posts);
 ?>
 <!doctype html>
 <html lang="en">
@@ -111,26 +114,30 @@ $posts = Post::showPosts();
                 <?php else: ?>
                     <p class="text-sm mx-4"> 0 likes </p>
                 <?php endif; ?>
-                <p class="text-sm mx-4 mb-2"> <b><?php echo $post->getUsername(); ?></b> <?php echo $post->getDescription(); ?> </p>
-
-                <?php if (!empty($post->getComments())): ?>
-                    <span class="w-full bg-gray-100 h-0.5 block self-center mb-2"></span>
-                    <?php foreach ($post->getComments() as $comment) : ?>
-                        <div class="mx-4 mb-2">
-                            <p class="text-sm">
-                                <b><?php echo $comment['username']; ?></b> <?php echo $comment['comment']; ?></p>
-                        </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                <p class="text-sm mx-4 mb-2">
+                    <b><?php echo $post->getUsername(); ?></b> <?php echo $post->getDescription(); ?> </p>
                 <div class="mx-4 mb-2">
                     <p class="text-xs">POSTED ON <?php echo substr($post->getTimePosted(), -9, 6); ?></p>
                 </div>
-                <form class="pb-5" method="post">
-                    <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100" name="comment"
+
+                <ul class="mx-4 mb-2 comments">
+                <?php if (!empty($post->getComments())): ?>
+                    <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 "></span>
+                        <?php foreach ($post->getComments() as $comment) : ?>
+                            <li class="text-sm mt-1" >
+                                <b><?php echo $comment['username']; ?></b> <?php echo $comment['comment']; ?> <span><?php echo $comment['time']; ?></span></li>
+                        <?php endforeach; ?>
+                <?php endif; ?>
+                </ul>
+                <form class="pb-5" method="post" action="">
+                    <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100 addComment"
+                           data-postid="<?php echo $post->getPostId(); ?>"
+                           data-username="<?php echo $_SESSION['username']; ?>" name="comment"
                            type="text" placeholder="Add a comment..." required>
                 </form>
         </article>
     <?php endforeach; ?>
 </div>
+<script src="js/liveComments.js"></script>
 </body>
 </html>
