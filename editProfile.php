@@ -74,7 +74,7 @@ var_dump($user->getProfilePic());
         </form>
         <form method="POST" enctype="multipart/form-data">
             <div class="flex flex-col justify-center items-center gap-y-1 pt-10">
-                <img class="rounded-full border-4 border-red-100 align-center w-52" src="<?php   echo  "images/profilePics/" . $user->getProfilePic() ?>"
+                <img class="rounded-full border-4 border-red-100 align-center w-52 h-52" src="<?php   echo  "images/profilePics/" . $user->getProfilePic() ?>"
                      alt="profile picture">
                 <label class="h-12 w-full flex flex-col items-center border border-gray-300 rounded px-4 cursor-pointer uppercase bg-gray-100">
                     <span class="py-3 text-gray-400">Select a Profile Picture</span>
