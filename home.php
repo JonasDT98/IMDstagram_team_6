@@ -89,7 +89,7 @@ var_dump($posts);
             <div>
                 <img src="<?php echo $post->getImage(); ?>" alt="post picture">
                 <div class="flex w-1/2 mx-4 my-2 gap-2">
-                <span class="fr66n"><button class="wpO6b  " type="button"><div class="QBdPU "><span class=""><svg
+                <span class="fr66n"><button class="wpO6b btnLike" type="button"><div class="QBdPU "><span class=""><svg
                                         aria-label="Unlike" class="_8-yf5 " fill="#ed4956" height="24"
                                         viewBox="0 0 48 48"
                                         width="24"><path
@@ -112,7 +112,7 @@ var_dump($posts);
                         <p class="mx-4"> <?php echo sizeof($post->getLikes()); ?> likes </p>
                     <?php endif; ?>
                 <?php else: ?>
-                    <p class="text-sm mx-4"> 0 likes </p>
+                    <p class="text-sm mx-4 likes"> 0 likes </p>
                 <?php endif; ?>
                 <p class="text-sm mx-4 mb-2">
                     <b><?php echo $post->getUsername(); ?></b> <?php echo $post->getDescription(); ?> </p>
@@ -139,5 +139,6 @@ var_dump($posts);
     <?php endforeach; ?>
 </div>
 <script src="js/liveComments.js"></script>
+<script src="js/likes.js"></script>
 </body>
 </html>
