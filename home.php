@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once(__DIR__ . "/classes/Post.php");
+include_once (__DIR__ . "/classes/Comment.php");
 
 
 session_start();
@@ -68,7 +69,7 @@ var_dump($posts);
             <div class="my-2 mx-4 flex items-center gap-2">
                 <div class="flex items-center w-1/2">
                     <a href="#">
-                        <img class="w-10 h-auto rounded-full border-4 border-red-200" src="images/gibby.png"
+                        <img class="w-12 h-12 object-contain rounded-full border-4 border-red-200" src="images/profilePics/<?php echo $post->getProfilePic(); ?>"
                              alt="profile picture">
                     </a>
                     <a class="ml-2" href="./userProfile.php?id=<?php echo $post->getUsername(); ?>">
@@ -125,7 +126,7 @@ var_dump($posts);
                     <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 "></span>
                         <?php foreach ($post->getComments() as $comment) : ?>
                             <li class="text-sm mt-1" >
-                                <b><?php echo $comment['username']; ?></b> <?php echo $comment['comment']; ?> <span><?php echo $comment['time']; ?></span></li>
+                                <b><?php echo $comment['username']; ?></b> <?php echo $comment['comment']; ?> <span class="float-right text-xs"><?php echo Comment::showTime($comment['time']); ?> ago</span></li>
                         <?php endforeach; ?>
                 <?php endif; ?>
                 </ul>

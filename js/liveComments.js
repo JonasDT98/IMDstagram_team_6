@@ -1,6 +1,5 @@
 console.log("is linked");
 let newComments = document.querySelectorAll(".addComment");
-let showComments = document.querySelectorAll(".comments");
 for (let i = 0; i < newComments.length; i++) {
     newComments[i].addEventListener("keypress", function (e) {
 
@@ -30,7 +29,6 @@ for (let i = 0; i < newComments.length; i++) {
                     let comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
                     let newComment = document.createElement('li');
                     let separation = document.createElement('span');
-                    //  <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 separation"></span>
                     separation.style.width = "100%";
                     separation.style.backgroundColor = "#F3F4F6";
                     separation.style.height = "0.125rem";
@@ -42,16 +40,8 @@ for (let i = 0; i < newComments.length; i++) {
                     newComment.style.fontSize = "0.875rem";
                     newComment.style.lineHeight = "1.25rem";
                     newComment.innerHTML = "<b>" + username + "</b>" + " " + result.body;
-                    console.log(comments.length);
-                    if (comments.length === 1) {
-                        comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
-
-                        comments[(comments.length) - 1].appendChild(separation);
-                        comments[(comments.length) - 1].appendChild(newComment);
-                    } else {
-
-                        comments[(comments.length) - 1].appendChild(newComment);
-                    }
+                    comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
+                    comments[(comments.length) - 1].appendChild(newComment);
                     newComments[i].value = '';
                 })
                 .catch(error => {
