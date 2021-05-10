@@ -31,7 +31,7 @@ $profile = Post::profileData($user);
             <div class="w-full bg-white rounded-t shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
                 <div class="flex items-center">
                     <a href="home.php" class="object-contain h-10 w-1/3">
-                    <img class="object-contain  w-4/6"
+                    <img class="object-contain  w-4/6 ml-4"
                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                          alt="Logo">
                     </a>

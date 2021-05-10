@@ -12,7 +12,7 @@
                 return self::$conn;
 
             } else {
-                // echo ":no_entry_sign:";
+              
                 // connection found, return connection
                 return self::$conn;
             }

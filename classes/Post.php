@@ -20,10 +20,12 @@ class Post{
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-            echo "Ga niet aahja moet ne jpg of png zen";
+            echo "Ga niet aahja moet ne jpg, jpeg of png zen";
+            $error = "Ga niet aahja moet ne jpg, jpeg of png zen";
         } else {
             if ($_FILES["image"]["size"] > 500000) {
                 echo "das te zwaar he pipo";
+                $error = "das te zwaar he pipo";
             } else {
                 $filename = $_FILES["image"]["name"];
                 $tempname = $_FILES["image"]["tmp_name"];
@@ -47,8 +49,9 @@ class Post{
                 return $result;
             }
         }
-    }
+        return $error;
 
+    }
 
     public function __construct($username, $image, $description, $time_posted, $comments, $likes, $postId)
     {
