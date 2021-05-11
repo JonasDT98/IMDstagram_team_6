@@ -8,7 +8,7 @@ class Post{
     private $description;
     private $username;
     private $image;
-    private $likes = 0;
+    private $likes;
     private $comments;
     private $time_posted;
     private $postId;
@@ -270,5 +270,27 @@ class Post{
     {
         $this->postId = $postId;
     }
+    public static function isLiked($userId, $postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT * FROM likes WHERE user_id =:userId AND post_id =:postId");
+        $query->bindValue(":userId", $userId);
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        if($result != NULL){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public static function getAmountOfLikes($postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT post_id FROM likes WHERE post_id = :postId");
 
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        return count($result);
+    }
 }

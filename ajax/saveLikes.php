@@ -7,37 +7,40 @@ if (!empty($_POST)) {
 //    new Like
     session_start();
     $userId = User::getId($_SESSION['username']);
-
+    $userId = $userId['id'];
+    $postId = $_POST['postId'];
     $l = new Like();
-    $l->setPostId($_POST['postId']);
-    $l->setUserId($userId['id']);
-    $postId = $l->getPostId();
-    $userid = $l->getUserId();
-    if($l->isLiked($userId)){
-        $l->saveLike();
+    $l->setPostId($postId);
+    $l->setUserId($userId);
+    if(!Post::isLiked($userId, $postId)){
+
+    $l->saveLike();
 
         //success message
-        if ($l->getAmountOfLikes($l->getPostId()) != 1){
+        if (Post::getAmountOfLikes($postId) != 1){
             $response = [
                 'status' => 'success',
-                'body' => htmlspecialchars($l->getAmountOfLikes($l->getPostId()) . " likes" ),
-                'message' => 'Like saved'
+                'body' => htmlspecialchars(Post::getAmountOfLikes($l->getPostId()) . " likes" ),
+                'message' => 'Like saved',
+                'liked' => Post::isLiked($userId, $postId)
             ];
         }
         else{
             $response = [
                 'status' => 'success',
-                'body' => htmlspecialchars($l->getAmountOfLikes($l->getPostId()) . " like" ),
-                'message' => 'Like saved'
+                'body' => htmlspecialchars(Post::getAmountOfLikes($l->getPostId()) . " like" ),
+                'message' => 'Like saved',
+                'liked' => Post::isLiked($userId, $postId)
             ];
         }
     }
     else{
-        $l->unsaveLike();
+        $l->deleteLike();
         $response = [
                 'status' => 'success',
-                'body' => htmlspecialchars($l->getAmountOfLikes($l->getPostId()) - 1 . " like" ),
-                'message' => 'Like removed'
+                'body' => htmlspecialchars(intval(Post::getAmountOfLikes($l->getPostId())) . " like" ),
+                'message' => 'Like removed',
+                'liked' => Post::isLiked($userId, $postId)
         ];
     }
 
