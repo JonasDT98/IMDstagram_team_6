@@ -10,7 +10,15 @@ if (!isset($_SESSION['username'])) {
 }
 
 $posts = Post::showFirstPosts();
-var_dump($posts);
+
+$conn = Db::getConnection();
+$query = $conn->prepare("SELECT post_id FROM likes WHERE user_id =:userId");
+$query->bindValue(":userId", 1);
+$query->execute();
+$result = $query->fetchAll();
+$result = implode('',array_column($result, 'post_id'));
+$result = str_split($result, 1);
+var_dump(count(array_unique($result)));
 ?>
 <!doctype html>
 <html lang="en">
@@ -25,6 +33,7 @@ var_dump($posts);
     <title>Instagram feed</title>
 </head>
 <body>
+
 <div class="flex flex-col min-h-screen items-center bg-blue-400">
     <header class="mt-8">
         <nav>
@@ -89,7 +98,9 @@ var_dump($posts);
             <div>
                 <img src="<?php echo $post->getImage(); ?>" alt="post picture">
                 <div class="flex w-1/2 mx-4 my-2 gap-2">
-                <span class="fr66n"><button class="wpO6b btnLike" type="button"><div class="QBdPU "><span class=""><svg
+                <span class="fr66n"><button class="wpO6b btnLike
+                                            "data-postid="<?php echo $post->getPostId(); ?>"
+                                            data-username="<?php echo $_SESSION['username']; ?>" type="button"><div class="QBdPU "><span class=""><svg
                                         aria-label="Unlike" class="_8-yf5 " fill="#ed4956" height="24"
                                         viewBox="0 0 48 48"
                                         width="24"><path
@@ -107,12 +118,12 @@ var_dump($posts);
                 </div>
                 <?php if (!empty($post->getLikes())): ?>
                     <?php if (sizeof($post->getLikes()) == 1): ?>
-                        <p class="mx-4"> <?php echo sizeof($post->getLikes()); ?> like </p>
+                        <p class="mx-4 likes"> <?php echo sizeof($post->getLikes()); ?> like </p>
                     <?php else: ?>
-                        <p class="mx-4"> <?php echo sizeof($post->getLikes()); ?> likes </p>
+                        <p class="mx-4 likes"> <?php echo sizeof($post->getLikes()); ?> likes </p>
                     <?php endif; ?>
                 <?php else: ?>
-                    <p class="text-sm mx-4 likes"> 0 likes </p>
+                    <p class="mx-4 likes"> 0 likes </p>
                 <?php endif; ?>
                 <p class="text-sm mx-4 mb-2">
                     <b><?php echo $post->getUsername(); ?></b> <?php echo $post->getDescription(); ?> </p>

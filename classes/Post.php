@@ -8,7 +8,7 @@ class Post{
     private $description;
     private $username;
     private $image;
-    private $likes;
+    private $likes = 0;
     private $comments;
     private $time_posted;
     private $postId;
