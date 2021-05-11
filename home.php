@@ -11,7 +11,6 @@ if (!isset($_SESSION['username'])) {
 }
 
 $posts = Post::showFirstPosts();
-var_dump($posts);
 ?>
 <!doctype html>
 <html lang="en">
@@ -118,14 +117,14 @@ var_dump($posts);
                 <p class="text-sm mx-4 mb-2">
                     <b><?php echo $post->getUsername(); ?></b> <?php echo $post->getDescription(); ?> </p>
                 <div class="mx-4 mb-2">
-                    <p class="text-xs">POSTED ON <?php echo substr($post->getTimePosted(), -9, 6); ?></p>
+                    <p class="text-xs">POSTED <?php echo strtoupper(Comment::showTime($post->getTimePosted())); ?> AGO </p>
                 </div>
 
                 <ul class="mx-4 mb-2 comments">
                 <?php if (!empty($post->getComments())): ?>
                     <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 "></span>
                         <?php foreach ($post->getComments() as $comment) : ?>
-                            <li class="text-sm mt-1" >
+                            <li class="text-sm mt-1 comment" >
                                 <b><?php echo $comment['username']; ?></b> <?php echo $comment['comment']; ?> <span class="float-right text-xs"><?php echo Comment::showTime($comment['time']); ?> ago</span></li>
                         <?php endforeach; ?>
                 <?php endif; ?>
@@ -133,8 +132,8 @@ var_dump($posts);
                 <form class="pb-5" method="post" action="">
                     <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100 addComment"
                            data-postid="<?php echo $post->getPostId(); ?>"
-                           data-username="<?php echo $_SESSION['username']; ?>" name="comment"
-                           type="text" placeholder="Add a comment..." required>
+                           data-username="<?php echo $_SESSION['username']; ?>"
+                           name="comment" type="text" placeholder="Add a comment..." required>
                 </form>
         </article>
     <?php endforeach; ?>

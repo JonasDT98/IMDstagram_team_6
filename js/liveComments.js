@@ -2,14 +2,17 @@ console.log("is linked");
 let newComments = document.querySelectorAll(".addComment");
 for (let i = 0; i < newComments.length; i++) {
     newComments[i].addEventListener("keypress", function (e) {
+        let noComments = newComments[i].parentNode.parentNode.querySelectorAll(".comment").length;
 
         if (e.keyCode === 13) {
             e.preventDefault();
-
+            // let current = new Date();
             let postId = this.dataset.postid;
             let username = this.dataset.username;
             let text = newComments[i].value;
-
+            // let time = current.toLocaleString();
+            // console.log(current);
+            // console.log(time);
             console.log(postId);
             console.log(text);
             console.log(username);
@@ -18,6 +21,7 @@ for (let i = 0; i < newComments.length; i++) {
 
             formData.append("text", text);
             formData.append("postId", postId);
+            // formData.append("time", time);
 
             fetch('ajax/saveComment.php', {
                 method: "POST",
@@ -39,9 +43,17 @@ for (let i = 0; i < newComments.length; i++) {
                     newComment.style.marginBottom = "0.25rem";
                     newComment.style.fontSize = "0.875rem";
                     newComment.style.lineHeight = "1.25rem";
-                    newComment.innerHTML = "<b>" + username + "</b>" + " " + result.body;
-                    comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
-                    comments[(comments.length) - 1].appendChild(newComment);
+                    newComment.innerHTML = "<b>" + username + "</b>" + " " + result.body + "<span class=\"float-right text-xs\"> Just now</span>";
+                    if(noComments === 0) {
+                        comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
+                        comments[(comments.length) - 1].appendChild(separation);
+                        comments[(comments.length) - 1].appendChild(newComment);
+                        noComments += 1;
+                    } else {
+                        comments[(comments.length) - 1].appendChild(newComment);
+                    }
+                    // comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
+                    // comments[(comments.length) - 1].appendChild(newComment);
                     newComments[i].value = '';
                 })
                 .catch(error => {
