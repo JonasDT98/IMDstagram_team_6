@@ -71,8 +71,8 @@ $posts = Post::showFirstPosts();
                         <img class="w-12 h-12 object-contain rounded-full border-4 border-red-200" src="images/profilePics/<?php echo $post->getProfilePic(); ?>"
                              alt="profile picture">
                     </a>
-                    <a class="ml-2" href="./userProfile.php?id=<?php echo $post->getUsername(); ?>">
-                        <p class="text-sm font-medium"><?php echo $post->getUsername(); ?></p>
+                    <a class="ml-2" href="./userProfile.php?id=<?php echo htmlspecialchars($post->getUsername()); ?>">
+                        <p class="text-sm font-medium"><?php echo htmlspecialchars($post->getUsername()); ?></p>
                     </a>
                 </div>
                 <div class="w-1/2 flex justify-end">
@@ -115,24 +115,24 @@ $posts = Post::showFirstPosts();
                     <p class="text-sm mx-4"> 0 likes </p>
                 <?php endif; ?>
                 <p class="text-sm mx-4 mb-2">
-                    <b><?php echo $post->getUsername(); ?></b> <?php echo $post->getDescription(); ?> </p>
+                    <b><?php echo htmlspecialchars($post->getUsername()); ?></b> <?php echo htmlspecialchars($post->getDescription()); ?> </p>
                 <div class="mx-4 mb-2">
                     <p class="text-xs">POSTED <?php echo strtoupper(Comment::showTime($post->getTimePosted())); ?> AGO </p>
                 </div>
 
                 <ul class="mx-4 mb-2 comments">
                 <?php if (!empty($post->getComments())): ?>
-                    <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 "></span>
+                    <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 separation"></span>
                         <?php foreach ($post->getComments() as $comment) : ?>
                             <li class="text-sm mt-1 comment" >
-                                <b><?php echo $comment['username']; ?></b> <?php echo $comment['comment']; ?> <span class="float-right text-xs"><?php echo Comment::showTime($comment['time']); ?> ago</span></li>
+                                <b><?php echo htmlspecialchars($comment['username']); ?></b> <?php echo htmlspecialchars($comment['comment']); ?> <span class="float-right text-xs"><?php echo Comment::showTime($comment['time']); ?> ago</span></li>
                         <?php endforeach; ?>
                 <?php endif; ?>
                 </ul>
-                <form class="pb-5" method="post" action="">
+                <form class="pb-5 errors" method="post" action="">
                     <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100 addComment"
                            data-postid="<?php echo $post->getPostId(); ?>"
-                           data-username="<?php echo $_SESSION['username']; ?>"
+                           data-username="<?php echo htmlspecialchars($_SESSION['username']); ?>"
                            name="comment" type="text" placeholder="Add a comment..." required>
                 </form>
         </article>
