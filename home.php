@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once(__DIR__ . "/classes/Post.php");
+include_once(__DIR__ . "/classes/User.php");
 
 
 session_start();
@@ -10,7 +11,8 @@ if (!isset($_SESSION['username'])) {
 }
 
 $posts = Post::showFirstPosts();
-
+$user = User::getId($_SESSION['username']);
+$userId = $user['id'];
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,7 +26,7 @@ $posts = Post::showFirstPosts();
     <link rel="icon" type="image/png" href="images/favicon.png"/>
     <title>Instagram feed</title>
 </head>
-<body>
+<body >
 
 <div class="flex flex-col min-h-screen items-center bg-blue-400">
     <header class="mt-8">
@@ -91,8 +93,16 @@ $posts = Post::showFirstPosts();
                 <img src="<?php echo $post->getImage(); ?>" alt="post picture">
                 <div class="flex w-1/2 mx-4 my-2 gap-2"><button class="wpO6b btnLike
                                             "
-                                                                type="button"> <i class="fa fa-heart-o btnIcon" data-postid="<?php echo $post->getPostId(); ?>"
-                                                                                  data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i></button>
+                                                                type="button">
+
+
+                        <?php if (Post::isLiked($userId, $post->getPostId())): ?>
+                        <i class="fa fa-heart btnIcon" data-postid="<?php echo $post->getPostId(); ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
+                        <?php else: ?>
+                        <i class="fa fa-heart-o btnIcon" data-postid="<?php echo $post->getPostId(); ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
+                        <?php endif; ?>
+
+                    </button>
                 <span class="_15y0l"><button class="wpO6b  " type="button"><div class="QBdPU "><svg
                                         aria-label="Comment"
                                         class="_8-yf5 "

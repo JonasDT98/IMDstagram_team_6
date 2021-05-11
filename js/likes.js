@@ -9,7 +9,6 @@ for (let i = 0; i < btnLike.length; i++) {
 
             let postId = this.dataset.postid;
 
-
             console.log();
             console.log(postId);
             let formData = new FormData();
@@ -24,6 +23,7 @@ for (let i = 0; i < btnLike.length; i++) {
                 .then(result => {
                     console.log('Success:', result);
                     likes[i].innerHTML = result.body;
+
                     if(result.liked === true){
                         //btnLike[i].className = "fa fa-heart-o btnIcon";
                         btnLike[i].className = "fa fa-heart btnIcon";
