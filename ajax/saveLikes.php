@@ -36,12 +36,23 @@ if (!empty($_POST)) {
     }
     else{
         $l->deleteLike();
-        $response = [
+
+        if (Post::getAmountOfLikes($postId) != 1){
+            $response = [
                 'status' => 'success',
-                'body' => htmlspecialchars(intval(Post::getAmountOfLikes($l->getPostId())) . " like" ),
+                'body' => htmlspecialchars(Post::getAmountOfLikes($l->getPostId()) . " likes" ),
                 'message' => 'Like removed',
                 'liked' => Post::isLiked($userId, $postId)
-        ];
+            ];
+        }
+        else{
+            $response = [
+                'status' => 'success',
+                'body' => htmlspecialchars(Post::getAmountOfLikes($l->getPostId()) . " like" ),
+                'message' => 'Like removed',
+                'liked' => Post::isLiked($userId, $postId)
+            ];
+        }
     }
 
 
