@@ -1,5 +1,6 @@
-let btnLike = document.querySelectorAll(".btnLike");
+let btnLike = document.querySelectorAll(".btnLike .btnIcon")
 let likes = document.querySelectorAll(".likes");
+
 for (let i = 0; i < btnLike.length; i++) {
     btnLike[i].addEventListener("click", function (e) {
 
@@ -7,51 +8,30 @@ for (let i = 0; i < btnLike.length; i++) {
             e.preventDefault();
 
             let postId = this.dataset.postid;
-            let username = this.dataset.username;
-            let text = newComments[i].value;
 
+            console.log();
             console.log(postId);
-            console.log(text);
-            console.log(username);
+            let formData = new FormData();
 
-            const formData = new FormData();
+            formData.append('postId', postId);
 
-            formData.append("text", text);
-            formData.append("postId", postId);
-
-            fetch('ajax/saveComment.php', {
-                method: "POST",
+            fetch('ajax/saveLikes.php', {
+                method: 'POST',
                 body: formData
             })
                 .then(response => response.json())
                 .then(result => {
                     console.log('Success:', result);
-                    let comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
-                    let newComment = document.createElement('li');
-                    let separation = document.createElement('span');
-                    //  <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 separation"></span>
-                    separation.style.width = "100%";
-                    separation.style.backgroundColor = "#F3F4F6";
-                    separation.style.height = "0.125rem";
-                    separation.style.display = "block";
-                    separation.style.alignSelf = "center";
-                    separation.style.marginBottom = "0.5rem";
-                    newComment.style.marginTop = "0.25rem";
-                    newComment.style.marginBottom = "0.25rem";
-                    newComment.style.fontSize = "0.875rem";
-                    newComment.style.lineHeight = "1.25rem";
-                    newComment.innerHTML = "<b>" + username + "</b>" + " " + result.body;
-                    console.log(comments.length);
-                    if (comments.length === 1) {
-                        comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
+                    likes[i].innerHTML = result.body;
 
-                        comments[(comments.length) - 1].appendChild(separation);
-                        comments[(comments.length) - 1].appendChild(newComment);
-                    } else {
-
-                        comments[(comments.length) - 1].appendChild(newComment);
+                    if(result.liked === true){
+                        //btnLike[i].className = "fa fa-heart-o btnIcon";
+                        btnLike[i].className = "fa fa-heart btnIcon";
                     }
-                    newComments[i].value = '';
+                    else{
+                        btnLike[i].className = "fa fa-heart-o btnIcon";
+                        //btnLike[i].className = "fa fa-heart btnIcon";
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -59,3 +39,31 @@ for (let i = 0; i < btnLike.length; i++) {
 
     });
 }
+/*// if all of the .btnLikes have a common parent, attach the delegated event listener to that rather than document.body
+document.body.addEventListener("click", async e => {
+  if(!e.target.matches(".btnLike .btnIcon")) return;
+  const formData = new FormData();
+  formData.append('postId', e.target.dataset.postid);
+
+  try {
+    const response = await fetch('ajax/saveLikes.php', {
+       method: 'POST',
+       body: formData
+    })
+
+    if (!response.ok) throw response;
+
+    const result = await response.json();
+    /*
+      likes[i].innerHTML = result.body;
+      You'll need to navigate to the relevant ".likes" element a different way (I'd need the HTML to see how this can be done)
+      And don't use "innerHTML".  I'd need to know what the body of the result is to know how to handle it instead
+    */
+/*
+e.target.classList.toggle("fa-heart-o");
+e.target.classList.toggle("fa-heart");
+} catch (error) {
+    console.error('Error:', error);
+}
+});
+*/
