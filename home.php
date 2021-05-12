@@ -25,7 +25,7 @@ $posts = Post::showFirstPosts();
     <title>Instagram feed</title>
 </head>
 <body>
-<div class="flex flex-col min-h-screen items-center bg-blue-400">
+<div class="flex flex-col min-h-screen items-center bg-blue-400 content">
     <header class="mt-8">
         <nav>
             <div class="w-full bg-white rounded-t shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
@@ -64,10 +64,10 @@ $posts = Post::showFirstPosts();
         </nav>
     </header>
     <?php foreach ($posts as $post) : ?>
-        <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
+        <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg article">
             <div class="my-2 mx-4 flex items-center gap-2">
                 <div class="flex items-center w-1/2">
-                    <a href="#">
+                    <a href="./userProfile.php?id=<?php echo htmlspecialchars($post->getUsername()); ?>">
                         <img class="w-12 h-12 object-contain rounded-full border-4 border-red-200" src="images/profilePics/<?php echo $post->getProfilePic(); ?>"
                              alt="profile picture">
                     </a>
@@ -137,7 +137,17 @@ $posts = Post::showFirstPosts();
                 </form>
         </article>
     <?php endforeach; ?>
+    <div class="w-full bg-white mb-10 shadow-2xl rounded-b max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg mb-20 loader">
+        <div class="flex items-center place-content-center py-6 ">
+            <a class="w-1/3 h-8 flex items-center place-content-center bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded morePosts" href="#">
+                Load more posts
+            </a>
+        </div>
+    </div>
+
+
 </div>
 <script src="js/liveComments.js"></script>
+<script src="js/loadMorePosts.js"></script>
 </body>
 </html>

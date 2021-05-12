@@ -1,4 +1,4 @@
-console.log("is linked");
+console.log("comments are linked");
 let newComments = document.querySelectorAll(".addComment");
 let line = 0;
 let errorActive = 0;
