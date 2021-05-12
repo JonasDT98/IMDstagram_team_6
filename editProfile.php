@@ -13,7 +13,9 @@ if(!empty($_POST['btnSave'])){
     $nUsername = $_POST['username'];
     $fullname = $_POST['fullname'];
     if(empty($nPassword)){
-        User::updateUser($username, $nUsername, $email, $oPassword, $fullname);
+        $user->setPassword($oPassword);
+        $hPassword = $user->getPassword();
+        User::updateUser($username, $nUsername, $email, $hPassword, $fullname);
     }
     elseif(!empty($nPassword) && $nPassword != $oPassword){
         $user->setPassword($nPassword);
