@@ -24,9 +24,9 @@ class User{
         $this->profilePic = $profilePic;
     }
 
-    public function save(){
+    public function save(): bool
+    {
         $conn = Db::getConnection();
-
         $statement = $conn->prepare("insert into users (fullname, username, email, password) values (:fullname, :username, :email, :password)");
 
         $fullname = $this->getFullname();
@@ -192,6 +192,16 @@ class User{
                 $this->profilePic = $profilePic;
             }
         }
+    }
+
+    public function delete($profilePic, $username){
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("update users set profilePic = :profilePic where username = :username");
+        $statement->bindValue(":profilePic", "default.png");
+        $statement->bindValue(":username", $username);
+        $statement->execute();
+        $this->profilePic = $profilePic;
+
     }
 
     public static function getUser($username): User
