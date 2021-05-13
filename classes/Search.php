@@ -12,7 +12,6 @@ class Search{
 
     public function search(){
         //https://stackoverflow.com/questions/18877098/pdo-search-database-using-like/18877158
-
         $conn = Db::getConnection();
 
         $statement = $conn->prepare("select * from `post` where `description` like :search;");
@@ -25,7 +24,7 @@ class Search{
         $statement->execute();
         $st->execute();
 
-        while ($result = $st->fetch(PDO:: FETCH_OBJ)){
+        while ($result = $st->fetch(PDO:: FETCH_OBJ)) {
             echo $result->username . " ";
             echo $result->email . " ";
             echo $result->fullname . " ";
@@ -95,7 +94,5 @@ class Search{
     {
         $this->search = $search;
     }
-
-
 
 }

@@ -7,20 +7,16 @@
         header("Location: login.php");
     }
 
-    if (!empty($_POST['search'])){
-        try {
-
-            $search = new Search($_POST['search']);
-            $search->setSearch($_POST['search']);
-            $search->search();
-
-
-        }
-        catch (\throwable $th){
-
-        }
+if (!empty($_POST['search'])){
+    try {
+        $search = new Search($_POST['search']);
+        $search->setSearch($_POST['search']);
+        $search->search();
     }
+    catch (\throwable $th){
 
+    }
+}
 
 
 //if (isset($_POST['search'])){
