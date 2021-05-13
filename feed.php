@@ -1,39 +1,34 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-include_once(__DIR__ . "/classes/Post.php");
-include_once(__DIR__ . "/classes/User.php");
+    include_once(__DIR__ . "/classes/Post.php");
 
-
-session_start();
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-}
-
-if (isset($_POST['search'])){
-    $conn = Db::getConnection();
-    $str = $_POST['search'];
-    $statement = $conn->prepare("select * from post where description like '%".$str."%'");
-    $statement->setFetchMode(PDO:: FETCH_OBJ);
-    $statement->execute();
-
-    $st = $conn->prepare("select * from users where username like '%".$str."%'");
-    $st->setFetchMode(PDO:: FETCH_OBJ);
-    $st->execute();
-
-    while ($result = $st->fetch()){
-        echo $result->username;
-        echo "<br>";
+    session_start();
+    if (!isset($_SESSION['username'])) {
+        header("Location: login.php");
     }
 
-    while ($result = $statement->fetch()){
-        echo $result->description;
-        echo "<br>";
+    if (!empty($_POST['search'])){
+        try {
+
+            var_dump($_POST['search']);
+            $search = new Search($_POST['search']);
+            $search->setSearch($_POST['search']);
+            $search->search();
+
+        }
+        catch (\throwable $th){
+
+        }
     }
 
-}
 
-$posts = Post::showFirstPosts();
+
+//if (isset($_POST['search'])){
+//    $search = new Search();
+//    $search->setSearch($_POST['search']);
+//    $search->search();
+//}
+
+$posts = Post::showPosts();
 
 ?>
 <!doctype html>
@@ -48,8 +43,7 @@ $posts = Post::showFirstPosts();
     <link rel="icon" type="image/png" href="images/favicon.png"/>
     <title>Instagram feed</title>
 </head>
-<body >
-
+<body>
 <div class="flex flex-col min-h-screen items-center bg-blue-400">
     <header class="mt-8">
         <nav>
@@ -113,65 +107,52 @@ $posts = Post::showFirstPosts();
             </div>
             <div>
                 <img src="<?php echo $post->getImage(); ?>" alt="post picture">
-                <div class="flex w-1/2 mx-4 my-2 gap-2"><button class="wpO6b btnLike
-                                            "
-                                                                type="button">
-
-
-                        <?php if (Post::isLiked($userId, $post->getPostId())): ?>
-                        <i class="fa fa-heart btnIcon" data-postid="<?php echo $post->getPostId(); ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
-                        <?php else: ?>
-                        <i class="fa fa-heart-o btnIcon" data-postid="<?php echo $post->getPostId(); ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
-                        <?php endif; ?>
-
-                    </button>
-                <span class="_15y0l"><button class="wpO6b  " type="button"><div class="QBdPU "><svg
-                                        aria-label="Comment"
-                                        class="_8-yf5 "
-                                        fill="#262626"
-                                        height="24"
-                                        viewBox="0 0 48 48"
-                                        width="24"><path
-                                            clip-rule="evenodd"
-                                            d="M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z"
-                                            fill-rule="evenodd"></path></svg></div></button></span>
+                <div class="flex w-1/2 mx-4 my-2 gap-2">
+                <span class="fr66n"><button class="wpO6b  " type="button"><div class="QBdPU "><span class=""><svg
+                                    aria-label="Unlike" class="_8-yf5 " fill="#ed4956" height="24"
+                                    viewBox="0 0 48 48"
+                                    width="24"><path
+                                        d="M34.6 3.1c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5s1.1-.2 1.6-.5c1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path></svg></span></div></button></span>
+                    <span class="_15y0l"><button class="wpO6b  " type="button"><div class="QBdPU "><svg
+                                    aria-label="Comment"
+                                    class="_8-yf5 "
+                                    fill="#262626"
+                                    height="24"
+                                    viewBox="0 0 48 48"
+                                    width="24"><path
+                                        clip-rule="evenodd"
+                                        d="M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z"
+                                        fill-rule="evenodd"></path></svg></div></button></span>
                 </div>
                 <?php if (!empty($post->getLikes())): ?>
                     <?php if (sizeof($post->getLikes()) == 1): ?>
-                        <p class="mx-4 likes"> <?php echo sizeof($post->getLikes()); ?> like </p>
+                        <p class="mx-4"> <?php echo sizeof($post->getLikes()); ?> like </p>
                     <?php else: ?>
-                        <p class="mx-4 likes"> <?php echo sizeof($post->getLikes()); ?> likes </p>
+                        <p class="mx-4"> <?php echo sizeof($post->getLikes()); ?> likes </p>
                     <?php endif; ?>
                 <?php else: ?>
-                    <p class="mx-4 likes"> 0 likes </p>
+                    <p class="text-sm mx-4"> 0 likes </p>
                 <?php endif; ?>
-                <p class="text-sm mx-4 mb-2">
-                    <b><?php echo $post->getUsername(); ?></b> <?php echo $post->getDescription(); ?> </p>
+                <p class="text-sm mx-4 mb-2"> <b><?php echo $post->getUsername(); ?></b> <?php echo $post->getDescription(); ?> </p>
+
+                <?php if (!empty($post->getComments())): ?>
+                    <span class="w-full bg-gray-100 h-0.5 block self-center mb-2"></span>
+                    <?php foreach ($post->getComments() as $comment) : ?>
+                        <div class="mx-4 mb-2">
+                            <p class="text-sm">
+                                <b><?php echo $comment['username']; ?></b> <?php echo $comment['comment']; ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
                 <div class="mx-4 mb-2">
                     <p class="text-xs">POSTED ON <?php echo substr($post->getTimePosted(), -9, 6); ?></p>
                 </div>
-
-                <ul class="mx-4 mb-2 comments">
-                <?php if (!empty($post->getComments())): ?>
-                    <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 "></span>
-                        <?php foreach ($post->getComments() as $comment) : ?>
-                            <li class="text-sm mt-1" >
-                                <b><?php echo $comment['username']; ?></b> <?php echo $comment['comment']; ?> <span><?php echo $comment['time']; ?></span></li>
-                        <?php endforeach; ?>
-                <?php endif; ?>
-                </ul>
-                <form class="pb-5" method="post" action="">
-                    <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100 addComment"
-                           data-postid="<?php echo $post->getPostId(); ?>"
-                           data-username="<?php echo $_SESSION['username']; ?>" name="comment"
+                <form class="pb-5" method="post">
+                    <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100" name="comment"
                            type="text" placeholder="Add a comment..." required>
                 </form>
         </article>
     <?php endforeach; ?>
 </div>
-
-<script src="js/liveComments.js"></script>
-<script src="js/likes.js"></script>
-<script src="https://use.fontawesome.com/2dd2522a24.js"></script>
 </body>
 </html>

@@ -28,12 +28,16 @@ if(!empty($_POST['btnSave'])){
 
 }
 if (isset($_POST['submit'])){
-
-
     $username = $_SESSION['username'];
     $user = User::getUser($username);
     $user->setProfilePic($_FILES['image']['name'], $username);
 
+}
+
+if (isset($_POST['delete'])){
+    $username = $_SESSION['username'];
+    $user = User::getUser($username);
+    $user->delete($_FILES['image']['name'], $username);
 }
 
 
@@ -81,6 +85,7 @@ var_dump($user->getProfilePic());
                     <input class = "hidden" type="file" name="image" id="image">
                 </label>
                 <input class="mt-2 w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="submit" type="submit" value="Save">
+                <input class="mt-2 w-full h-10 bg-red-400 hover:bg-red-500 text-white font-bold rounded mt-1" name="delete" type="submit" value="Delete">
             </div>
         </form>
 
