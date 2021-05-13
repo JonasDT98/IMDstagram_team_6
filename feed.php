@@ -1,5 +1,6 @@
 <?php
     include_once(__DIR__ . "/classes/Post.php");
+    include_once(__DIR__ . "/classes/Search.php");
 
     session_start();
     if (!isset($_SESSION['username'])) {
@@ -9,10 +10,10 @@
     if (!empty($_POST['search'])){
         try {
 
-            var_dump($_POST['search']);
             $search = new Search($_POST['search']);
             $search->setSearch($_POST['search']);
             $search->search();
+
 
         }
         catch (\throwable $th){

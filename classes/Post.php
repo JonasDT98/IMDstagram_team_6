@@ -33,16 +33,18 @@ class Post{
 
                 $conn = Db::getConnection();
 
-                $statement = $conn->prepare("insert into post (title, description, image) values (:title, :description, :image)");
+                $statement = $conn->prepare("insert into post (title, description, image, user_id) values (:title, :description, :image, :user_id)");
 
                 //user_id
                 $title = $this->getTitle();
                 $description = $this->getDescription();
                 $image = $this->getImage();
 
+
                 $statement->bindValue(":title", $title);
                 $statement->bindValue(":description", $description);
                 $statement->bindValue(":image", $image);
+
 
                 $result = $statement->execute();
                 return $result;
@@ -61,6 +63,8 @@ class Post{
         $this->setTimePosted($time_posted);
         $this->setLikes($likes);
     }
+
+
 
     public static function profileData($username) {
         $conn = Db::getConnection();
