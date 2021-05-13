@@ -68,18 +68,21 @@ class Post{
 
     public static function profileData($username) {
         $conn = Db::getConnection();
-        $query = $conn->prepare("Select users.username, post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted DESC LIMIT 9");
+        $query = $conn->prepare("Select users.username, users.profilePic, users.bio, post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted DESC LIMIT 9");
         $query->bindValue(":username", $username);
         $query->execute();
         $fetchedProfile = $query->fetchAll();
         return $fetchedProfile;
     }
 
-    public static function showFirstPosts(): array
+    public static function showFirstPosts($amount): array
     {
 
             $conn = Db::getConnection();
-            $query = $conn->query("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id ORDER BY post.time_posted DESC LIMIT 20");
+            $query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id WHERE post.id BETWEEN :amount1 AND :amount2 ORDER BY post.time_posted DESC LIMIT 20");
+            $query->bindValue(":amount1", $amount-19);
+            $query->bindValue(":amount2", $amount);
+            $query->execute();
             $posts = $query->fetchAll();
             $fullPosts = array();
             $comments = array();
@@ -93,7 +96,6 @@ class Post{
                 if (!empty($fetchedComments)) {
                     foreach ($fetchedComments as $fetchedComment) {
                         array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description'], "time" => $fetchedComment['time_comment']));
-
                     }
                 }
 

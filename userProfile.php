@@ -65,8 +65,8 @@ $profile = Post::profileData($user);
     </header>
     <section class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
         <div class="flex justify-center items-center">
-            <div class="w-1/3 justify-center">
-                <img class="rounded-full w-28" src="./images/gibby.png" alt="profile pic">
+            <div class="flex w-1/3 justify-center">
+                <img class="rounded-full w-28 h-28" src="images/profilePics/<?php echo $profile[0]['profilePic'] ?>" alt="profile pic">
             </div>
             <div class="grid grid-cols-3 grid-rows-3 items-center">
                 <p class="col-start-1 col-end-2 row-start-1 row-end-2"><?php echo $profile[0]['username']; ?></p>
@@ -75,7 +75,7 @@ $profile = Post::profileData($user);
                            name="btnFollow"
                            type="submit" value="FOLLOWING">
                 </form>
-                <p class="col-start-1 col-end-4 row-start-2 row-end-3">Hey ik ben Gibby, de allereeste user.</p>
+                <p class="col-start-1 col-end-4 row-start-2 row-end-3"><?php echo $profile[0]['bio'] ?></p>
                 <p class="col-start-1 col-end-2 row-start-3 row-end-4"><b><?php echo sizeof($profile); ?></b> posts</p>
                 <p class="col-start-2 col-end-3 row-start-3 row-end-4 justify-self-center"><b>111k</b> followers</p>
                 <p class="col-start-3 col-end-4 row-start-3 row-end-4 justify-self-end"><b>111</b> following</p>
