@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once(__DIR__ . "/classes/Post.php");
 include_once(__DIR__ . "/classes/User.php");
+include_once(__DIR__ . "/classes/Search.php");
 
 
 session_start();
@@ -10,30 +11,22 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
 }
 
-if (isset($_POST['search'])){
-    $conn = Db::getConnection();
-    $str = $_POST['search'];
-    $statement = $conn->prepare("select * from post where description like '%".$str."%'");
-    $statement->setFetchMode(PDO:: FETCH_OBJ);
-    $statement->execute();
+if (!empty($_POST['search'])){
+    try {
+//        header("Location: feed.php");
+        $search = new Search($_POST['search']);
+        $search->setSearch($_POST['search']);
+        $search->search();
 
-    $st = $conn->prepare("select * from users where username like '%".$str."%'");
-    $st->setFetchMode(PDO:: FETCH_OBJ);
-    $st->execute();
-
-    while ($result = $st->fetch()){
-        echo $result->username;
-        echo "<br>";
     }
+    catch (\throwable $th){
 
-    while ($result = $statement->fetch()){
-        echo $result->description;
-        echo "<br>";
     }
-
 }
 
 $posts = Post::showFirstPosts();
+$user = User::getId($_SESSION['username']);
+$userId = $user['id'];
 
 ?>
 <!doctype html>

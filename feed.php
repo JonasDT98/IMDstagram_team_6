@@ -6,20 +6,17 @@
         header("Location: login.php");
     }
 
-    if (!empty($_POST['search'])){
-        try {
+if (!empty($_POST['search'])){
+    try {
+        $search = new Search($_POST['search']);
+        $search->setSearch($_POST['search']);
+        $search->search();
 
-            var_dump($_POST['search']);
-            $search = new Search($_POST['search']);
-            $search->setSearch($_POST['search']);
-            $search->search();
-
-        }
-        catch (\throwable $th){
-
-        }
     }
+    catch (\throwable $th){
 
+    }
+}
 
 
 //if (isset($_POST['search'])){
