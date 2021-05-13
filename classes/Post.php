@@ -12,6 +12,7 @@ class Post{
     private $comments;
     private $time_posted;
     private $postId;
+    private $profilePic;
 
     public function post()
     {
@@ -55,7 +56,7 @@ class Post{
 
     }
 
-    public function __construct($username, $image, $description, $time_posted, $comments, $likes, $postId)
+    public function __construct($username, $profilePic, $image, $description, $time_posted, $comments, $likes, $postId)
     {
         $this->setUsername($username);
         $this->setImage($image);
@@ -64,24 +65,28 @@ class Post{
         $this->setTimePosted($time_posted);
         $this->setLikes($likes);
         $this->setPostId($postId);
+        $this->setProfilePic($profilePic);
     }
 
 
 
     public static function profileData($username) {
         $conn = Db::getConnection();
-        $query = $conn->prepare("Select users.username, post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted DESC LIMIT 9");
+        $query = $conn->prepare("Select users.username, users.profilePic, users.bio, post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted DESC LIMIT 9");
         $query->bindValue(":username", $username);
         $query->execute();
         $fetchedProfile = $query->fetchAll();
         return $fetchedProfile;
     }
 
-    public static function showFirstPosts(): array
+    public static function showFirstPosts($amount): array
     {
 
             $conn = Db::getConnection();
-            $query = $conn->query("SELECT post.id, users.username, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id ORDER BY post.time_posted DESC LIMIT 20");
+            $query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id WHERE post.id BETWEEN :amount1 AND :amount2 ORDER BY post.time_posted DESC LIMIT 20");
+            $query->bindValue(":amount1", $amount-19);
+            $query->bindValue(":amount2", $amount);
+            $query->execute();
             $posts = $query->fetchAll();
             $fullPosts = array();
             $comments = array();
@@ -95,7 +100,6 @@ class Post{
                 if (!empty($fetchedComments)) {
                     foreach ($fetchedComments as $fetchedComment) {
                         array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description'], "time" => $fetchedComment['time_comment']));
-
                     }
                 }
 
@@ -110,7 +114,7 @@ class Post{
                     }
                 }
 
-                array_push($fullPosts, new Post($post['username'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']));
+                array_push($fullPosts, new Post($post['username'], $post['profilePic'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']));
                 $comments = array();
                 $likes = array();
             }
@@ -274,6 +278,24 @@ class Post{
     {
         $this->postId = $postId;
     }
+  
+      /**
+     * @return mixed
+     */
+    public function getProfilePic()
+    {
+        return $this->profilePic;
+    }
+
+    /**
+     * @param mixed $profilePic
+     */
+    public function setProfilePic($profilePic): void
+    {
+        $this->profilePic = $profilePic;
+    }
+  
+  
     public static function isLiked($userId, $postId){
         $conn = Db::getConnection();
         $query = $conn->prepare("SELECT * FROM likes WHERE user_id =:userId AND post_id =:postId");
@@ -291,10 +313,10 @@ class Post{
     public static function getAmountOfLikes($postId){
         $conn = Db::getConnection();
         $query = $conn->prepare("SELECT post_id FROM likes WHERE post_id = :postId");
-
         $query->bindValue(":postId", $postId);
         $query->execute();
         $result = $query->fetchAll();
         return count($result);
     }
+  
 }

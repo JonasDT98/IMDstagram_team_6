@@ -1,87 +1,70 @@
-console.log("is linked");
+console.log("comments are linked");
 let newComments = document.querySelectorAll(".addComment");
-let showComments = document.querySelectorAll(".comments");
+let line = 0;
+let errorActive = 0;
 for (let i = 0; i < newComments.length; i++) {
     newComments[i].addEventListener("keypress", function (e) {
+        let noComments = newComments[i].parentNode.parentNode.querySelectorAll(".comment").length;
+        let comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
+        let forms = newComments[i].parentNode.parentNode.querySelectorAll(".errors");
 
         if (e.keyCode === 13) {
-            e.preventDefault();
+            if (newComments[i].value === "") {
+                if(errorActive === 0) {
+                    let error = document.createElement('div');
+                    error.className = "flex items-center place-content-center gap-3 w-full h-10 border border-red-300 rounded-b px-4 bg-red-200 font-semibold error";
+                    error.innerHTML = "Hey, you forgot to fill in your comment!";
+                    forms[(forms.length) - 1].appendChild(error);
+                    errorActive += 1;
+                }
+            } else {
+                e.preventDefault();
+                if(errorActive === 1) {
+                    let error = document.querySelector(".error");
+                    forms[(forms.length) - 1].removeChild(error);
+                    errorActive = 0;
+                }
+                let postId = this.dataset.postid;
+                let username = this.dataset.username;
+                let text = newComments[i].value;
 
-            let postId = this.dataset.postid;
-            let username = this.dataset.username;
-            let text = newComments[i].value;
+                console.log(postId);
+                console.log(text);
+                console.log(username);
 
-            console.log(postId);
-            console.log(text);
-            console.log(username);
+                const formData = new FormData();
 
-            const formData = new FormData();
+                formData.append("text", text);
+                formData.append("postId", postId);
 
-            formData.append("text", text);
-            formData.append("postId", postId);
-
-            fetch('ajax/saveComment.php', {
-                method: "POST",
-                body: formData
-            })
-                .then(response => response.json())
-                .then(result => {
-                    console.log('Success:', result);
-                    let comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
-                    let newComment = document.createElement('li');
-                    let separation = document.createElement('span');
-                    //  <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 separation"></span>
-                    separation.style.width = "100%";
-                    separation.style.backgroundColor = "#F3F4F6";
-                    separation.style.height = "0.125rem";
-                    separation.style.display = "block";
-                    separation.style.alignSelf = "center";
-                    separation.style.marginBottom = "0.5rem";
-                    newComment.style.marginTop = "0.25rem";
-                    newComment.style.marginBottom = "0.25rem";
-                    newComment.style.fontSize = "0.875rem";
-                    newComment.style.lineHeight = "1.25rem";
-                    newComment.innerHTML = "<b>" + username + "</b>" + " " + result.body;
-                    console.log(comments.length);
-                    if (comments.length === 1) {
-                        comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
-
-                        comments[(comments.length) - 1].appendChild(separation);
-                        comments[(comments.length) - 1].appendChild(newComment);
-                    } else {
-
-                        comments[(comments.length) - 1].appendChild(newComment);
-                    }
-                    newComments[i].value = '';
+                fetch('ajax/saveComment.php', {
+                    method: "POST",
+                    body: formData
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log('Success:', result);
+                        // let comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
+                        let newComment = document.createElement('li');
+                        let separation = document.createElement('span');
+                        separation.className = "w-full bg-gray-100 h-0.5 block self-center mb-2";
+                        newComment.className = "my-1 text-sm ";
+                        newComment.innerHTML = "<b>" + username + "</b>" + " " + result.body + "<span class=\"float-right text-xs\"> Just now</span>";
+                        if(noComments === 0 && line === 0) {
+                            comments = newComments[i].parentNode.parentNode.querySelectorAll(".comments");
+                            comments[(comments.length) - 1].appendChild(separation);
+                            comments[(comments.length) - 1].appendChild(newComment);
+                            line += 1;
+                            console.log(noComments);
+                        } else {
+                            comments[(comments.length) - 1].appendChild(newComment);
+                        }
+                        newComments[i].value = '';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
         }
     });
 }
-// document.querySelector("#btnAddComment").addEventListener("click", function (e) {
-//     e.preventDefault();
-//     let postId = this.dataset.postid;
-//     let text = document.querySelector("#addComment").value;
-//
-//     console.log(postId);
-//     console.log(text);
-//
-//     const formData = new FormData();
-//
-//     formData.append("text", text);
-//     formData.append("postId", postId);
-//
-//     fetch('ajax/saveComment.php', {
-//         method: "POST",
-//         body: formData
-//     })
-//         .then(response => response.json())
-//         .then(result => {
-//             console.log('Success:', result);
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//         });
-// });
