@@ -13,6 +13,7 @@ if (!isset($_SESSION['username'])) {
 $posts = Post::showFirstPosts();
 $user = User::getId($_SESSION['username']);
 $userId = $user['id'];
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -79,14 +80,16 @@ $userId = $user['id'];
                     </a>
                 </div>
                 <div class="w-1/2 flex justify-end">
-                    <a href="">
-                        <svg aria-label="More options" class="_8-yf5 " fill="#262626" height="16"
-                             viewBox="0 0 48 48" width="16">
-                            <circle clip-rule="evenodd" cx="8" cy="24" fill-rule="evenodd" r="4.5"></circle>
-                            <circle clip-rule="evenodd" cx="24" cy="24" fill-rule="evenodd" r="4.5"></circle>
-                            <circle clip-rule="evenodd" cx="40" cy="24" fill-rule="evenodd" r="4.5"></circle>
-                        </svg>
-                    </a>
+
+                    <?php   if(!empty($_POST['btnReport'])): ?>
+                    <?php  $post->report($post->getPostId());  ?>
+                    <?php endif; ?>
+
+                    <form action="home.php" method="post">
+                        <button type="submit"  name="btnReport">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
             <div>
