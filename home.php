@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once(__DIR__ . "/classes/Post.php");
+include_once (__DIR__ . "/classes/Comment.php");
 include_once(__DIR__ . "/classes/User.php");
 include_once(__DIR__ . "/classes/Search.php");
 
@@ -23,7 +24,8 @@ if (!empty($_POST['search'])){
     }
 }
 
-$posts = Post::showFirstPosts();
+$amount = 20;
+$posts = Post::showFirstPosts($amount);
 $user = User::getId($_SESSION['username']);
 $userId = $user['id'];
 
@@ -40,9 +42,9 @@ $userId = $user['id'];
     <link rel="icon" type="image/png" href="images/favicon.png"/>
     <title>Instagram feed</title>
 </head>
-<body >
 
-<div class="flex flex-col min-h-screen items-center bg-blue-400">
+<body>
+<div class="flex flex-col min-h-screen items-center bg-blue-400 content">
     <header class="mt-8">
         <nav>
             <div class="w-full bg-white rounded-t shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
@@ -81,15 +83,15 @@ $userId = $user['id'];
         </nav>
     </header>
     <?php foreach ($posts as $post) : ?>
-        <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
+        <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg article">
             <div class="my-2 mx-4 flex items-center gap-2">
                 <div class="flex items-center w-1/2">
-                    <a href="#">
-                        <img class="w-10 h-auto rounded-full border-4 border-red-200" src="images/gibby.png"
+                    <a href="./userProfile.php?id=<?php echo htmlspecialchars($post->getUsername()); ?>">
+                        <img class="w-12 h-12 object-contain rounded-full border-4 border-red-200" src="images/profilePics/<?php echo $post->getProfilePic(); ?>"
                              alt="profile picture">
                     </a>
-                    <a class="ml-2" href="./userProfile.php?id=<?php echo $post->getUsername(); ?>">
-                        <p class="text-sm font-medium"><?php echo $post->getUsername(); ?></p>
+                    <a class="ml-2" href="./userProfile.php?id=<?php echo htmlspecialchars($post->getUsername()); ?>">
+                        <p class="text-sm font-medium"><?php echo htmlspecialchars($post->getUsername()); ?></p>
                     </a>
                 </div>
                 <div class="w-1/2 flex justify-end">
@@ -105,6 +107,7 @@ $userId = $user['id'];
             </div>
             <div>
                 <img src="<?php echo $post->getImage(); ?>" alt="post picture">
+             
                 <div class="flex w-1/2 mx-4 my-2 gap-2"><button class="wpO6b btnLike
                                             "
                                                                 type="button">
@@ -138,32 +141,43 @@ $userId = $user['id'];
                     <p class="mx-4 likes"> 0 likes </p>
                 <?php endif; ?>
                 <p class="text-sm mx-4 mb-2">
-                    <b><?php echo $post->getUsername(); ?></b> <?php echo $post->getDescription(); ?> </p>
-                <div class="mx-4 mb-2">
-                    <p class="text-xs">POSTED ON <?php echo substr($post->getTimePosted(), -9, 6); ?></p>
-                </div>
+                    <b><?php echo htmlspecialchars($post->getUsername()); ?></b> <?php echo htmlspecialchars($post->getDescription()); ?> </p>
+
+                <p class="text-xs mx-4 mb-2">POSTED <?php echo strtoupper(Comment::showTime($post->getTimePosted())); ?> AGO </p>
+
 
                 <ul class="mx-4 mb-2 comments">
                 <?php if (!empty($post->getComments())): ?>
-                    <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 "></span>
+                    <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 separation"></span>
                         <?php foreach ($post->getComments() as $comment) : ?>
-                            <li class="text-sm mt-1" >
-                                <b><?php echo $comment['username']; ?></b> <?php echo $comment['comment']; ?> <span><?php echo $comment['time']; ?></span></li>
+                            <li class="text-sm mt-1 comment" >
+                                <b><?php echo htmlspecialchars($comment['username']); ?></b> <?php echo htmlspecialchars($comment['comment']); ?> <span class="float-right text-xs"><?php echo Comment::showTime($comment['time']); ?> ago</span></li>
                         <?php endforeach; ?>
                 <?php endif; ?>
                 </ul>
-                <form class="pb-5" method="post" action="">
+                <form class="pb-5 errors" method="post" action="">
                     <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100 addComment"
                            data-postid="<?php echo $post->getPostId(); ?>"
-                           data-username="<?php echo $_SESSION['username']; ?>" name="comment"
-                           type="text" placeholder="Add a comment..." required>
+                           data-username="<?php echo htmlspecialchars($_SESSION['username']); ?>"
+                           name="comment" type="text" placeholder="Add a comment..." required>
                 </form>
         </article>
     <?php endforeach; ?>
+    <div class="w-full bg-white mb-10 shadow-2xl rounded-b max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg mb-20 loader" data-postsamount="<?php echo $amount; ?>">
+        <div class="flex items-center place-content-center py-6">
+            <a class="w-1/3 h-8 flex items-center place-content-center bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded morePosts" href="#">
+                Load more posts
+            </a>
+        </div>
+    </div>
+
+
 </div>
 
 <script src="js/liveComments.js"></script>
+<script src="js/loadMorePosts.js"></script>
 <script src="js/likes.js"></script>
 <script src="https://use.fontawesome.com/2dd2522a24.js"></script>
+
 </body>
 </html>
