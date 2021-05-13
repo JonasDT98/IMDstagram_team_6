@@ -28,12 +28,16 @@ if(!empty($_POST['btnSave'])){
 
 }
 if (isset($_POST['submit'])){
-
-
     $username = $_SESSION['username'];
     $user = User::getUser($username);
     $user->setProfilePic($_FILES['image']['name'], $username);
 
+}
+
+if (isset($_POST['delete'])){
+    $username = $_SESSION['username'];
+    $user = User::getUser($username);
+    $user->delete($_FILES['image']['name'], $username);
 }
 
 
@@ -73,14 +77,15 @@ var_dump($user->getProfilePic());
             </div>
         </form>
         <form method="POST" enctype="multipart/form-data">
-            <div class="justify-items-center gap-y-1 pt-10">
-                <img class="rounded-full border-4 border-red-100" src="<?php   echo  "images/profilePics/" . $user->getProfilePic() ?>"
+            <div class="flex flex-col justify-center items-center gap-y-1 pt-10">
+                <img class="rounded-full border-4 border-red-100 align-center w-52 h-52" src="<?php   echo  "images/profilePics/" . $user->getProfilePic() ?>"
                      alt="profile picture">
                 <label class="h-12 w-full flex flex-col items-center border border-gray-300 rounded px-4 cursor-pointer uppercase bg-gray-100">
                     <span class="py-3 text-gray-400">Select a Profile Picture</span>
                     <input class = "hidden" type="file" name="image" id="image">
                 </label>
                 <input class="mt-2 w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="submit" type="submit" value="Save">
+                <input class="mt-2 w-full h-10 bg-red-400 hover:bg-red-500 text-white font-bold rounded mt-1" name="delete" type="submit" value="Delete">
             </div>
         </form>
 

@@ -35,16 +35,18 @@ class Post{
 
                 $conn = Db::getConnection();
 
-                $statement = $conn->prepare("insert into post (title, description, image) values (:title, :description, :image)");
+                $statement = $conn->prepare("insert into post (title, description, image, user_id) values (:title, :description, :image, :user_id)");
 
                 //user_id
                 $title = $this->getTitle();
                 $description = $this->getDescription();
                 $image = $this->getImage();
 
+
                 $statement->bindValue(":title", $title);
                 $statement->bindValue(":description", $description);
                 $statement->bindValue(":image", $image);
+
 
                 $result = $statement->execute();
                 return $result;
@@ -65,6 +67,8 @@ class Post{
         $this->setPostId($postId);
         $this->setProfilePic($profilePic);
     }
+
+
 
     public static function profileData($username) {
         $conn = Db::getConnection();
@@ -274,8 +278,8 @@ class Post{
     {
         $this->postId = $postId;
     }
-
-    /**
+  
+      /**
      * @return mixed
      */
     public function getProfilePic()
@@ -290,5 +294,29 @@ class Post{
     {
         $this->profilePic = $profilePic;
     }
-
+  
+  
+    public static function isLiked($userId, $postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT * FROM likes WHERE user_id =:userId AND post_id =:postId");
+        $query->bindValue(":userId", $userId);
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        if($result != NULL){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public static function getAmountOfLikes($postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT post_id FROM likes WHERE post_id = :postId");
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        return count($result);
+    }
+  
 }
