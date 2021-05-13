@@ -13,6 +13,7 @@
                 session_start();
                 $_SESSION["username"] = $username;
                 $_SESSION['userid'] = User::getId($username);
+                $_SESSION['profilePic'] = User::getImage($username);
                 header("Location: home.php");
             }else{
                 $error = true;

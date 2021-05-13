@@ -156,6 +156,16 @@ class User{
             return $userId;
         }
 
+    public static function getImage($username)
+    {
+        $conn = db::getConnection();
+        $query = $conn->prepare("SELECT profilePic from users where username = :username");
+        $query->bindValue(":username", $username);
+        $query->execute();
+        $profilePic = $query->fetch();
+        return $profilePic;
+    }
+
     /**
      * @return mixed
      */
@@ -216,4 +226,5 @@ class User{
         $result = $statement->fetch();
         return new User($result['email'], $result['fullname'], $result['username'], $result['password'], $result['profilePic']);
     }
+
 }

@@ -13,21 +13,22 @@ class Post{
     private $time_posted;
     private $postId;
     private $profilePic;
+    private $userId;
 
-    public function post()
+    public function post($userId)
     {
-
         $target_file = "images/upload/" . basename($_FILES["image"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-            echo "Ga niet aahja moet ne jpg, jpeg of png zen";
-            $error = "Ga niet aahja moet ne jpg, jpeg of png zen";
+//            echo "Ga niet aahja moet ne jpg, jpeg of png zen";
+            $error = true;
         } else {
             if ($_FILES["image"]["size"] > 500000) {
-                echo "das te zwaar he pipo";
-                $error = "das te zwaar he pipo";
+//                echo "das te zwaar he pipo";
+                $error = true;
             } else {
+                $error = false;
                 $filename = $_FILES["image"]["name"];
                 $tempname = $_FILES["image"]["tmp_name"];
                 $folder = "images/upload/" . $filename;
@@ -35,7 +36,7 @@ class Post{
 
                 $conn = Db::getConnection();
 
-                $statement = $conn->prepare("insert into post (title, description, image) values (:title, :description, :image)");
+                $statement = $conn->prepare("insert into post (title, description, image, user_id) values (:title, :description, :image, :user_id)");
 
                 //user_id
                 $title = $this->getTitle();
@@ -46,11 +47,14 @@ class Post{
                 $statement->bindValue(":title", $title);
                 $statement->bindValue(":description", $description);
                 $statement->bindValue(":image", $image);
+                $statement->bindValue(":user_id", $userId);
 
 
                 $result = $statement->execute();
                 return $result;
+
             }
+            return $error;
         }
         return $error;
 
@@ -82,7 +86,8 @@ class Post{
     public static function showFirstPosts($amount): array
     {
             $conn = Db::getConnection();
-            $query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id WHERE post.id BETWEEN :amount1 AND :amount2 ORDER BY post.time_posted DESC LIMIT 20");
+            $query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id WHERE post.id ORDER BY post.time_posted DESC LIMIT 20");
+            //$query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id WHERE post.id BETWEEN :amount1 AND :amount2 ORDER BY post.time_posted DESC LIMIT 20");
             $query->bindValue(":amount1", $amount-19);
             $query->bindValue(":amount2", $amount);
             $query->execute();
@@ -120,6 +125,23 @@ class Post{
             return $fullPosts;
         }
 
+
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @param mixed $userId
+     */
+    public function setUserId($userId): void
+    {
+        $this->userId = $userId;
+    }
 
     /**
      * @return mixed
