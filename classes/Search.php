@@ -39,45 +39,45 @@ class Search{
 
     }
 
-    public static function showPosts()
-    {
-
-        $conn = Db::getConnection();
-        $query = $conn->query("SELECT post.id, users.username, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id where `username` like :search");
-        $posts = $query->fetchAll();
-        $fullPosts = array();
-        $comments = array();
-        $likes = array();
-        foreach ($posts as $post) {
-            $query = $conn->prepare("SELECT users.username, comments.description FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
-            $query->bindValue(":post_id", $post['id']);
-            $query->execute();
-            $fetchedComments = $query->fetchAll();
-
-            if (!empty($fetchedComments)) {
-                foreach ($fetchedComments as $fetchedComment) {
-                    array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description']));
-
-                }
-            }
-
-            $query = $conn->prepare("SELECT users.username FROM likes JOIN users on users.id = likes.user_id WHERE likes.post_id = :post_id");
-            $query->bindValue(":post_id", $post['id']);
-            $query->execute();
-            $fetchedlikes = $query->fetchAll();
-
-            if (!empty($fetchedlikes)) {
-                foreach ($fetchedlikes as $fetchedlike) {
-                    array_push($likes, $fetchedlikes['username']);
-                }
-            }
-
-            array_push($fullPosts, new Post($post['username'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes));
-            $comments = array();
-            $likes = array();
-        }
-        return $fullPosts;
-    }
+//    public static function showPosts()
+//    {
+//
+//        $conn = Db::getConnection();
+//        $query = $conn->query("SELECT post.id, users.username, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id where `username` like :search");
+//        $posts = $query->fetchAll();
+//        $fullPosts = array();
+//        $comments = array();
+//        $likes = array();
+//        foreach ($posts as $post) {
+//            $query = $conn->prepare("SELECT users.username, comments.description FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
+//            $query->bindValue(":post_id", $post['id']);
+//            $query->execute();
+//            $fetchedComments = $query->fetchAll();
+//
+//            if (!empty($fetchedComments)) {
+//                foreach ($fetchedComments as $fetchedComment) {
+//                    array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description']));
+//
+//                }
+//            }
+//
+//            $query = $conn->prepare("SELECT users.username FROM likes JOIN users on users.id = likes.user_id WHERE likes.post_id = :post_id");
+//            $query->bindValue(":post_id", $post['id']);
+//            $query->execute();
+//            $fetchedlikes = $query->fetchAll();
+//
+//            if (!empty($fetchedlikes)) {
+//                foreach ($fetchedlikes as $fetchedlike) {
+//                    array_push($likes, $fetchedlikes['username']);
+//                }
+//            }
+//
+//            array_push($fullPosts, new Post($post['username'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes));
+//            $comments = array();
+//            $likes = array();
+//        }
+//        return $fullPosts;
+//    }
 
     /**
      * @return mixed

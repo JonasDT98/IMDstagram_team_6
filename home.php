@@ -17,7 +17,6 @@ if (!empty($_POST['search'])){
         $search = new Search($_POST['search']);
         $search->setSearch($_POST['search']);
         $search->search();
-
     }
     catch (\throwable $th){
 
@@ -28,7 +27,6 @@ $amount = 20;
 $posts = Post::showFirstPosts($amount);
 $user = User::getId($_SESSION['username']);
 $userId = $user['id'];
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -106,7 +104,7 @@ $userId = $user['id'];
                 </div>
             </div>
             <div>
-                <img src="<?php echo $post->getImage(); ?>" alt="post picture">
+                <img src="images/upload/<?php echo $post->getImage(); ?>" alt="post picture">
              
                 <div class="flex w-1/2 mx-4 my-2 gap-2"><button class="wpO6b btnLike
                                             "

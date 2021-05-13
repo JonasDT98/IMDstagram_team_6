@@ -10,6 +10,7 @@
                 $user = new User($_POST['email'], $_POST['fullname'], $_POST['username'], $_POST['password']);
                 $user->setPassword($_POST['password']);
                 $user->save();
+                header("Location: login.php");
                 if (!$user->save()){
                     $error = "";
                 }

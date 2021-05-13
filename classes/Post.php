@@ -35,7 +35,7 @@ class Post{
 
                 $conn = Db::getConnection();
 
-                $statement = $conn->prepare("insert into post (title, description, image, user_id) values (:title, :description, :image, :user_id)");
+                $statement = $conn->prepare("insert into post (title, description, image) values (:title, :description, :image)");
 
                 //user_id
                 $title = $this->getTitle();
@@ -81,7 +81,6 @@ class Post{
 
     public static function showFirstPosts($amount): array
     {
-
             $conn = Db::getConnection();
             $query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id WHERE post.id BETWEEN :amount1 AND :amount2 ORDER BY post.time_posted DESC LIMIT 20");
             $query->bindValue(":amount1", $amount-19);

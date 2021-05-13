@@ -17,7 +17,7 @@
     if (isset($_POST['submit'])){
 
         try {
-            $post = new Post($_SESSION['username'], $_FILES['image'],$_POST['description'],NULL,array(),array());
+            $post = new Post($_SESSION['username'], NULL, $_FILES['image'],$_POST['description'],NULL,array(),array(), NULL);
             $post->setTitle($_POST['title']);
             $post->setDescription($_POST['description']);
             $post->setImage($_FILES['image']['name']);
