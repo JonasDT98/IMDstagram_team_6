@@ -100,7 +100,7 @@ $profilePic = $pic['profilePic'];
         </nav>
     </header>
     <?php foreach ($posts as $post) : ?>
-    <?php if(!Post::isHidden($post->getPostId())) : ?>
+    <?php if(!Post::isHidden($post['id'])) : ?>
         <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg article">
             <div class="my-2 mx-4 flex items-center gap-2">
                 <div class="flex items-center w-1/2">
@@ -115,18 +115,18 @@ $profilePic = $pic['profilePic'];
                     </a>
                 </div>
                 <div class="w-1/2 flex justify-end">
-                    <button class="wpO6b btnReport
-                                            "
-                            type="button">
+                        <button onclick="refresh()" class="wpO6b btnReport
+                                                "
+                                type="button">
 
 
-                        <?php if (Post::isReported($userId, $post->getPostId())): ?>
-                            <i class="fa fa-flag btnIcon" data-postid="<?php echo $post->getPostId(); ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
-                        <?php else: ?>
-                            <i class="fa fa-flag-o btnIcon" data-postid="<?php echo $post->getPostId(); ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
-                        <?php endif; ?>
+                            <?php if (Post::isReported($userId, $post['id'])): ?>
+                                <i class="fa fa-flag btnIcon" data-postid="<?php echo $post['id']; ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
+                            <?php else: ?>
+                                <i class="fa fa-flag-o btnIcon" data-postid="<?php echo $post['id']; ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
+                            <?php endif; ?>
 
-                    </button>
+                        </button>
                 </div>
             </div>
             <div>
@@ -214,6 +214,9 @@ $profilePic = $pic['profilePic'];
 <script src="js/likes.js"></script>
 <script src="js/reports.js"></script>
 <script src="https://use.fontawesome.com/2dd2522a24.js"></script>
+<script>function refresh(){
+        window.location.reload();
+    }</script>
 
 </body>
 </html>

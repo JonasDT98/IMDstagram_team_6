@@ -3,7 +3,6 @@ let btnReport = document.querySelectorAll(".btnReport .btnIcon")
 for (let i = 0; i < btnReport.length; i++) {
     btnReport[i].addEventListener("click", function (e) {
 
-
         e.preventDefault();
 
         let postId = this.dataset.postid;
@@ -35,6 +34,7 @@ for (let i = 0; i < btnReport.length; i++) {
 
     });
 }
+
 /*// if all of the .btnLikes have a common parent, attach the delegated event listener to that rather than document.body
 document.body.addEventListener("click", async e => {
   if(!e.target.matches(".btnLike .btnIcon")) return;

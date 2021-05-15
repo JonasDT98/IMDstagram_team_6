@@ -131,10 +131,7 @@ class Post{
         return count($result);
     }
 
-    /**
-     * @return bool
-     */
-    public static function isHidden($postId): bool
+    public static function isHidden($postId)
     {
         $conn = Db::getConnection();
         $query = $conn->prepare("SELECT hidden FROM post WHERE id = :postId");
@@ -153,7 +150,6 @@ class Post{
         $result = $query->fetchAll();
         if($result != NULL){
             return true;
-
         }
         else{
             return false;
