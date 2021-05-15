@@ -20,7 +20,6 @@
         $filename = "Select a file";
     }
 
-
     if (isset($_POST['submit'])){
 
         $target_file = "images/upload/" . basename($filename);

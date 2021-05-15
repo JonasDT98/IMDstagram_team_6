@@ -21,10 +21,11 @@ if (!empty($_POST['search'])){
     catch (\throwable $th){
 
     }
+}else{
+    $amount = 20;
+    $posts = Post::showFirstPosts($amount);
 }
 
-$amount = 20;
-$posts = Post::showFirstPosts($amount);
 $user = User::getId($_SESSION['username']);
 $pic = User::getImage($_SESSION['username']);
 $userId = $user['id'];

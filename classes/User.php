@@ -99,7 +99,6 @@ class User{
 
     public function setProfilePic($profilePic, $username, $imageFileType): bool
     {
-
         if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
         } else {
             if ($_FILES["image"]["size"] > 500000) {
