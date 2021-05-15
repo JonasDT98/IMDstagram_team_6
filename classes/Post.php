@@ -13,54 +13,8 @@ class Post{
     private $time_posted;
     private $postId;
     private $profilePic;
+    private $postsAmount;
     private $userId;
-    private static $hidden = false;
-    private static $reports;
-
-    public function post($userId)
-    {
-        $target_file = "images/upload/" . basename($_FILES["image"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-//            echo "Ga niet aahja moet ne jpg, jpeg of png zen";
-            $error = true;
-        } else {
-            if ($_FILES["image"]["size"] > 500000) {
-//                echo "das te zwaar he pipo";
-                $error = true;
-            } else {
-                $error = false;
-                $filename = $_FILES["image"]["name"];
-                $tempname = $_FILES["image"]["tmp_name"];
-                $folder = "images/upload/" . $filename;
-                move_uploaded_file($tempname, $folder);
-
-                $conn = Db::getConnection();
-
-                $statement = $conn->prepare("insert into post (title, description, image, user_id) values (:title, :description, :image, :user_id)");
-
-                //user_id
-                $title = $this->getTitle();
-                $description = $this->getDescription();
-                $image = $this->getImage();
-
-
-                $statement->bindValue(":title", $title);
-                $statement->bindValue(":description", $description);
-                $statement->bindValue(":image", $image);
-                $statement->bindValue(":user_id", $userId);
-
-
-                $result = $statement->execute();
-                return $result;
-
-            }
-            return $error;
-        }
-        return $error;
-
-    }
 
     public function __construct($username, $profilePic, $image, $description, $time_posted, $comments, $likes, $postId)
     {
@@ -74,26 +28,52 @@ class Post{
         $this->setProfilePic($profilePic);
     }
 
+    public function post($userId, $filename, $imageFileType): bool
+    {
 
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+        } else {
+            if ($_FILES["image"]["size"] > 500000) {
+            } else {
+                $fileName = $filename;
+                $tempname = $_FILES["image"]["tmp_name"];
+                $folder = "images/upload/" . $fileName;
+                move_uploaded_file($tempname, $folder);
+                $conn = Db::getConnection();
+
+                $statement = $conn->prepare("insert into post (title, description, image, user_id) values (:title, :description, :image, :user_id)");
+
+                $title = $this->getTitle();
+                $description = $this->getDescription();
+                $image = $this->getImage();
+
+                $statement->bindValue(":title", $title);
+                $statement->bindValue(":description", $description);
+                $statement->bindValue(":image", $image);
+                $statement->bindValue(":user_id", $userId);
+
+                $result = $statement->execute();
+                return $result;
+            }
+        }
+    }
 
     public static function profileData($username) {
         $conn = Db::getConnection();
-        $query = $conn->prepare("Select users.username, users.profilePic, users.bio, post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted DESC LIMIT 9");
+        $query = $conn->prepare("Select users.username, users.profilePic, users.bio, post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted");
         $query->bindValue(":username", $username);
         $query->execute();
         $fetchedProfile = $query->fetchAll();
         return $fetchedProfile;
     }
 
-    public static function showFirstPosts($amount): array
+    public static function showPosts($offset): array
     {
             $conn = Db::getConnection();
-            $query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id WHERE post.id ORDER BY post.time_posted DESC LIMIT 20");
-            //$query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id WHERE post.id BETWEEN :amount1 AND :amount2 ORDER BY post.time_posted DESC LIMIT 20");
-            $query->bindValue(":amount1", $amount-19);
-            $query->bindValue(":amount2", $amount);
+            $query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id ORDER BY post.time_posted DESC LIMIT 20 OFFSET $offset");
             $query->execute();
             $posts = $query->fetchAll();
+
             $fullPosts = array();
             $comments = array();
             $likes = array();
@@ -120,31 +100,35 @@ class Post{
                         array_push($likes, $fetchedLike['username']);
                     }
                 }
-
-                array_push($fullPosts, new Post($post['username'], $post['profilePic'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']));
+                $newPost = new Post($post['username'], $post['profilePic'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']);
+                array_push($fullPosts,array("username" => $newPost->getUsername(), "profilePic" =>  $newPost->getProfilePic(), "image" => $newPost->getImage(), "description" => $newPost->getDescription(), "time_posted" => $newPost->time_posted, "comments" => $comments, "likes" => $likes, "id" => $newPost->getPostId()));
                 $comments = array();
                 $likes = array();
             }
             return $fullPosts;
         }
 
-
-
-
-    /**
-     * @return mixed
-     */
-    public function getReports()
-    {
-        return $this->reports;
+    public static function isLiked($userId, $postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT * FROM likes WHERE user_id =:userId AND post_id =:postId");
+        $query->bindValue(":userId", $userId);
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        if($result != NULL){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
-
-    /**
-     * @param mixed $reports
-     */
-    public static function setReports($reports, $postId): void
-    {
-        self::$reports = $reports;
+    public static function getAmountOfLikes($postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT post_id FROM likes WHERE post_id = :postId");
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        return count($result);
     }
 
     /**
@@ -157,16 +141,35 @@ class Post{
         $query->bindValue(":postId", $postId);
         $query->execute();
         $result = $query->fetch();
-//        if($result['0'] == 0){
-//            return false;
-//        }
-//        else{
-//            return true;
-//        }
         return $result['0'];
     }
+  
+      public static function isReported($userId, $postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT * FROM reports  WHERE user_id =:userId AND post_id =:postId");
+        $query->bindValue(":userId", $userId);
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        if($result != NULL){
+            return true;
 
-    /**
+        }
+        else{
+            return false;
+        }
+    }
+    public static function getAmountOfReports($postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT post_id FROM reports WHERE post_id = :postId");
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        return count($result);
+
+    }
+  
+   /**
      * @param $postId
      */
     public static function setHidden($hidden, $postId)
@@ -366,52 +369,22 @@ class Post{
     {
         $this->profilePic = $profilePic;
     }
-  
-  
-    public static function isLiked($userId, $postId){
-        $conn = Db::getConnection();
-        $query = $conn->prepare("SELECT * FROM likes WHERE user_id =:userId AND post_id =:postId");
-        $query->bindValue(":userId", $userId);
-        $query->bindValue(":postId", $postId);
-        $query->execute();
-        $result = $query->fetchAll();
-        if($result != NULL){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    public static function getAmountOfLikes($postId){
-        $conn = Db::getConnection();
-        $query = $conn->prepare("SELECT post_id FROM likes WHERE post_id = :postId");
-        $query->bindValue(":postId", $postId);
-        $query->execute();
-        $result = $query->fetchAll();
-        return count($result);
-    }
-    public static function isReported($userId, $postId){
-        $conn = Db::getConnection();
-        $query = $conn->prepare("SELECT * FROM reports  WHERE user_id =:userId AND post_id =:postId");
-        $query->bindValue(":userId", $userId);
-        $query->bindValue(":postId", $postId);
-        $query->execute();
-        $result = $query->fetchAll();
-        if($result != NULL){
-            return true;
 
-        }
-        else{
-            return false;
-        }
+    /**
+     * @return mixed
+     */
+    public function getPostsAmount()
+    {
+        return $this->postsAmount;
     }
-    public static function getAmountOfReports($postId){
-        $conn = Db::getConnection();
-        $query = $conn->prepare("SELECT post_id FROM reports WHERE post_id = :postId");
-        $query->bindValue(":postId", $postId);
-        $query->execute();
-        $result = $query->fetchAll();
-        return count($result);
 
+    /**
+     * @param mixed $postsAmount
+     */
+    public function setPostsAmount($postsAmount): void
+    {
+        $this->postsAmount = $postsAmount;
     }
+
+
 }

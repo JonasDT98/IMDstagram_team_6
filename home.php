@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once(__DIR__ . "/classes/Post.php");
-include_once (__DIR__ . "/classes/Comment.php");
+include_once(__DIR__ . "/classes/Comment.php");
 include_once(__DIR__ . "/classes/User.php");
 include_once(__DIR__ . "/classes/Search.php");
 
@@ -11,21 +11,18 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
 }
 
-
-if (!empty($_POST['search'])){
+if (!empty($_POST['search'])) {
     try {
-        //header("Location: feed.php");
         $search = new Search($_POST['search']);
         $search->setSearch($_POST['search']);
         $search->search();
-    }
-    catch (\throwable $th){
+    } catch (throwable $th) {
 
     }
+}else{
+    $posts = Post::showPosts(0);
 }
 
-$amount = 20;
-$posts = Post::showFirstPosts($amount);
 $user = User::getId($_SESSION['username']);
 $pic = User::getImage($_SESSION['username']);
 $userId = $user['id'];
@@ -55,8 +52,9 @@ $profilePic = $pic['profilePic'];
                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                              alt="Logo">
                     </a>
-                    <form action = "" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">
-                        <input class="text-center rounded-md bg-gray-200" type="text" name="search" placeholder="Search">
+                    <form action="" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">
+                        <input class="text-center rounded-md bg-gray-200" type="text" name="search"
+                               placeholder="Search">
                     </form>
                     <div class="flex items-center justify-center w-1/3 gap-3 ml-6">
                         <a href="post.php">
@@ -69,15 +67,6 @@ $profilePic = $pic['profilePic'];
                                 </g>
                             </svg>
                         </a>
-<!--                        <svg aria-label="Kanál aktivít" class="_8-yf5 w-10" fill="#262626" height="22" viewBox="0 0 48 48"-->
-<!--                             width="22">-->
-<!--                            <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4 11.5 0 6.8-5.9 11-11.5 16S25 41.3 24 41.9c-1.1-.7-4.7-4-9.5-8.3-5.7-5-11.5-9.2-11.5-16C3 11.3 7.7 6.1 13.4 6.1c4.2 0 6.5 2 8.1 4.3 1.9 2.6 2.2 3.9 2.5 3.9.3 0 .6-1.3 2.5-3.9 1.6-2.3 3.9-4.3 8.1-4.3m0-3c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5.6 0 1.1-.2 1.6-.5 1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>-->
-<!--                        </svg>-->
-
-<!--                        <svg class="" aria-label="Direct" class="_8-yf5 " fill="#262626" height="22" viewBox="0 0 48 48"-->
-<!--                             width="22">-->
-<!--                            <path d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3 3.5.1 4S0 5.2.4 5.7l15.9 15.6 5.5 22.6c.1.6.6 1 1.2 1.1h.2c.5 0 1-.3 1.3-.7l23.2-39c.4-.4.4-1 .1-1.5zM5.2 6.1h35.5L18 18.7 5.2 6.1zm18.7 33.6l-4.4-18.4L42.4 8.6 23.9 39.7z"></path>-->
-<!--                        </svg>-->
 
                         <div class="flex items-center w-1/2">
                             <a href="./userProfile.php?id=<?php echo htmlspecialchars($_SESSION['username']); ?>">
@@ -115,12 +104,14 @@ $profilePic = $pic['profilePic'];
         <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg article">
             <div class="my-2 mx-4 flex items-center gap-2">
                 <div class="flex items-center w-1/2">
-                    <a href="./userProfile.php?id=<?php echo htmlspecialchars($post->getUsername()); ?>">
-                        <img class="w-12 h-12 object-fill rounded-full border-4 border-red-200" src="images/profilePics/<?php echo $post->getProfilePic(); ?>"
-                             alt="profile picture">
+
+
+                    <a href="./userProfile.php?id=<?php echo htmlspecialchars($post['username']); ?>">
+                        <img class="w-12 h-12 object-fill rounded-full border-4 border-red-200 "
+                             src="images/profilePics/<?php echo $post['profilePic']; ?>" alt="profile picture">
                     </a>
-                    <a class="ml-2" href="./userProfile.php?id=<?php echo htmlspecialchars($post->getUsername()); ?>">
-                        <p class="text-sm font-medium"><?php echo htmlspecialchars($post->getUsername()); ?></p>
+                    <a class="ml-2" href="./userProfile.php?id=<?php echo htmlspecialchars($post['username']); ?>">
+                        <p class="text-sm font-medium"><?php echo htmlspecialchars($post['username']); ?></p>
                     </a>
                 </div>
                 <div class="w-1/2 flex justify-end">
@@ -139,48 +130,53 @@ $profilePic = $pic['profilePic'];
                 </div>
             </div>
             <div>
-                <img class="w-screen" src="images/upload/<?php echo $post->getImage(); ?>" alt="post picture">
-             
-                <div class="flex w-1/2 mx-4 my-2 gap-2"><button class="wpO6b btnLike
-                                            "
-                                                                type="button">
 
+                <img class="w-screen" src="images/upload/<?php echo $post['image']; ?>" alt="post picture">
 
-                        <?php if (Post::isLiked($userId, $post->getPostId())): ?>
-                        <i class="fa fa-heart btnIcon" data-postid="<?php echo $post->getPostId(); ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
+                <div class="flex w-1/2 mx-4 my-2 gap-2">
+                    <button class="wpO6b btnLike" type="button">
+
+                        <?php if (Post::isLiked($userId, $post['id'])): ?>
+                            <i class="fa fa-heart btnIcon" data-postid="<?php echo $post['id']; ?>"
+                               data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
                         <?php else: ?>
-                        <i class="fa fa-heart-o btnIcon" data-postid="<?php echo $post->getPostId(); ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
+                            <i class="fa fa-heart-o btnIcon" data-postid="<?php echo $post['id']; ?>"
+                               data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
                         <?php endif; ?>
 
                     </button>
                 </div>
-                <?php if (!empty($post->getLikes())): ?>
-                    <?php if (sizeof($post->getLikes()) == 1): ?>
-                        <p class="mx-4 likes"> <?php echo sizeof($post->getLikes()); ?> like </p>
+                <?php if (!empty($post['likes'])): ?>
+                    <?php if (sizeof($post['likes']) == 1): ?>
+                        <p class="mx-4 likes"> <?php echo sizeof($post['likes']); ?> like </p>
                     <?php else: ?>
-                        <p class="mx-4 likes"> <?php echo sizeof($post->getLikes()); ?> likes </p>
+                        <p class="mx-4 likes"> <?php echo sizeof($post['likes']); ?> likes </p>
                     <?php endif; ?>
                 <?php else: ?>
                     <p class="mx-4 likes"> 0 likes </p>
                 <?php endif; ?>
                 <p class="text-sm mx-4 mb-2">
-                    <b><?php echo htmlspecialchars($post->getUsername()); ?></b> <?php echo htmlspecialchars($post->getDescription()); ?> </p>
+                    <b><?php echo htmlspecialchars($post['username']); ?></b> <?php echo htmlspecialchars($post['description']); ?>
+                </p>
 
-                <p class="text-xs mx-4 mb-2">POSTED <?php echo strtoupper(Comment::showTime($post->getTimePosted())); ?> AGO </p>
+                <p class="text-xs mx-4 mb-2">POSTED <?php echo strtoupper(Comment::showTime($post['time_posted'])); ?>
+                    AGO </p>
 
 
                 <ul class="mx-4 mb-2 comments">
-                <?php if (!empty($post->getComments())): ?>
-                    <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 separation"></span>
-                        <?php foreach ($post->getComments() as $comment) : ?>
-                            <li class="text-sm mt-1 comment" >
-                                <b><?php echo htmlspecialchars($comment['username']); ?></b> <?php echo htmlspecialchars($comment['comment']); ?> <span class="float-right text-xs"><?php echo Comment::showTime($comment['time']); ?> ago</span></li>
+                    <?php if (!empty($post['comments'])): ?>
+                        <span class="w-full bg-gray-100 h-0.5 block self-center mb-2 separation"></span>
+                        <?php foreach ($post['comments'] as $comment) : ?>
+                            <li class="text-sm mt-1 comment">
+                                <b><?php echo htmlspecialchars($comment['username']); ?></b> <?php echo htmlspecialchars($comment['comment']); ?>
+                                <span class="float-right text-xs"><?php echo Comment::showTime($comment['time']); ?> ago</span>
+                            </li>
                         <?php endforeach; ?>
-                <?php endif; ?>
+                    <?php endif; ?>
                 </ul>
                 <form class="pb-5 errors" method="post" action="">
                     <input class="w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100 addComment"
-                           data-postid="<?php echo $post->getPostId(); ?>"
+                           data-postid="<?php echo $post['id']; ?>"
                            data-username="<?php echo htmlspecialchars($_SESSION['username']); ?>"
                            name="comment" type="text" placeholder="Add a comment..." required>
                 </form>
@@ -189,15 +185,28 @@ $profilePic = $pic['profilePic'];
         <article></article>
         <?php endif; ?>
     <?php endforeach; ?>
-    <div class="w-full bg-white mb-10 shadow-2xl rounded-b max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg mb-20 loader" data-postsamount="<?php echo $amount; ?>">
-        <div class="flex items-center place-content-center py-6">
-            <a class="w-1/3 h-8 flex items-center place-content-center bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded morePosts" href="#">
-                Load more posts
-            </a>
+    <!--    --><?php //if((sizeof($posts)) >= 20):
+    ?><!-- -->
+    <?php if ((sizeof($posts)) <= 20): ?>
+        <div class="w-full bg-white mb-10 shadow-2xl rounded-b max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg mb-20 loader"
+             data-postsamount="<?php echo sizeof($posts); ?>">
+            <div class="flex items-center place-content-center py-6">
+                <a class="w-1/3 h-8 flex items-center place-content-center bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded morePosts"
+                   href="#">
+                    Load more posts
+                </a>
+            </div>
         </div>
-    </div>
-
-
+    <?php else: ?>
+        <div class="w-full bg-white mb-10 shadow-2xl rounded-b max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg mb-20">
+            <div class="flex items-center place-content-center py-6">
+                <p class="h-8 px-4 flex items-center place-content-center bg-red-400 text-white font-semibold rounded morePosts"
+                   href="#">
+                    There aren't more posts to be loaded
+                </p>
+            </div>
+        </div>
+    <?php endif; ?>
 </div>
 
 <script src="js/liveComments.js"></script>
