@@ -24,7 +24,9 @@ if (!empty($_POST['search'])) {
 
 $posts = Post::showPosts(0);
 $user = User::getId($_SESSION['username']);
+$pic = User::getImage($_SESSION['username']);
 $userId = $user['id'];
+$profilePic = $pic['profilePic'];
 ?>
 <!doctype html>
 <html lang="en">
@@ -56,7 +58,7 @@ $userId = $user['id'];
                     </form>
                     <div class="flex items-center justify-center w-1/3 gap-3 ml-6">
                         <a href="post.php">
-                            <svg class="h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">
+                            <svg class="h-6 ml-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">
                                 <g id="Layer_2" data-name="Layer 2">
                                     <g id="Layer_1-2" data-name="Layer 1">
                                         <path d="M7.23,0H2.68A2.68,2.68,0,0,0,0,2.68V7.42A2.68,2.68,0,0,0,2.68,10.1H7.23A2.68,2.68,0,0,0,9.9,7.42V2.68A2.68,2.68,0,0,0,7.23,0ZM8.9,7.42A1.68,1.68,0,0,1,7.23,9.1H2.68A1.68,1.68,0,0,1,1,7.42V2.68A1.68,1.68,0,0,1,2.68,1H7.23A1.68,1.68,0,0,1,8.9,2.68Z"/>
@@ -65,15 +67,33 @@ $userId = $user['id'];
                                 </g>
                             </svg>
                         </a>
-                        <svg aria-label="Kanál aktivít" class="_8-yf5 " fill="#262626" height="22" viewBox="0 0 48 48"
-                             width="22">
-                            <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4 11.5 0 6.8-5.9 11-11.5 16S25 41.3 24 41.9c-1.1-.7-4.7-4-9.5-8.3-5.7-5-11.5-9.2-11.5-16C3 11.3 7.7 6.1 13.4 6.1c4.2 0 6.5 2 8.1 4.3 1.9 2.6 2.2 3.9 2.5 3.9.3 0 .6-1.3 2.5-3.9 1.6-2.3 3.9-4.3 8.1-4.3m0-3c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5.6 0 1.1-.2 1.6-.5 1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path>
-                        </svg>
-                        <svg class="" aria-label="Direct" class="_8-yf5 " fill="#262626" height="22" viewBox="0 0 48 48"
-                             width="22">
-                            <path d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3 3.5.1 4S0 5.2.4 5.7l15.9 15.6 5.5 22.6c.1.6.6 1 1.2 1.1h.2c.5 0 1-.3 1.3-.7l23.2-39c.4-.4.4-1 .1-1.5zM5.2 6.1h35.5L18 18.7 5.2 6.1zm18.7 33.6l-4.4-18.4L42.4 8.6 23.9 39.7z"></path>
-                        </svg>
-                        <a class="font-semibold text-blue-800" href="logout.php">Log out</a>
+
+                        <div class="flex items-center w-1/2">
+                            <a href="./userProfile.php?id=<?php echo htmlspecialchars($_SESSION['username']); ?>">
+                                <img class="w-10 h-10 object-fill rounded-full border-2 border-red-200 m-1" src="images/profilePics/<?php echo htmlspecialchars($profilePic); ?>"
+                                     alt="profile picture">
+                            </a>
+                            <a class="" href="./userProfile.php?id=<?php echo htmlspecialchars($_SESSION['username']); ?>">
+                            </a>
+                        </div>
+
+                        <a class="font-semibold text-blue-800" href="logout.php"><svg aria-label="Kanál aktivít" class="_8-yf5 w-10" fill="#262626" height="28" viewBox="0 0 48 48">
+                                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                                     y="0px"
+                                     viewBox="0 0 490.3 490.3" style="enable-background:new 0 0 490.3 490.3;" xml:space="preserve">
+                                        <g>
+                                            <g>
+                                                <path d="M0,121.05v248.2c0,34.2,27.9,62.1,62.1,62.1h200.6c34.2,0,62.1-27.9,62.1-62.1v-40.2c0-6.8-5.5-12.3-12.3-12.3
+                                                    s-12.3,5.5-12.3,12.3v40.2c0,20.7-16.9,37.6-37.6,37.6H62.1c-20.7,0-37.6-16.9-37.6-37.6v-248.2c0-20.7,16.9-37.6,37.6-37.6h200.6
+                                                    c20.7,0,37.6,16.9,37.6,37.6v40.2c0,6.8,5.5,12.3,12.3,12.3s12.3-5.5,12.3-12.3v-40.2c0-34.2-27.9-62.1-62.1-62.1H62.1
+                                                    C27.9,58.95,0,86.75,0,121.05z"/>
+                                                <path d="M385.4,337.65c2.4,2.4,5.5,3.6,8.7,3.6s6.3-1.2,8.7-3.6l83.9-83.9c4.8-4.8,4.8-12.5,0-17.3l-83.9-83.9
+                                                    c-4.8-4.8-12.5-4.8-17.3,0s-4.8,12.5,0,17.3l63,63H218.6c-6.8,0-12.3,5.5-12.3,12.3c0,6.8,5.5,12.3,12.3,12.3h229.8l-63,63
+                                                    C380.6,325.15,380.6,332.95,385.4,337.65z"/>
+                                            </g>
+                                        </g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                                        </svg>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -84,10 +104,10 @@ $userId = $user['id'];
             <div class="my-2 mx-4 flex items-center gap-2">
                 <div class="flex items-center w-1/2">
 
+
                     <a href="./userProfile.php?id=<?php echo htmlspecialchars($post['username']); ?>">
                         <img class="w-12 h-12 object-contain rounded-full border-4 border-red-200"
-                             src="images/profilePics/<?php echo $post['profilePic']; ?>"
-                             alt="profile picture">
+                             src="images/profilePics/<?php echo $post['profilePic']; ?>" alt="profile picture">
                     </a>
                     <a class="ml-2" href="./userProfile.php?id=<?php echo htmlspecialchars($post['username']); ?>">
                         <p class="text-sm font-medium"><?php echo htmlspecialchars($post['username']); ?></p>
@@ -105,13 +125,11 @@ $userId = $user['id'];
                 </div>
             </div>
             <div>
+
                 <img src="images/upload/<?php echo $post['image']; ?>" alt="post picture">
 
                 <div class="flex w-1/2 mx-4 my-2 gap-2">
-                    <button class="wpO6b btnLike
-                                            "
-                            type="button">
-
+                    <button class="wpO6b btnLike" type="button">
 
                         <?php if (Post::isLiked($userId, $post['id'])): ?>
                             <i class="fa fa-heart btnIcon" data-postid="<?php echo $post['id']; ?>"
@@ -122,16 +140,6 @@ $userId = $user['id'];
                         <?php endif; ?>
 
                     </button>
-                    <span class="_15y0l"><button class="wpO6b  " type="button"><div class="QBdPU "><svg
-                                        aria-label="Comment"
-                                        class="_8-yf5 "
-                                        fill="#262626"
-                                        height="24"
-                                        viewBox="0 0 48 48"
-                                        width="24"><path
-                                            clip-rule="evenodd"
-                                            d="M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 2.8c.8.2 1.6-.6 1.4-1.4zm-3-22.1c0 4-1 7-2.6 10-.2.4-.3.9-.2 1.4l2.1 8.4-8.3-2.1c-.5-.1-1-.1-1.4.2-1.8 1-5.2 2.6-10 2.6-11.4 0-20.6-9.2-20.6-20.5S12.7 3.5 24 3.5 44.5 12.7 44.5 24z"
-                                            fill-rule="evenodd"></path></svg></div></button></span>
                 </div>
                 <?php if (!empty($post['likes'])): ?>
                     <?php if (sizeof($post['likes']) == 1): ?>
