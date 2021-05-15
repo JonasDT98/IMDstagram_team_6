@@ -71,10 +71,7 @@ class Post{
     {
             $conn = Db::getConnection();
             $query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id ORDER BY post.time_posted DESC LIMIT 20 OFFSET $offset");
-            $query->bindValue(":amount1", $amount-19);
-            $query->bindValue(":amount2", $amount);
             $query->execute();
-
             $posts = $query->fetchAll();
 
             $fullPosts = array();
