@@ -20,6 +20,7 @@ button.addEventListener("click", function (e) {
         .then(result => {
             console.log('Success:', result);
             createPost();
+            console.log(result.body);
         })
         .catch(error => {
             console.error('Error:', error);
