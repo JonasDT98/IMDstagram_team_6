@@ -15,51 +15,6 @@ class Post{
     private $profilePic;
     private $userId;
 
-    public function post($userId)
-    {
-        $target_file = "images/upload/" . basename($_FILES["image"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-//            echo "Ga niet aahja moet ne jpg, jpeg of png zen";
-            $error = true;
-        } else {
-            if ($_FILES["image"]["size"] > 500000) {
-//                echo "das te zwaar he pipo";
-                $error = true;
-            } else {
-                $error = false;
-                $filename = $_FILES["image"]["name"];
-                $tempname = $_FILES["image"]["tmp_name"];
-                $folder = "images/upload/" . $filename;
-                move_uploaded_file($tempname, $folder);
-
-                $conn = Db::getConnection();
-
-                $statement = $conn->prepare("insert into post (title, description, image, user_id) values (:title, :description, :image, :user_id)");
-
-                //user_id
-                $title = $this->getTitle();
-                $description = $this->getDescription();
-                $image = $this->getImage();
-
-
-                $statement->bindValue(":title", $title);
-                $statement->bindValue(":description", $description);
-                $statement->bindValue(":image", $image);
-                $statement->bindValue(":user_id", $userId);
-
-
-                $result = $statement->execute();
-                return $result;
-
-            }
-            return $error;
-        }
-        return $error;
-
-    }
-
     public function __construct($username, $profilePic, $image, $description, $time_posted, $comments, $likes, $postId)
     {
         $this->setUsername($username);
@@ -72,11 +27,39 @@ class Post{
         $this->setProfilePic($profilePic);
     }
 
+    public function post($userId, $filename, $imageFileType): bool
+    {
 
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+        } else {
+            if ($_FILES["image"]["size"] > 500000) {
+            } else {
+                $fileName = $filename;
+                $tempname = $_FILES["image"]["tmp_name"];
+                $folder = "images/upload/" . $fileName;
+                move_uploaded_file($tempname, $folder);
+                $conn = Db::getConnection();
+
+                $statement = $conn->prepare("insert into post (title, description, image, user_id) values (:title, :description, :image, :user_id)");
+
+                $title = $this->getTitle();
+                $description = $this->getDescription();
+                $image = $this->getImage();
+
+                $statement->bindValue(":title", $title);
+                $statement->bindValue(":description", $description);
+                $statement->bindValue(":image", $image);
+                $statement->bindValue(":user_id", $userId);
+
+                $result = $statement->execute();
+                return $result;
+            }
+        }
+    }
 
     public static function profileData($username) {
         $conn = Db::getConnection();
-        $query = $conn->prepare("Select users.username, users.profilePic, users.bio, post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted DESC LIMIT 9");
+        $query = $conn->prepare("Select users.username, users.profilePic, users.bio, post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted");
         $query->bindValue(":username", $username);
         $query->execute();
         $fetchedProfile = $query->fetchAll();
@@ -125,6 +108,28 @@ class Post{
             return $fullPosts;
         }
 
+    public static function isLiked($userId, $postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT * FROM likes WHERE user_id =:userId AND post_id =:postId");
+        $query->bindValue(":userId", $userId);
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        if($result != NULL){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public static function getAmountOfLikes($postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT post_id FROM likes WHERE post_id = :postId");
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        return count($result);
+    }
 
 
     /**
@@ -314,30 +319,6 @@ class Post{
     public function setProfilePic($profilePic): void
     {
         $this->profilePic = $profilePic;
-    }
-  
-  
-    public static function isLiked($userId, $postId){
-        $conn = Db::getConnection();
-        $query = $conn->prepare("SELECT * FROM likes WHERE user_id =:userId AND post_id =:postId");
-        $query->bindValue(":userId", $userId);
-        $query->bindValue(":postId", $postId);
-        $query->execute();
-        $result = $query->fetchAll();
-        if($result != NULL){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    public static function getAmountOfLikes($postId){
-        $conn = Db::getConnection();
-        $query = $conn->prepare("SELECT post_id FROM likes WHERE post_id = :postId");
-        $query->bindValue(":postId", $postId);
-        $query->execute();
-        $result = $query->fetchAll();
-        return count($result);
     }
   
 }

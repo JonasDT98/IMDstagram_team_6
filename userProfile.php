@@ -9,6 +9,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 $user = $_GET['id'];
+var_dump($user);
 $profile = Post::profileData($user);
 $pic = User::getImage($_SESSION['username']);
 $profilePic = $pic['profilePic'];
@@ -86,7 +87,7 @@ $profilePic = $pic['profilePic'];
     <section class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
         <div class="flex justify-center items-center">
             <div class="flex w-1/3 justify-center">
-                <img class="rounded-full w-28 h-28" src="images/profilePics/<?php echo htmlspecialchars($profilePic); ?>" alt="profile pic">
+                <img class="rounded-full w-28 h-28" src="images/profilePics/<?php echo htmlspecialchars($profile[0]['profilePic']); ?>" alt="profile pic">
             </div>
             <div class="grid grid-cols-3 grid-rows-3 items-center">
                 <p class="col-start-1 col-end-2 row-start-1 row-end-2"><?php echo $profile[0]['username']; ?></p>
@@ -107,7 +108,7 @@ $profilePic = $pic['profilePic'];
             <?php foreach ($profile as $post): ?>
             <div class="w-1/3">
                 <a href="#">
-                    <img src="<?php echo $post['image']; ?>"
+                    <img src="images/upload/<?php echo $post['image']; ?>"
                          alt="post picture">
                 </a>
             </div>

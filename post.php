@@ -16,7 +16,6 @@
 
     if(!empty($_FILES['image']['name'])){
         $filename = $_FILES['image']['name'];
-//        $filename = "A file has been Uploaded";
     }else{
         $filename = "Select a file";
     }
@@ -24,21 +23,24 @@
 
     if (isset($_POST['submit'])){
 
+        $target_file = "images/upload/" . basename($filename);
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $filename = $_SESSION['username'].date('YmdHis'). "." . $imageFileType;
+
         try {
             $post = new Post($_SESSION['username'], NULL, $_FILES['image'],$_POST['description'],NULL,array(),array(), NULL);
             $post->setTitle($_POST['title']);
             $post->setDescription($_POST['description']);
-            $post->setImage($_FILES['image']['name']);
+            $post->setImage($filename);
             $post->setUserId($userId);
 
-            $post->post($userId);
+            $post->post($userId, $filename, $imageFileType);
+            header("Location: home.php");
         }catch (\Throwable $th){
-            $error = $th->getMessage();
+//            $error = $th->getMessage();
+            $error = "Afbeelding te groot of fout formaat";
         }
 
-        if($error == true){
-            echo "fuck off";
-        }
     }
 
 ?>

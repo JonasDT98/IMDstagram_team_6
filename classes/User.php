@@ -76,6 +76,72 @@ class User{
         $statement->execute();
 
     }
+
+    public static function getId($username)
+    {
+        $conn = db::getConnection();
+        $query = $conn->prepare("SELECT id from users where username = :username");
+        $query->bindValue(":username", $username);
+        $query->execute();
+        $userId = $query->fetch();
+        return $userId;
+    }
+
+    public static function getImage($username)
+    {
+        $conn = db::getConnection();
+        $query = $conn->prepare("SELECT profilePic from users where username = :username");
+        $query->bindValue(":username", $username);
+        $query->execute();
+        $profilePic = $query->fetch();
+        return $profilePic;
+    }
+
+    public function setProfilePic($profilePic, $username, $imageFileType): bool
+    {
+
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+        } else {
+            if ($_FILES["image"]["size"] > 500000) {
+            } else {
+                $fileName = $profilePic;
+                $tempname = $_FILES["image"]["tmp_name"];
+                $folder = "images/profilePics/" . $fileName;
+                move_uploaded_file($tempname, $folder);
+
+                $conn = Db::getConnection();
+
+                $statement = $conn->prepare("update users set profilePic = :profilePic where username = :username");
+
+                $statement->bindValue(":profilePic", $profilePic);
+                $statement->bindValue(":username", $username);
+                $result = $statement->execute();
+                return $result;
+//                $this->profilePic = $profilePic;
+            }
+        }
+    }
+
+    public function delete($username){
+//        unlink($_FILES['image']['name']);
+        unlink("images/profilePics/" . $this->getProfilePic());
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("update users set profilePic = NULL where username = :username");
+        $statement->bindValue(":username", $username);
+        $statement->execute();
+        $this->profilePic = NULL;
+    }
+
+    public static function getUser($username): User
+    {
+        $conn = db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
+        $statement->bindValue(':username', $username);
+        $statement->execute();
+        $result = $statement->fetch();
+        return new User($result['email'], $result['fullname'], $result['username'], $result['password'], $result['profilePic']);
+    }
+
     /**
      * @return mixed
      */
@@ -146,30 +212,10 @@ class User{
         /**
          * @return mixed
          */
-        public static function getId($username)
-        {
-            $conn = db::getConnection();
-            $query = $conn->prepare("SELECT id from users where username = :username");
-            $query->bindValue(":username", $username);
-            $query->execute();
-            $userId = $query->fetch();
-            return $userId;
-        }
-
-    public static function getImage($username)
-    {
-        $conn = db::getConnection();
-        $query = $conn->prepare("SELECT profilePic from users where username = :username");
-        $query->bindValue(":username", $username);
-        $query->execute();
-        $profilePic = $query->fetch();
-        return $profilePic;
-    }
 
     /**
      * @return mixed
      */
-   
 
     public function getProfilePic()
     {
@@ -179,52 +225,6 @@ class User{
     /**
      * @param mixed|null $profilePic
      */
-    public function setProfilePic($profilePic, $username): void
-    {
-        $target_file = "images/profilePics/" . basename($_FILES["image"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-            echo "Ga niet aahja moet ne jpg of png zen";
-        } else {
-            if ($_FILES["image"]["size"] > 500000) {
-                echo "das te zwaar he pipo";
-            } else {
-                $filename = $_FILES["image"]["name"];
-                $tempname = $_FILES["image"]["tmp_name"];
-                $folder = "images/profilePics/" . $filename;
-                move_uploaded_file($tempname, $folder);
-
-                $conn = Db::getConnection();
-
-                $statement = $conn->prepare("update users set profilePic = :profilePic where username = :username");
-
-                $statement->bindValue(":profilePic", $profilePic);
-                $statement->bindValue(":username", $username);
-                $statement->execute();
-                $this->profilePic = $profilePic;
-            }
-        }
-    }
-
-    public function delete($profilePic, $username){
-        $conn = Db::getConnection();
-        $statement = $conn->prepare("update users set profilePic = :profilePic where username = :username");
-        $statement->bindValue(":profilePic", "default.png");
-        $statement->bindValue(":username", $username);
-        $statement->execute();
-        $this->profilePic = $profilePic;
-
-    }
-
-    public static function getUser($username): User
-    {
-        $conn = db::getConnection();
-        $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
-        $statement->bindValue(':username', $username);
-        $statement->execute();
-        $result = $statement->fetch();
-        return new User($result['email'], $result['fullname'], $result['username'], $result['password'], $result['profilePic']);
-    }
 
 }
