@@ -142,6 +142,15 @@ class User{
         return new User($result['email'], $result['fullname'], $result['username'], $result['password'], $result['profilePic']);
     }
 
+    public static function getProfileData($username) {
+        $conn = db::getConnection();
+        $statement = $conn->prepare("SELECT username, bio, profilePic FROM users WHERE username = :username");
+        $statement->bindValue(':username', $username);
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result;
+    }
+
     /**
      * @return mixed
      */

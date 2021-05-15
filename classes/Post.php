@@ -58,9 +58,9 @@ class Post{
         }
     }
 
-    public static function profileData($username) {
+    public static function profilePosts($username) {
         $conn = Db::getConnection();
-        $query = $conn->prepare("Select users.username, users.profilePic, users.bio, post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted");
+        $query = $conn->prepare("Select post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted");
         $query->bindValue(":username", $username);
         $query->execute();
         $fetchedProfile = $query->fetchAll();
@@ -86,7 +86,8 @@ class Post{
 
                 if (!empty($fetchedComments)) {
                     foreach ($fetchedComments as $fetchedComment) {
-                        array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description'], "time" => $fetchedComment['time_comment']));
+                        $time = Comment::showTime($fetchedComment['time_comment']);
+                        array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description'], "time" => $time));
                     }
                 }
 
@@ -101,7 +102,7 @@ class Post{
                     }
                 }
                 $newPost = new Post($post['username'], $post['profilePic'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']);
-                array_push($fullPosts,array("username" => $newPost->getUsername(), "profilePic" =>  $newPost->getProfilePic(), "image" => $newPost->getImage(), "description" => $newPost->getDescription(), "time_posted" => $newPost->time_posted, "comments" => $comments, "likes" => $likes, "id" => $newPost->getPostId()));
+                array_push($fullPosts,array("username" => $newPost->getUsername(), "profilePic" =>  $newPost->getProfilePic(), "image" => $newPost->getImage(), "description" => $newPost->getDescription(), "time_posted" => Comment::showTime($newPost->time_posted), "comments" => $comments, "likes" => $likes, "id" => $newPost->getPostId()));
                 $comments = array();
                 $likes = array();
             }

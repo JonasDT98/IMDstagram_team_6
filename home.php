@@ -23,6 +23,7 @@ if (!empty($_POST['search'])) {
 }
 
 $posts = Post::showPosts(0);
+var_dump(sizeof($posts));
 $user = User::getId($_SESSION['username']);
 $pic = User::getImage($_SESSION['username']);
 $userId = $user['id'];
@@ -154,7 +155,7 @@ $profilePic = $pic['profilePic'];
                     <b><?php echo htmlspecialchars($post['username']); ?></b> <?php echo htmlspecialchars($post['description']); ?>
                 </p>
 
-                <p class="text-xs mx-4 mb-2">POSTED <?php echo strtoupper(Comment::showTime($post['time_posted'])); ?>
+                <p class="text-xs mx-4 mb-2">POSTED <?php echo strtoupper($post['time_posted']); ?>
                     AGO </p>
 
 
@@ -164,7 +165,7 @@ $profilePic = $pic['profilePic'];
                         <?php foreach ($post['comments'] as $comment) : ?>
                             <li class="text-sm mt-1 comment">
                                 <b><?php echo htmlspecialchars($comment['username']); ?></b> <?php echo htmlspecialchars($comment['comment']); ?>
-                                <span class="float-right text-xs"><?php echo Comment::showTime($comment['time']); ?> ago</span>
+                                <span class="float-right text-xs"><?php echo $comment['time']; ?> ago</span>
                             </li>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -179,9 +180,10 @@ $profilePic = $pic['profilePic'];
     <?php endforeach; ?>
     <!--    --><?php //if((sizeof($posts)) >= 20):
     ?><!-- -->
-    <?php if ((sizeof($posts)) <= 20): ?>
+    <?php if ((sizeof($posts)) >= 20): ?>
         <div class="w-full bg-white mb-10 shadow-2xl rounded-b max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg mb-20 loader"
-             data-postsamount="<?php echo sizeof($posts); ?>">
+             data-postsamount="<?php echo sizeof($posts); ?>"
+             data-loggedUser="<?php echo $_SESSION['username']; ?>">
             <div class="flex items-center place-content-center py-6">
                 <a class="w-1/3 h-8 flex items-center place-content-center bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded morePosts"
                    href="#">

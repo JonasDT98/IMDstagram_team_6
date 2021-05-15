@@ -9,8 +9,8 @@ if (!isset($_SESSION['username'])) {
 }
 
 $user = $_GET['id'];
-var_dump($user);
-$profile = Post::profileData($user);
+$profilePosts = Post::profilePosts($user);
+$profileUser = User::getProfileData($user);
 $pic = User::getImage($_SESSION['username']);
 $profilePic = $pic['profilePic'];
 ?>
@@ -38,8 +38,9 @@ $profilePic = $pic['profilePic'];
                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                              alt="Logo">
                     </a>
-                    <form action = "" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">
-                        <input class="text-center rounded-md bg-gray-200" type="text" name="search" placeholder="Search">
+                    <form action="" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">
+                        <input class="text-center rounded-md bg-gray-200" type="text" name="search"
+                               placeholder="Search">
                     </form>
                     <div class="flex items-center justify-center w-1/3 gap-3 ml-6">
                         <a href="post.php">
@@ -55,17 +56,23 @@ $profilePic = $pic['profilePic'];
 
                         <div class="flex items-center w-1/2">
                             <a href="./userProfile.php?id=<?php echo htmlspecialchars($_SESSION['username']); ?>">
-                                <img class="w-10 h-10 object-fill rounded-full border-2 border-red-200 m-1" src="images/profilePics/<?php echo htmlspecialchars($profilePic); ?>"
+                                <img class="w-10 h-10 object-fill rounded-full border-2 border-red-200 m-1"
+                                     src="images/profilePics/<?php echo htmlspecialchars($profilePic); ?>"
                                      alt="profile picture">
                             </a>
-                            <a class="" href="./userProfile.php?id=<?php echo htmlspecialchars($_SESSION['username']); ?>">
+                            <a class=""
+                               href="./userProfile.php?id=<?php echo htmlspecialchars($_SESSION['username']); ?>">
                             </a>
                         </div>
 
-                        <a class="font-semibold text-blue-800" href="logout.php"><svg aria-label="Kanál aktivít" class="_8-yf5 w-10" fill="#262626" height="28" viewBox="0 0 48 48">
-                                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                        <a class="font-semibold text-blue-800" href="logout.php">
+                            <svg aria-label="Kanál aktivít" class="_8-yf5 w-10" fill="#262626" height="28"
+                                 viewBox="0 0 48 48">
+                                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                                      y="0px"
-                                     viewBox="0 0 490.3 490.3" style="enable-background:new 0 0 490.3 490.3;" xml:space="preserve">
+                                     viewBox="0 0 490.3 490.3" style="enable-background:new 0 0 490.3 490.3;"
+                                     xml:space="preserve">
                                         <g>
                                             <g>
                                                 <path d="M0,121.05v248.2c0,34.2,27.9,62.1,62.1,62.1h200.6c34.2,0,62.1-27.9,62.1-62.1v-40.2c0-6.8-5.5-12.3-12.3-12.3
@@ -76,7 +83,22 @@ $profilePic = $pic['profilePic'];
                                                     c-4.8-4.8-12.5-4.8-17.3,0s-4.8,12.5,0,17.3l63,63H218.6c-6.8,0-12.3,5.5-12.3,12.3c0,6.8,5.5,12.3,12.3,12.3h229.8l-63,63
                                                     C380.6,325.15,380.6,332.95,385.4,337.65z"/>
                                             </g>
-                                        </g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                                        </g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
+                                    <g></g>
                                         </svg>
                         </a>
                     </div>
@@ -84,35 +106,47 @@ $profilePic = $pic['profilePic'];
             </div>
         </nav>
     </header>
-    <section class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
+    <section class="w-full bg-white rounded-b shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
         <div class="flex justify-center items-center">
             <div class="flex w-1/3 justify-center">
-                <img class="rounded-full w-28 h-28" src="images/profilePics/<?php echo htmlspecialchars($profile[0]['profilePic']); ?>" alt="profile pic">
+                <img class="rounded-full w-28 h-28"
+                     src="images/profilePics/<?php echo htmlspecialchars($profileUser['profilePic']); ?>"
+                     alt="profile pic">
             </div>
-            <div class="grid grid-cols-3 grid-rows-3 items-center">
-                <p class="col-start-1 col-end-2 row-start-1 row-end-2"><?php echo $profile[0]['username']; ?></p>
-                <form class="col-start-2 col-end-4 row-start-1 row-end-2" action="login.php" method="post">
-                    <input class="w-1/2 h-8 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1"
+            <div class="grid grid-cols-3 grid-rows-3 items-center justify-items-stretch mr-5">
+                <p class="col-start-1 col-end-2 row-start-1 row-end-2">
+                    <b><?php echo htmlspecialchars($profileUser['username']); ?></b></p>
+                <form class="w-5/6 col-start-2 col-end-3 row-start-1 row-end-2 justify-self-center" action="login.php"
+                      method="post">
+                    <input class="h-8 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1"
                            name="btnFollow"
                            type="submit" value="FOLLOWING">
-                    <a href="editProfile.php">Settings</a>
                 </form>
+                <a class="w-4/6 flex items-center col-start-3 col-end-4 row-start-1 row-end-2 h-8 align-center bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1 justify-self-end"
+                   href="editProfile.php">SETTINGS</a>
 
-                <p class="col-start-1 col-end-4 row-start-2 row-end-3"><?php echo $profile[0]['bio'] ?></p>
-                <p class="col-start-1 col-end-2 row-start-3 row-end-4"><b><?php echo sizeof($profile); ?></b> posts</p>
+                <p class="col-start-1 col-end-4 row-start-2 row-end-3"><?php echo htmlspecialchars($profileUser['bio']) ?></p>
+                <p class="col-start-1 col-end-2 row-start-3 row-end-4"><b><?php echo sizeof($profilePosts); ?></b> posts
+                </p>
                 <p class="col-start-2 col-end-3 row-start-3 row-end-4 justify-self-center"><b>111k</b> followers</p>
                 <p class="col-start-3 col-end-4 row-start-3 row-end-4 justify-self-end"><b>111</b> following</p>
             </div>
         </div>
-        <div class="flex flex-wrap">
-            <?php foreach ($profile as $post): ?>
-            <div class="w-1/3">
-                <a href="#">
-                    <img src="images/upload/<?php echo $post['image']; ?>"
-                         alt="post picture">
-                </a>
-            </div>
-            <?php endforeach; ?>
+        <div class="flex flex-wrap justify-center rounded-b bg-gray-200">
+            <?php if (!empty($profilePosts)): ?>
+                <?php foreach ($profilePosts as $post): ?>
+                    <div class="w-1/3">
+                        <a href="#">
+                            <img src="images/upload/<?php echo $post['image']; ?>"
+                                 alt="post picture">
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="w-1/3 flex text-center">
+                    <p class="my-5 text-base font-semibold">There are no posts to be seen!</p>
+                </div>
+            <?php endif; ?>
         </div>
     </section>
 </div>

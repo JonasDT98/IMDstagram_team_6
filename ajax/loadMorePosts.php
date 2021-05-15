@@ -6,9 +6,10 @@ include_once (__DIR__ . "/../classes/Post.php");
 if (!empty($_POST)) {
 //    new Comment
     session_start();
-    $userId = User::getId($_SESSION['username']);
+    $user = $_SESSION['username']   ;
     $amountPosts = $_POST['postsAmount'];
     $data = Post::showPosts($amountPosts);
+    var_dump($amountPosts);
 
     //save comment in Db
 
@@ -16,6 +17,7 @@ if (!empty($_POST)) {
     $response = [
         'status' => 'success',
         'body' => $data,
+        'username' => $user,
         'message' => 'Posts are loaded in'
     ];
 
