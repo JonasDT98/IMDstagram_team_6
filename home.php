@@ -111,6 +111,7 @@ $profilePic = $pic['profilePic'];
         </nav>
     </header>
     <?php foreach ($posts as $post) : ?>
+    <?php if(!Post::isHidden($post->getPostId())) : ?>
         <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg article">
             <div class="my-2 mx-4 flex items-center gap-2">
                 <div class="flex items-center w-1/2">
@@ -123,14 +124,18 @@ $profilePic = $pic['profilePic'];
                     </a>
                 </div>
                 <div class="w-1/2 flex justify-end">
-                    <a href="">
-                        <svg aria-label="More options" class="_8-yf5 " fill="#262626" height="16"
-                             viewBox="0 0 48 48" width="16">
-                            <circle clip-rule="evenodd" cx="8" cy="24" fill-rule="evenodd" r="4.5"></circle>
-                            <circle clip-rule="evenodd" cx="24" cy="24" fill-rule="evenodd" r="4.5"></circle>
-                            <circle clip-rule="evenodd" cx="40" cy="24" fill-rule="evenodd" r="4.5"></circle>
-                        </svg>
-                    </a>
+                    <button class="wpO6b btnReport
+                                            "
+                            type="button">
+
+
+                        <?php if (Post::isReported($userId, $post->getPostId())): ?>
+                            <i class="fa fa-flag btnIcon" data-postid="<?php echo $post->getPostId(); ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
+                        <?php else: ?>
+                            <i class="fa fa-flag-o btnIcon" data-postid="<?php echo $post->getPostId(); ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
+                        <?php endif; ?>
+
+                    </button>
                 </div>
             </div>
             <div>
@@ -180,6 +185,9 @@ $profilePic = $pic['profilePic'];
                            name="comment" type="text" placeholder="Add a comment..." required>
                 </form>
         </article>
+        <?php else: ?>
+        <article></article>
+        <?php endif; ?>
     <?php endforeach; ?>
     <div class="w-full bg-white mb-10 shadow-2xl rounded-b max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg mb-20 loader" data-postsamount="<?php echo $amount; ?>">
         <div class="flex items-center place-content-center py-6">
@@ -195,6 +203,7 @@ $profilePic = $pic['profilePic'];
 <script src="js/liveComments.js"></script>
 <script src="js/loadMorePosts.js"></script>
 <script src="js/likes.js"></script>
+<script src="js/reports.js"></script>
 <script src="https://use.fontawesome.com/2dd2522a24.js"></script>
 
 </body>
