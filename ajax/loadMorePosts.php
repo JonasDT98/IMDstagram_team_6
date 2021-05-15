@@ -7,16 +7,16 @@ if (!empty($_POST)) {
 //    new Comment
     session_start();
     $userId = User::getId($_SESSION['username']);
-    $data = Post::showFirstPosts(20);
+    $amountPosts = $_POST['postsAmount'];
+    $data = Post::showPosts($amountPosts);
 
     //save comment in Db
-
 
     //success message
     $response = [
         'status' => 'success',
-        'body' => [$data],
-        'message' => 'Comment saved'
+        'body' => $data,
+        'message' => 'Posts are loaded in'
     ];
 
     header('Content-Type: application/json');
