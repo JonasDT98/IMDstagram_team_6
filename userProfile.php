@@ -9,7 +9,6 @@ if (!isset($_SESSION['username'])) {
 }
 
 $user = $_GET['id'];
-var_dump($user);
 $profile = Post::profileData($user);
 $pic = User::getImage($_SESSION['username']);
 $profilePic = $pic['profilePic'];

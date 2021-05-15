@@ -13,6 +13,7 @@ class Post{
     private $time_posted;
     private $postId;
     private $profilePic;
+    private $postsAmount;
     private $userId;
 
     public function __construct($username, $profilePic, $image, $description, $time_posted, $comments, $likes, $postId)
@@ -66,15 +67,13 @@ class Post{
         return $fetchedProfile;
     }
 
-    public static function showFirstPosts($amount): array
+    public static function showPosts($offset): array
     {
             $conn = Db::getConnection();
-            $query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id WHERE post.id ORDER BY post.time_posted DESC LIMIT 20");
-            //$query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id WHERE post.id BETWEEN :amount1 AND :amount2 ORDER BY post.time_posted DESC LIMIT 20");
-            $query->bindValue(":amount1", $amount-19);
-            $query->bindValue(":amount2", $amount);
+            $query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id ORDER BY post.time_posted DESC LIMIT 20 OFFSET $offset");
             $query->execute();
             $posts = $query->fetchAll();
+
             $fullPosts = array();
             $comments = array();
             $likes = array();
@@ -100,8 +99,8 @@ class Post{
                         array_push($likes, $fetchedLike['username']);
                     }
                 }
-
-                array_push($fullPosts, new Post($post['username'], $post['profilePic'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']));
+                $newPost = new Post($post['username'], $post['profilePic'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']);
+                array_push($fullPosts,array("username" => $newPost->getUsername(), "profilePic" =>  $newPost->getProfilePic(), "image" => $newPost->getImage(), "description" => $newPost->getDescription(), "time_posted" => $newPost->time_posted, "comments" => $comments, "likes" => $likes, "id" => $newPost->getPostId()));
                 $comments = array();
                 $likes = array();
             }
@@ -320,5 +319,21 @@ class Post{
     {
         $this->profilePic = $profilePic;
     }
-  
+
+    /**
+     * @return mixed
+     */
+    public function getPostsAmount()
+    {
+        return $this->postsAmount;
+    }
+
+    /**
+     * @param mixed $postsAmount
+     */
+    public function setPostsAmount($postsAmount): void
+    {
+        $this->postsAmount = $postsAmount;
+    }
+ 
 }
