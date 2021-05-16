@@ -1,5 +1,10 @@
-let btnLike = document.querySelectorAll(".btnLike .btnIcon")
-let likes = document.querySelectorAll(".likes");
+$(function (){
+    let btnLike = document.querySelectorAll(".btnLike .btnIcon")
+    let likes = document.querySelectorAll(".likes");
+})
+
+btnLike = document.querySelectorAll(".btnLike .btnIcon")
+likes = document.querySelectorAll(".likes");
 
 for (let i = 0; i < btnLike.length; i++) {
     btnLike[i].addEventListener("click", function (e) {

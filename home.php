@@ -179,7 +179,7 @@ $profilePic = $pic['profilePic'];
                     <b><?php echo htmlspecialchars($post['username']); ?></b> <?php echo htmlspecialchars($post['description']); ?>
                 </p>
 
-                <p class="text-xs mx-4 mb-2">POSTED <?php echo strtoupper(Comment::showTime($post['time_posted'])); ?>
+                <p class="text-xs mx-4 mb-2">POSTED <?php echo strtoupper($post['time_posted']); ?>
                     AGO </p>
 
 
@@ -189,7 +189,7 @@ $profilePic = $pic['profilePic'];
                         <?php foreach ($post['comments'] as $comment) : ?>
                             <li class="text-sm mt-1 comment">
                                 <b><?php echo htmlspecialchars($comment['username']); ?></b> <?php echo htmlspecialchars($comment['comment']); ?>
-                                <span class="float-right text-xs"><?php echo Comment::showTime($comment['time']); ?> ago</span>
+                                <span class="float-right text-xs"><?php echo $comment['time']; ?> ago</span>
                             </li>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -207,9 +207,10 @@ $profilePic = $pic['profilePic'];
     <?php endforeach; ?>
     <!--    --><?php //if((sizeof($posts)) >= 20):
     ?><!-- -->
-    <?php if ((sizeof($posts)) <= 20): ?>
+    <?php if ((sizeof($posts)) >= 20): ?>
         <div class="w-full bg-white mb-10 shadow-2xl rounded-b max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg mb-20 loader"
-             data-postsamount="<?php echo sizeof($posts); ?>">
+             data-postsamount="<?php echo sizeof($posts); ?>"
+             data-loggedUser="<?php echo $_SESSION['username']; ?>">
             <div class="flex items-center place-content-center py-6">
                 <a class="w-1/3 h-8 flex items-center place-content-center bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded morePosts"
                    href="#">
@@ -220,8 +221,7 @@ $profilePic = $pic['profilePic'];
     <?php else: ?>
         <div class="w-full bg-white mb-10 shadow-2xl rounded-b max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg mb-20">
             <div class="flex items-center place-content-center py-6">
-                <p class="h-8 px-4 flex items-center place-content-center bg-red-400 text-white font-semibold rounded morePosts"
-                   href="#">
+                <p class="h-8 px-4 flex items-center place-content-center bg-red-400 text-white font-semibold rounded morePosts">
                     There aren't more posts to be loaded
                 </p>
             </div>
@@ -229,10 +229,11 @@ $profilePic = $pic['profilePic'];
     <?php endif; ?>
 </div>
 
-<script src="js/liveComments.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script class="scripts" src="js/liveComments.js"></script>
 <script src="js/loadMorePosts.js"></script>
-<script src="js/likes.js"></script>
-<script src="js/reports.js"></script>
+<script class="scripts" src="js/likes.js"></script>
+<script class="scripts" src="js/reports.js"></script>
 <script src="https://use.fontawesome.com/2dd2522a24.js"></script>
 <script>function refresh(){
         window.location.reload();

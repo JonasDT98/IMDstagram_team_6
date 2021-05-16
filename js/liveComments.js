@@ -1,7 +1,12 @@
-console.log("comments are linked");
-let newComments = document.querySelectorAll(".addComment");
-let line = 0;
-let errorActive = 0;
+$(function (){
+    let newComments = document.querySelectorAll(".addComment");
+    let line = 0;
+    let errorActive = 0;
+})
+
+newComments = document.querySelectorAll(".addComment");
+line = 0;
+errorActive = 0;
 for (let i = 0; i < newComments.length; i++) {
     newComments[i].addEventListener("keypress", function (e) {
         let noComments = newComments[i].parentNode.parentNode.querySelectorAll(".comment").length;
