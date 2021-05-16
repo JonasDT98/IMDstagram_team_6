@@ -60,12 +60,22 @@ class Post{
 
     public static function profilePosts($username) {
         $conn = Db::getConnection();
-        $query = $conn->prepare("Select post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted");
+        $query = $conn->prepare("SELECT post.id, post.image, post.description FROM post JOIN users ON users.id = post.user_id WHERE users.username = :username ORDER BY post.time_posted");
         $query->bindValue(":username", $username);
         $query->execute();
         $fetchedProfile = $query->fetchAll();
         return $fetchedProfile;
     }
+
+//    public static function deletePost($postId, $image){
+//        unlink("images/upload/" . $this->getProfilePic());
+
+//        unlink("images/upload/" . $image);
+//        $conn = Db::getConnection();
+//        $statement = $conn->prepare("DELETE FROM post WHERE post.id = :postId;");
+//        $statement->bindValue(":postId", $postId);
+//        $statement->execute();
+//    }
 
     public static function showPosts($offset): array
     {

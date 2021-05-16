@@ -2,6 +2,9 @@
 
     include_once (__DIR__ . "/classes/User.php");
     session_start();
+    if (!isset($_SESSION['username'])) {
+        header("Location: login.php");
+    }
     //$username = $_SESSION["username"];
     //$user = User::getUser($username);
     if(!empty($_POST['btnSave'])){
@@ -148,7 +151,7 @@
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" value="<?php  echo $user->getUsername()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullname" type="text" value="<?php  echo $user->getFullname()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" value="<?php  echo $user->getEmail()    ?>">
-                        <input class="text-align-center w-full h-40 border border-gray-300 rounded px-4 bg-gray-100" name="bio" type="text" value="<?php  echo $user->getBio()    ?>">
+                        <input class="text-align-center w-full h-40 border border-gray-300 rounded px-4 bg-gray-100" name="bio" type="text" placeholder="Bio" value="<?php  echo $user->getBio()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="oPassword" type="password" placeholder="Old Password" required>
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="nPassword" type="password" placeholder="New Password" >
                         <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="btnSave" type="submit" value="Save">
