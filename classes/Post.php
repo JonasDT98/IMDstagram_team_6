@@ -10,7 +10,7 @@ class Post{
     private $image;
     private $likes;
     private $comments;
-    private $time_posted;
+    public $time_posted;
     private $postId;
     private $profilePic;
     private $postsAmount;

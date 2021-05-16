@@ -13,9 +13,10 @@ if (!isset($_SESSION['username'])) {
 
 if (!empty($_POST['search'])) {
     try {
-        $search = new Search($_POST['search']);
-        $search->setSearch($_POST['search']);
-        $search->search();
+//        $posts = new Search($_POST['search']);
+//        $posts->setSearch($_POST['search']);
+        $posts = Search::searchPost($_POST['search']);
+        $users = Search::searchUser($_POST['search']);
     } catch (throwable $th) {
 
     }
@@ -99,6 +100,25 @@ $profilePic = $pic['profilePic'];
             </div>
         </nav>
     </header>
+    <?php if (!empty($users)) :?>
+        <?php foreach ($users as $user) : ?>
+        <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg article pt-1 pb-1">
+            <div class="my-2 mx-4 flex items-center gap-2">
+                <div class="flex items-center w-1/2">
+                    <a href="./userProfile.php?id=<?php echo htmlspecialchars($user['username']); ?>">
+                        <img class="w-12 h-12 object-fill rounded-full border-4 border-red-200 "
+                             src="images/profilePics/<?php echo $user['profilePic']; ?>" alt="profile picture">
+                    </a>
+                    <a class="ml-2" href="./userProfile.php?id=<?php echo htmlspecialchars($user['username']); ?>">
+                        <p class="text-sm font-medium"><?php echo htmlspecialchars($user['username']); ?></p>
+                    </a>
+                </div>
+
+            </div>
+        </article>
+        <?php endforeach;?>
+    <?php endif; ?>
+
     <?php foreach ($posts as $post) : ?>
     <?php if(!Post::isHidden($post['id'])) : ?>
         <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg article">
@@ -147,7 +167,7 @@ $profilePic = $pic['profilePic'];
                     </button>
                 </div>
                 <?php if (!empty($post['likes'])): ?>
-                    <?php if (sizeof($post['likes']) == 1): ?>
+                    <?php if (is_array($post['likes']) && sizeof($post['likes']) == 1): ?>
                         <p class="mx-4 likes"> <?php echo sizeof($post['likes']); ?> like </p>
                     <?php else: ?>
                         <p class="mx-4 likes"> <?php echo sizeof($post['likes']); ?> likes </p>
