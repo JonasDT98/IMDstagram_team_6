@@ -37,10 +37,10 @@ $profilePic = $pic['profilePic'];
                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                              alt="Logo">
                     </a>
-                    <form action = "" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">
-                        <input class="text-center rounded-md bg-gray-200" type="text" name="search" placeholder="Search">
-                    </form>
-                    <div class="flex items-center justify-center w-1/3 gap-3 ml-6">
+                    <!--                    <form action = "" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">-->
+                    <!--                        <input class="text-center rounded-md bg-gray-200" type="text" name="search" placeholder="Search">-->
+                    <!--                    </form>-->
+                    <div class="flex items-center justify-end w-2/3 gap-3 mr-3">
                         <a href="post.php">
                             <svg class="h-6 ml-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">
                                 <g id="Layer_2" data-name="Layer 2">
@@ -52,7 +52,7 @@ $profilePic = $pic['profilePic'];
                             </svg>
                         </a>
 
-                        <div class="flex items-center w-1/2">
+                        <div class="flex items-center justify-end">
                             <a href="./userProfile.php?id=<?php echo htmlspecialchars($_SESSION['username']); ?>">
                                 <img class="w-10 h-10 object-fill rounded-full border-2 border-red-200 m-1" src="images/profilePics/<?php echo htmlspecialchars($profilePic); ?>"
                                      alt="profile picture">
@@ -61,7 +61,7 @@ $profilePic = $pic['profilePic'];
                             </a>
                         </div>
 
-                        <a class="font-semibold text-blue-800" href="logout.php"><svg aria-label="Kanál aktivít" class="_8-yf5 w-10" fill="#262626" height="28" viewBox="0 0 48 48">
+                        <a class="font-semibold text-blue-800 " href="logout.php"><svg aria-label="Kanál aktivít" class="_8-yf5 w-10" fill="#262626" height="28" viewBox="0 0 48 48">
                                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                                      y="0px"
                                      viewBox="0 0 490.3 490.3" style="enable-background:new 0 0 490.3 490.3;" xml:space="preserve">
@@ -79,6 +79,7 @@ $profilePic = $pic['profilePic'];
                                         </svg>
                         </a>
                     </div>
+
                 </div>
             </div>
         </nav>
