@@ -1,6 +1,12 @@
-console.log("posts are linked");
-let button = document.querySelector(".morePosts");
+let button = document.querySelector('.morePosts');
 let loader = document.querySelector('.loader');
+let loader2HeadDiv = document.createElement('div');
+loader2HeadDiv.className = "w-full bg-white mb-10 shadow-2xl rounded-b max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg mb-20";
+let loader2subDiv = document.createElement('div');
+loader2subDiv.className = "flex items-center place-content-center py-6";
+let loader2text = document.createElement('p');
+loader2text.className = "h-8 px-4 flex items-center place-content-center bg-red-400 text-white font-semibold rounded morePosts";
+loader2text.innerHTML = "There aren't more posts to be loaded";
 let content = document.querySelector('.content');
 let body = document.querySelector('body');
 button.addEventListener("click", function (e) {
@@ -19,10 +25,15 @@ button.addEventListener("click", function (e) {
         .then(result => {
             console.log('Success:', result);
             let posts = result.body;
+            loader.dataset.postsamount = parseInt(loader.dataset.postsamount) + result.body.length;
+            if (result.body.length !== 0) {
             for (let i = 0; i < posts.length; i++) {
                 createPost(posts[i]['username'], posts[i]['profilePic'], posts[i]['image'], posts[i]['description'], posts[i]['time_posted'], posts[i]['comments'], posts[i]['likes'].length, posts[i]['id'], result.username);
                 console.log(posts[i]['likes'].length);
             }
+            let scripts = document.querySelectorAll('.scripts');
+            body.removeChild(scripts[0]);
+            body.removeChild(scripts[1]);
             //scripts
             let liveComments = document.createElement('script');
             liveComments.setAttribute('src', 'js/liveComments.js');
@@ -31,7 +42,11 @@ button.addEventListener("click", function (e) {
             let liveLikes = document.createElement('script');
             liveLikes.setAttribute('src', 'js/likes.js');
             body.appendChild(liveLikes);
-
+            content.removeChild(loader);
+            }
+            content.appendChild(loader2HeadDiv);
+            loader2HeadDiv.appendChild(loader2subDiv);
+            loader2subDiv.appendChild(loader2text);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -123,10 +138,10 @@ function createPost(username, profilePic, image, description, time_posted, comme
     article.appendChild(postedOn);
     //comments in content
     let firstComment = 0;
+    let commentsUl = document.createElement('ul');
+    commentsUl.className = "mx-4 mb-2 comments";
+    article.appendChild(commentsUl);
     for (let i = 0; i < comments.length; i++) {
-        let commentsUl = document.createElement('ul');
-        commentsUl.className = "mx-4 mb-2 comments";
-        article.appendChild(commentsUl);
         if (firstComment === 0) {
             let lineSpan = document.createElement('span');
             lineSpan.className = "w-full bg-gray-100 h-0.5 block self-center mb-2 separation";
@@ -144,7 +159,7 @@ function createPost(username, profilePic, image, description, time_posted, comme
     let commentInput = document.createElement('input');
     commentInput.className = "w-full h-10 text-sm border border-gray-300 rounded-t px-4 bg-gray-100 addComment";
     commentInput.dataset.postid = postId; //hier komt de postId
-    commentInput.dataset.username = username; //hier komt de username van de ingelogde user
+    commentInput.dataset.username = loggedUser; //hier komt de username van de ingelogde user
     commentInput.name = "comment";
     commentInput.type = "text";
     commentInput.placeholder = "Add a comment...";

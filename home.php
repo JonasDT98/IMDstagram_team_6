@@ -23,7 +23,6 @@ if (!empty($_POST['search'])) {
 }
 
 $posts = Post::showPosts(0);
-var_dump(sizeof($posts));
 $user = User::getId($_SESSION['username']);
 $pic = User::getImage($_SESSION['username']);
 $userId = $user['id'];
@@ -194,8 +193,7 @@ $profilePic = $pic['profilePic'];
     <?php else: ?>
         <div class="w-full bg-white mb-10 shadow-2xl rounded-b max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg mb-20">
             <div class="flex items-center place-content-center py-6">
-                <p class="h-8 px-4 flex items-center place-content-center bg-red-400 text-white font-semibold rounded morePosts"
-                   href="#">
+                <p class="h-8 px-4 flex items-center place-content-center bg-red-400 text-white font-semibold rounded morePosts">
                     There aren't more posts to be loaded
                 </p>
             </div>
@@ -203,9 +201,10 @@ $profilePic = $pic['profilePic'];
     <?php endif; ?>
 </div>
 
-<script src="js/liveComments.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script class="scripts" src="js/liveComments.js"></script>
 <script src="js/loadMorePosts.js"></script>
-<script src="js/likes.js"></script>
+<script class="scripts" src="js/likes.js"></script>
 <script src="https://use.fontawesome.com/2dd2522a24.js"></script>
 
 </body>

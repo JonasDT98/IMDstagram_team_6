@@ -9,7 +9,7 @@ if (!empty($_POST)) {
     $user = $_SESSION['username']   ;
     $amountPosts = $_POST['postsAmount'];
     $data = Post::showPosts($amountPosts);
-    var_dump($amountPosts);
+
 
     //save comment in Db
 
