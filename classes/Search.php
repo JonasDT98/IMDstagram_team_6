@@ -13,13 +13,9 @@ class Search{
     public static function searchPost($search) : array
     {
         $conn = Db::getConnection();
-
         $statementPost =$conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id where `description` like :search;");
-
         $statementPost->bindValue(':search', '%'.$search.'%');
-
         $statementPost->execute();
-
         $posts = $statementPost->fetchAll();
 
         $fullPosts = array();
