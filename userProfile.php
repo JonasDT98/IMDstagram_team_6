@@ -38,10 +38,7 @@ $profilePic = $pic['profilePic'];
                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                              alt="Logo">
                     </a>
-                    <form action="" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">
-                        <input class="text-center rounded-md bg-gray-200" type="text" name="search"
-                               placeholder="Search">
-                    </form>
+                  
                     <div class="flex items-center justify-center w-1/3 gap-3 ml-6">
                         <a href="post.php">
                             <svg class="h-6 ml-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">
@@ -54,7 +51,7 @@ $profilePic = $pic['profilePic'];
                             </svg>
                         </a>
 
-                        <div class="flex items-center w-1/2">
+                        <div class="flex items-center justify-end">
                             <a href="./userProfile.php?id=<?php echo htmlspecialchars($_SESSION['username']); ?>">
                                 <img class="w-10 h-10 object-fill rounded-full border-2 border-red-200 m-1"
                                      src="images/profilePics/<?php echo htmlspecialchars($profilePic); ?>"
@@ -102,6 +99,7 @@ $profilePic = $pic['profilePic'];
                                         </svg>
                         </a>
                     </div>
+
                 </div>
             </div>
         </nav>
@@ -121,6 +119,11 @@ $profilePic = $pic['profilePic'];
                     <input class="h-8 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1"
                            name="btnFollow"
                            type="submit" value="FOLLOWING">
+                  
+                    <?php if ($profileUser['username'] == $_SESSION['username']): ?>
+                    <a href="editProfile.php">Settings</a>
+                    <?php endif; ?>
+                  
                 </form>
                 <a class="w-4/6 flex items-center col-start-3 col-end-4 row-start-1 row-end-2 h-8 align-center bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1 justify-self-end"
                    href="editProfile.php">SETTINGS</a>
@@ -132,6 +135,7 @@ $profilePic = $pic['profilePic'];
                 <p class="col-start-3 col-end-4 row-start-3 row-end-4 justify-self-end"><b>111</b> following</p>
             </div>
         </div>
+
         <div class="flex flex-wrap justify-center rounded-b bg-gray-200">
             <?php if (!empty($profilePosts)): ?>
                 <?php foreach ($profilePosts as $post): ?>
@@ -148,6 +152,7 @@ $profilePic = $pic['profilePic'];
                 </div>
             <?php endif; ?>
         </div>
+      
     </section>
 </div>
 </body>

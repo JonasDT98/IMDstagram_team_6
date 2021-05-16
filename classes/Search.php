@@ -1,6 +1,6 @@
 <?php
 include_once (__DIR__ . "/Db.php");
-//include_once (__DIR__ . "/Post.php");
+include_once (__DIR__ . "/Post.php");
 
 class Search{
     private $search;
@@ -10,74 +10,66 @@ class Search{
         $this->search = $search;
     }
 
-    public function search(){
-        //https://stackoverflow.com/questions/18877098/pdo-search-database-using-like/18877158
+    public static function searchPost($search) : array
+    {
         $conn = Db::getConnection();
+        $statementPost =$conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id where `description` like :search;");
+        $statementPost->bindValue(':search', '%'.$search.'%');
+        $statementPost->execute();
+        $posts = $statementPost->fetchAll();
 
-        $statement = $conn->prepare("select * from `post` where `description` like :search;");
-        $st = $conn->prepare("select * from `users` where `username` like :search;");
+        $fullPosts = array();
+        $comments = array();
+        $likes = array();
 
-        $search = $this->getSearch();
-        $statement->bindValue(':search', '%'.$search.'%');
-        $st->bindValue(':search', '%'.$search.'%');
+        foreach ($posts as $post) {
 
-        $statement->execute();
-        $st->execute();
+            $statementPost = $conn->prepare("SELECT users.username, comments.description, comments.time_comment FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
+            $statementPost->bindValue(":post_id", $post['id']);
+            $statementPost->execute();
+            $fetchedComments = $statementPost->fetchAll();
 
-        while ($result = $st->fetch(PDO:: FETCH_OBJ)) {
-            echo $result->username . " ";
-            echo $result->email . " ";
-            echo $result->fullname . " ";
-            echo $result->profilePic;
-            echo "<br>";
+            if (!empty($fetchedComments)) {
+                foreach ($fetchedComments as $fetchedComment) {
+                    array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description'], "time" => $fetchedComment['time_comment']));
+                }
+            }
 
+            $statementPost = $conn->prepare("SELECT users.username FROM likes JOIN users on users.id = likes.user_id WHERE likes.post_id = :post_id");
+            $statementPost->bindValue(":post_id", $post['id']);
+            $statementPost->execute();
+            $fetchedLikes = $statementPost->fetchAll();
 
-//            $conn = Db::getConnection();
-//            $query = $conn->query("SELECT post.id, users.username, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id where `username` like :search");
-//            $posts = $query->fetchAll();
-//            $fullPosts = array();
-//            $comments = array();
-//            $likes = array();
-//            foreach ($posts as $post) {
-//                $query = $conn->prepare("SELECT users.username, comments.description FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
-//                $query->bindValue(":post_id", $post['id']);
-//                $query->execute();
-//                $fetchedComments = $query->fetchAll();
-//
-//                if (!empty($fetchedComments)) {
-//                    foreach ($fetchedComments as $fetchedComment) {
-//                        array_push($comments, array("username" => $fetchedComment['username'], "comment" => $fetchedComment['description']));
-//
-//                    }
-//                }
-//
-//                $query = $conn->prepare("SELECT users.username FROM likes JOIN users on users.id = likes.user_id WHERE likes.post_id = :post_id");
-//                $query->bindValue(":post_id", $post['id']);
-//                $query->execute();
-//                $fetchedlikes = $query->fetchAll();
-//
-//                if (!empty($fetchedlikes)) {
-//                    foreach ($fetchedlikes as $fetchedlike) {
-//                        array_push($likes, $fetchedlikes['username']);
-//                    }
-//                }
-//
-//                array_push($fullPosts, new Post($post['username'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes));
-//                $comments = array();
-//                $likes = array();
-//            }
-//            return $fullPosts;
-
-
+            if (!empty($fetchedLikes)) {
+                foreach ($fetchedLikes as $fetchedLike) {
+                    array_push($likes, $fetchedLike['username']);
+                }
+            }
+            $newPost = new Post($post['username'], $post['profilePic'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']);
+            array_push($fullPosts,array("username" => $newPost->getUsername(), "profilePic" =>  $newPost->getProfilePic(), "image" => $newPost->getImage(), "description" => $newPost->getDescription(), "time_posted" => $newPost->time_posted, "comments" => $comments, "likes" => $likes, "id" => $newPost->getPostId()));
+            $comments = array();
+            $likes = array();
+//            var_dump($fullPosts);
         }
-
-        while ($result = $statement->fetch(PDO::FETCH_OBJ)){
-            echo $result->description;
-            echo "<br>";
-        }
+        return $fullPosts;
 
     }
 
+    public static function searchUser($search) : array
+    {
+        $conn = Db::getConnection();
+        $statementUser = $conn->prepare("select * from `users` where `username` like :search;");
+        $statementUser->bindValue(':search', '%'.$search.'%');
+        $statementUser->execute();
+        $users = $statementUser->fetchAll();
+
+        foreach ($users as $user) {
+            $statementPost = $conn->prepare("SELECT users.username, comments.description, comments.time_comment FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
+            $statementPost->bindValue(":post_id", $user['id']);
+            $statementPost->execute();
+        }
+        return $users;
+    }
 
     /**
      * @return mixed

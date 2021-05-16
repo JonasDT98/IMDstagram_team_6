@@ -13,16 +13,17 @@ if (!isset($_SESSION['username'])) {
 
 if (!empty($_POST['search'])) {
     try {
-        //header("Location: feed.php");
-        $search = new Search($_POST['search']);
-        $search->setSearch($_POST['search']);
-        $search->search();
+//        $posts = new Search($_POST['search']);
+//        $posts->setSearch($_POST['search']);
+        $posts = Search::searchPost($_POST['search']);
+        $users = Search::searchUser($_POST['search']);
     } catch (throwable $th) {
 
     }
+}else{
+    $posts = Post::showPosts(0);
 }
 
-$posts = Post::showPosts(0);
 $user = User::getId($_SESSION['username']);
 $pic = User::getImage($_SESSION['username']);
 $userId = $user['id'];
@@ -99,14 +100,34 @@ $profilePic = $pic['profilePic'];
             </div>
         </nav>
     </header>
+    <?php if (!empty($users)) :?>
+        <?php foreach ($users as $user) : ?>
+        <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg article pt-1 pb-1">
+            <div class="my-2 mx-4 flex items-center gap-2">
+                <div class="flex items-center w-1/2">
+                    <a href="./userProfile.php?id=<?php echo htmlspecialchars($user['username']); ?>">
+                        <img class="w-12 h-12 object-fill rounded-full border-4 border-red-200 "
+                             src="images/profilePics/<?php echo $user['profilePic']; ?>" alt="profile picture">
+                    </a>
+                    <a class="ml-2" href="./userProfile.php?id=<?php echo htmlspecialchars($user['username']); ?>">
+                        <p class="text-sm font-medium"><?php echo htmlspecialchars($user['username']); ?></p>
+                    </a>
+                </div>
+
+            </div>
+        </article>
+        <?php endforeach;?>
+    <?php endif; ?>
+
     <?php foreach ($posts as $post) : ?>
+    <?php if(!Post::isHidden($post['id'])) : ?>
         <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg article">
             <div class="my-2 mx-4 flex items-center gap-2">
                 <div class="flex items-center w-1/2">
 
 
                     <a href="./userProfile.php?id=<?php echo htmlspecialchars($post['username']); ?>">
-                        <img class="w-12 h-12 object-contain rounded-full border-4 border-red-200"
+                        <img class="w-12 h-12 object-fill rounded-full border-4 border-red-200 "
                              src="images/profilePics/<?php echo $post['profilePic']; ?>" alt="profile picture">
                     </a>
                     <a class="ml-2" href="./userProfile.php?id=<?php echo htmlspecialchars($post['username']); ?>">
@@ -114,19 +135,23 @@ $profilePic = $pic['profilePic'];
                     </a>
                 </div>
                 <div class="w-1/2 flex justify-end">
-                    <a href="">
-                        <svg aria-label="More options" class="_8-yf5 " fill="#262626" height="16"
-                             viewBox="0 0 48 48" width="16">
-                            <circle clip-rule="evenodd" cx="8" cy="24" fill-rule="evenodd" r="4.5"></circle>
-                            <circle clip-rule="evenodd" cx="24" cy="24" fill-rule="evenodd" r="4.5"></circle>
-                            <circle clip-rule="evenodd" cx="40" cy="24" fill-rule="evenodd" r="4.5"></circle>
-                        </svg>
-                    </a>
+                        <button onclick="refresh()" class="wpO6b btnReport
+                                                "
+                                type="button">
+
+
+                            <?php if (Post::isReported($userId, $post['id'])): ?>
+                                <i class="fa fa-flag btnIcon" data-postid="<?php echo $post['id']; ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
+                            <?php else: ?>
+                                <i class="fa fa-flag-o btnIcon" data-postid="<?php echo $post['id']; ?>" data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
+                            <?php endif; ?>
+
+                        </button>
                 </div>
             </div>
             <div>
 
-                <img src="images/upload/<?php echo $post['image']; ?>" alt="post picture">
+                <img class="w-screen" src="images/upload/<?php echo $post['image']; ?>" alt="post picture">
 
                 <div class="flex w-1/2 mx-4 my-2 gap-2">
                     <button class="wpO6b btnLike" type="button">
@@ -142,7 +167,7 @@ $profilePic = $pic['profilePic'];
                     </button>
                 </div>
                 <?php if (!empty($post['likes'])): ?>
-                    <?php if (sizeof($post['likes']) == 1): ?>
+                    <?php if (is_array($post['likes']) && sizeof($post['likes']) == 1): ?>
                         <p class="mx-4 likes"> <?php echo sizeof($post['likes']); ?> like </p>
                     <?php else: ?>
                         <p class="mx-4 likes"> <?php echo sizeof($post['likes']); ?> likes </p>
@@ -176,6 +201,9 @@ $profilePic = $pic['profilePic'];
                            name="comment" type="text" placeholder="Add a comment..." required>
                 </form>
         </article>
+        <?php else: ?>
+        <article></article>
+        <?php endif; ?>
     <?php endforeach; ?>
     <!--    --><?php //if((sizeof($posts)) >= 20):
     ?><!-- -->
@@ -205,7 +233,11 @@ $profilePic = $pic['profilePic'];
 <script class="scripts" src="js/liveComments.js"></script>
 <script src="js/loadMorePosts.js"></script>
 <script class="scripts" src="js/likes.js"></script>
+<script class="scripts" src="js/reports.js"></script>
 <script src="https://use.fontawesome.com/2dd2522a24.js"></script>
+<script>function refresh(){
+        window.location.reload();
+    }</script>
 
 </body>
 </html>

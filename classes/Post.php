@@ -10,7 +10,7 @@ class Post{
     private $image;
     private $likes;
     private $comments;
-    private $time_posted;
+    public $time_posted;
     private $postId;
     private $profilePic;
     private $postsAmount;
@@ -72,12 +72,12 @@ class Post{
             $conn = Db::getConnection();
             $query = $conn->prepare("SELECT post.id, users.username, users.profilePic, post.image, post.description, post.time_posted FROM post JOIN users on users.id = post.user_id ORDER BY post.time_posted DESC LIMIT 20 OFFSET $offset");
             $query->execute();
-
             $posts = $query->fetchAll();
 
             $fullPosts = array();
             $comments = array();
             $likes = array();
+
             foreach ($posts as $post) {
                 $query = $conn->prepare("SELECT users.username, comments.description, comments.time_comment FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
                 $query->bindValue(":post_id", $post['id']);
@@ -132,6 +132,51 @@ class Post{
         return count($result);
     }
 
+    public static function isHidden($postId)
+    {
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT hidden FROM post WHERE id = :postId");
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetch();
+        return $result['0'];
+    }
+  
+      public static function isReported($userId, $postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT * FROM reports  WHERE user_id =:userId AND post_id =:postId");
+        $query->bindValue(":userId", $userId);
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        if($result != NULL){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public static function getAmountOfReports($postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT post_id FROM reports WHERE post_id = :postId");
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        return count($result);
+
+    }
+  
+   /**
+     * @param $postId
+     */
+    public static function setHidden($hidden, $postId)
+    {
+        $conn = Db::getConnection();
+        $query = $conn->prepare("update post set hidden = :hidden where id = :postId");
+        $query->bindValue(":hidden", $hidden);
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+    }
 
     /**
      * @return mixed
@@ -337,5 +382,6 @@ class Post{
     {
         $this->postsAmount = $postsAmount;
     }
- 
+
+
 }

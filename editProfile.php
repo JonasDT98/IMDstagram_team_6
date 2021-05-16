@@ -8,17 +8,18 @@
         $username = $_SESSION['username'];
         $user = User::getUser($username);
         $email = $_POST['email'];
+        $bio = $_POST['bio'];
         $nPassword = $_POST['nPassword'];
         $oPassword = $_POST['oPassword'];
         $nUsername = $_POST['username'];
         $fullname = $_POST['fullname'];
         if(empty($nPassword)){
-            User::updateUser($username, $nUsername, $email, $oPassword, $fullname);
+            User::updateUser($username, $nUsername, $email, $oPassword, $fullname, $bio);
         }
         elseif(!empty($nPassword) && $nPassword != $oPassword){
             $user->setPassword($nPassword);
             $hPassword = $user->getPassword();
-            User::updateUser($username, $nUsername, $email, $hPassword, $fullname);
+            User::updateUser($username, $nUsername, $email, $hPassword, $fullname, $bio);
         }
         else{
             echo "New password cannot be the same as old one.";
@@ -67,7 +68,7 @@
     $user = User::getUser($username);
     $pic = User::getImage($_SESSION['username']);
     $profilePic = $pic['profilePic'];
-
+    echo $user->getBio();
 ?>
 
 <!doctype html>
@@ -94,10 +95,7 @@
                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                              alt="Logo">
                     </a>
-                    <form action = "" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">
-                        <input class="text-center rounded-md bg-gray-200" type="text" name="search" placeholder="Search">
-                    </form>
-                    <div class="flex items-center justify-center w-1/3 gap-3 ml-6">
+                    <div class="flex items-center justify-end w-2/3 gap-3 mr-3">
                         <a href="post.php">
                             <svg class="h-6 ml-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">
                                 <g id="Layer_2" data-name="Layer 2">
@@ -109,7 +107,7 @@
                             </svg>
                         </a>
 
-                        <div class="flex items-center w-1/2">
+                        <div class="flex items-center justify-end">
                             <a href="./userProfile.php?id=<?php echo htmlspecialchars($_SESSION['username']); ?>">
                                 <img class="w-10 h-10 object-fill rounded-full border-2 border-red-200 m-1" src="images/profilePics/<?php echo htmlspecialchars($profilePic); ?>"
                                      alt="profile picture">
@@ -118,7 +116,7 @@
                             </a>
                         </div>
 
-                        <a class="font-semibold text-blue-800" href="logout.php"><svg aria-label="Kanál aktivít" class="_8-yf5 w-10" fill="#262626" height="28" viewBox="0 0 48 48">
+                        <a class="font-semibold text-blue-800 " href="logout.php"><svg aria-label="Kanál aktivít" class="_8-yf5 w-10" fill="#262626" height="28" viewBox="0 0 48 48">
                                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                                      y="0px"
                                      viewBox="0 0 490.3 490.3" style="enable-background:new 0 0 490.3 490.3;" xml:space="preserve">
@@ -136,6 +134,7 @@
                                         </svg>
                         </a>
                     </div>
+
                 </div>
             </div>
         </nav>
@@ -149,6 +148,7 @@
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" value="<?php  echo $user->getUsername()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullname" type="text" value="<?php  echo $user->getFullname()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" value="<?php  echo $user->getEmail()    ?>">
+                        <input class="text-align-center w-full h-40 border border-gray-300 rounded px-4 bg-gray-100" name="bio" type="text" value="<?php  echo $user->getBio()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="oPassword" type="password" placeholder="Old Password" required>
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="nPassword" type="password" placeholder="New Password" >
                         <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="btnSave" type="submit" value="Save">
