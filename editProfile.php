@@ -94,9 +94,6 @@
                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                              alt="Logo">
                     </a>
-                    <!--                    <form action = "" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">-->
-                    <!--                        <input class="text-center rounded-md bg-gray-200" type="text" name="search" placeholder="Search">-->
-                    <!--                    </form>-->
                     <div class="flex items-center justify-end w-2/3 gap-3 mr-3">
                         <a href="post.php">
                             <svg class="h-6 ml-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">

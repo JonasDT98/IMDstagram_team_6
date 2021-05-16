@@ -37,9 +37,6 @@ $profilePic = $pic['profilePic'];
                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                              alt="Logo">
                     </a>
-                    <!--                    <form action = "" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">-->
-                    <!--                        <input class="text-center rounded-md bg-gray-200" type="text" name="search" placeholder="Search">-->
-                    <!--                    </form>-->
                     <div class="flex items-center justify-end w-2/3 gap-3 mr-3">
                         <a href="post.php">
                             <svg class="h-6 ml-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">
@@ -95,7 +92,9 @@ $profilePic = $pic['profilePic'];
                     <input class="w-1/2 h-8 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1"
                            name="btnFollow"
                            type="submit" value="FOLLOWING">
+                    <?php if ($profile[0]['username'] == $_SESSION['username']): ?>
                     <a href="editProfile.php">Settings</a>
+                    <?php endif; ?>
                 </form>
 
                 <p class="col-start-1 col-end-4 row-start-2 row-end-3"><?php echo $profile[0]['bio'] ?></p>
@@ -106,9 +105,9 @@ $profilePic = $pic['profilePic'];
         </div>
         <div class="flex flex-wrap">
             <?php foreach ($profile as $post): ?>
-            <div class="w-1/3">
-                <a href="#">
-                    <img src="images/upload/<?php echo $post['image']; ?>"
+            <div class="w-1/3 border-2 bg-red-300 border-indigo-600">
+                <a class="bg-red-300" href="#">
+                    <img class=""  src="images/upload/<?php echo $post['image']; ?>"
                          alt="post picture">
                 </a>
             </div>
