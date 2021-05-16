@@ -8,17 +8,18 @@
         $username = $_SESSION['username'];
         $user = User::getUser($username);
         $email = $_POST['email'];
+        $bio = $_POST['bio'];
         $nPassword = $_POST['nPassword'];
         $oPassword = $_POST['oPassword'];
         $nUsername = $_POST['username'];
         $fullname = $_POST['fullname'];
         if(empty($nPassword)){
-            User::updateUser($username, $nUsername, $email, $oPassword, $fullname);
+            User::updateUser($username, $nUsername, $email, $oPassword, $fullname, $bio);
         }
         elseif(!empty($nPassword) && $nPassword != $oPassword){
             $user->setPassword($nPassword);
             $hPassword = $user->getPassword();
-            User::updateUser($username, $nUsername, $email, $hPassword, $fullname);
+            User::updateUser($username, $nUsername, $email, $hPassword, $fullname, $bio);
         }
         else{
             echo "New password cannot be the same as old one.";
@@ -67,7 +68,7 @@
     $user = User::getUser($username);
     $pic = User::getImage($_SESSION['username']);
     $profilePic = $pic['profilePic'];
-
+    echo $user->getBio();
 ?>
 
 <!doctype html>
@@ -149,6 +150,7 @@
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" value="<?php  echo $user->getUsername()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullname" type="text" value="<?php  echo $user->getFullname()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" value="<?php  echo $user->getEmail()    ?>">
+                        <input class="text-align-center w-full h-40 border border-gray-300 rounded px-4 bg-gray-100" name="bio" type="text" value="<?php  echo $user->getBio()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="oPassword" type="password" placeholder="Old Password" required>
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="nPassword" type="password" placeholder="New Password" >
                         <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="btnSave" type="submit" value="Save">

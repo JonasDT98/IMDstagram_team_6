@@ -90,7 +90,7 @@ $profilePic = $pic['profilePic'];
             </div>
             <div class="grid grid-cols-3 grid-rows-3 items-center">
                 <p class="col-start-1 col-end-2 row-start-1 row-end-2"><?php echo $profile[0]['username']; ?></p>
-                <form class="col-start-2 col-end-4 row-start-1 row-end-2" action="login.php" method="post">
+                <form class="col-start-2 col-end-4 row-start-1 row-end-2" method="post">
                     <input class="w-1/2 h-8 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1"
                            name="btnFollow"
                            type="submit" value="FOLLOWING">

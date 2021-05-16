@@ -7,6 +7,8 @@ class User{
     private $username;
     private $password;
     private $profilePic;
+    private $bio;
+
 
     /**
      * User constructor.
@@ -15,13 +17,14 @@ class User{
      * @param $username
      * @param $password
      */
-    public function __construct($email, $fullname, $username, $password, $profilePic = NULL)
+    public function __construct($email, $fullname, $username, $password, $profilePic = NULL, $bio= NULL)
     {
         $this->email = $email;
         $this->fullname = $fullname;
         $this->username = $username;
         $this->password = $password;
         $this->profilePic = $profilePic;
+        $this->bio = $bio;
     }
 
     public function save(): bool
@@ -64,15 +67,16 @@ class User{
         }
     }
 
-    static function updateUser($oUsername, $username, $email, $nPassword, $fullname): void
+    static function updateUser($oUsername, $username, $email, $nPassword, $fullname, $bio): void
     {
         $conn = db::getConnection();
-        $statement = $conn->prepare("UPDATE users SET username=:username,email=:email,password=:password,fullname=:fullname WHERE username=:oUsername");
+        $statement = $conn->prepare("UPDATE users SET username=:username,email=:email,password=:password,fullname=:fullname, bio =:bio WHERE username=:oUsername");
         $statement->bindParam(':oUsername', $oUsername, PDO::PARAM_STR);
         $statement->bindParam(':username', $username, PDO::PARAM_STR);
         $statement->bindParam(':fullname', $fullname, PDO::PARAM_STR);
         $statement->bindParam(':email', $email, PDO::PARAM_STR);
         $statement->bindParam(':password', $nPassword, PDO::PARAM_STR);
+        $statement->bindParam(':bio', $bio, PDO::PARAM_STR);
         $statement->execute();
 
     }
@@ -138,7 +142,7 @@ class User{
         $statement->bindValue(':username', $username);
         $statement->execute();
         $result = $statement->fetch();
-        return new User($result['email'], $result['fullname'], $result['username'], $result['password'], $result['profilePic']);
+        return new User($result['email'], $result['fullname'], $result['username'], $result['password'], $result['profilePic'], $result['bio']);
     }
 
     /**
@@ -224,6 +228,21 @@ class User{
     /**
      * @param mixed|null $profilePic
      */
+    /**
+     * @return mixed
+     */
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
+    /**
+     * @param mixed $bio
+     */
+    public function setBio($bio): void
+    {
+        $this->bio = $bio;
+    }
 
 
 }
