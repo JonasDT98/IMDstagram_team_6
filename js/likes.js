@@ -26,7 +26,6 @@ for (let i = 0; i < btnLike.length; i++) {
             })
                 .then(response => response.json())
                 .then(result => {
-                    console.log('Success:', result);
                     likes[i].innerHTML = result.body;
 
                     if(result.liked === true){
