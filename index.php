@@ -37,7 +37,7 @@
 <div class="flex flex-col gap-8 min-h-screen items-center justify-center bg-blue-400">
     <div class="w-full bg-white p-6 rounded shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg lg:bg-white px-16">
         <img class="object-contain h-16 w-full mb-8" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png" alt="Instagram">
-        <form action="login.php" method="post">
+        <form action="index.php" method="post">
             <div class="grid grid-rows-3 justify-items-center gap-y-1">
                 <?php if(isset($error)): ?>
                     <div class="flex items-center gap-3 w-full h-10 border border-red-300 rounded px-4 bg-red-200">

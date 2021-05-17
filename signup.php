@@ -10,7 +10,7 @@
                 $user = new User($_POST['email'], $_POST['fullname'], $_POST['username'], $_POST['password']);
                 $user->setPassword($_POST['password']);
                 $user->save();
-                header("Location: login.php");
+                header("Location: index.php");
                 if (!$user->save()){
                     $error = "";
                 }
@@ -64,7 +64,7 @@
             </form>
         </div>
         <div class="w-full bg-white p-8 rounded shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg lg:bg-white px-16">
-            <p class="text-normal text-center">Already have an account? <a class=" font-semibold text-blue-400" href="login.php">Log in</a> </p>
+            <p class="text-normal text-center">Already have an account? <a class=" font-semibold text-blue-400" href="index.php">Log in</a> </p>
         </div>
     </div>
 </body>

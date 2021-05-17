@@ -5,7 +5,7 @@ include_once(__DIR__ . "/classes/User.php");
 
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+    header("Location: index.php");
 }
 
 $user = $_GET['id'];
@@ -95,7 +95,7 @@ $profilePic = $pic['profilePic'];
             <div class="grid grid-cols-3 grid-rows-3 items-center justify-items-stretch mr-5">
                 <p class="col-start-1 col-end-2 row-start-1 row-end-2">
                     <b><?php echo htmlspecialchars($profileUser['username']); ?></b></p>
-                <form class="w-5/6 col-start-2 col-end-3 row-start-1 row-end-2 justify-self-center" action="login.php"
+                <form class="w-5/6 col-start-2 col-end-3 row-start-1 row-end-2 justify-self-center" action="index.php"
                       method="post">
                     <input class="h-8 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1 px-2"
                            name="btnFollow"
@@ -126,8 +126,9 @@ $profilePic = $pic['profilePic'];
 //                          }
                         ?>
                             <form action="" method="post">
-                            <button name="deletePost" class="absolute text-lg text-white hover:text-red-600  cursor-pointer ml-2">
+                            <button name="deletePost" class="absolute text-lg text-white hover:text-red-200 bg-blue-500 rounded-full h-6 w-6  cursor-pointer ml-2 flex items-center justify-center m-2">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
+
                             </button>
                             </form>
                         <?php endif; ?>

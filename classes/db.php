@@ -7,7 +7,7 @@
             include_once (__DIR__ . "/../settings/settings.php");
 
             if (self::$conn === null) {
-                self::$conn = new PDO('mysql:host=' . SETTINGS['db']['host'] . ':'. SETTINGS['db']['port'] . ';dbname=' . SETTINGS['db']['dbname'], SETTINGS['db']['user'], SETTINGS['db']['password']);
+                self::$conn = new PDO('mysql:host=' . SETTINGS['db']['host'] . ":" . SETTINGS['db']['port'] . ';dbname=' . SETTINGS['db']['dbname'], SETTINGS['db']['user'], SETTINGS['db']['password']);
                 //self::$conn = new PDO('mysql:host=localhost:3307;dbname=db_imdstagram', "root", "root");
                 return self::$conn;
 

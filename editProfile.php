@@ -3,7 +3,7 @@
     include_once (__DIR__ . "/classes/User.php");
     session_start();
     if (!isset($_SESSION['username'])) {
-        header("Location: login.php");
+        header("Location: index.php");
     }
     //$username = $_SESSION["username"];
     //$user = User::getUser($username);
@@ -17,7 +17,9 @@
         $nUsername = $_POST['username'];
         $fullname = $_POST['fullname'];
         if(empty($nPassword)){
-            User::updateUser($username, $nUsername, $email, $oPassword, $fullname, $bio);
+            $user->setPassword($oPassword);
+            $hPassword = $user->getPassword();
+            User::updateUser($username, $nUsername, $email, $hPassword, $fullname, $bio);
         }
         elseif(!empty($nPassword) && $nPassword != $oPassword){
             $user->setPassword($nPassword);
@@ -71,7 +73,6 @@
     $user = User::getUser($username);
     $pic = User::getImage($_SESSION['username']);
     $profilePic = $pic['profilePic'];
-    echo $user->getBio();
 ?>
 
 <!doctype html>

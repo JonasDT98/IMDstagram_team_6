@@ -8,7 +8,7 @@ include_once(__DIR__ . "/classes/Search.php");
 
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+    header("Location: index.php");
 }
 
 if (!empty($_POST['search'])) {

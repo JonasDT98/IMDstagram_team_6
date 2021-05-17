@@ -1,46 +1,20 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['username'])){
-        header("Location: index.php");
-    }
 
-    include_once (__DIR__ . "/classes/Post.php");
-    include_once (__DIR__ . "/classes/User.php");
+include_once(__DIR__ . "/classes/Post.php");
+include_once(__DIR__ . "/classes/User.php");
 
-    $user = User::getId($_SESSION['username']);
-    $userId = $user['id'];
-    $pic = User::getImage($_SESSION['username']);
-    $profilePic = $pic['profilePic'];
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: index.php");
+}
 
-    $error = false;
-
-    if(!empty($_FILES['image']['name'])){
-        $filename = $_FILES['image']['name'];
-    }else{
-        $filename = "Select a file";
-    }
-
-    if (isset($_POST['submit'])){
-
-        $target_file = "images/upload/" . basename($filename);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        $filename = $_SESSION['username'].date('YmdHis'). "." . $imageFileType;
-
-        try {
-            $post = new Post($_SESSION['username'], NULL, $_FILES['image'],$_POST['description'],NULL,array(),array(), NULL);
-            $post->setDescription($_POST['description']);
-            $post->setImage($filename);
-            $post->setUserId($userId);
-
-            $post->post($userId, $filename, $imageFileType);
-            header("Location: home.php");
-        }catch (\Throwable $th){
-//            $error = $th->getMessage();
-            $error = "Afbeelding te groot of fout formaat";
-        }
-
-    }
+$user = $_GET['id'];
+$profilePosts = Post::profilePosts($user);
+$profileUser = User::getProfileData($user);
+$pic = User::getImage($_SESSION['username']);
+$profilePic = $pic['profilePic'];
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -64,6 +38,9 @@
                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                              alt="Logo">
                     </a>
+                    <!--                    <form action = "" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">-->
+                    <!--                        <input class="text-center rounded-md bg-gray-200" type="text" name="search" placeholder="Search">-->
+                    <!--                    </form>-->
                     <div class="flex items-center justify-end w-2/3 gap-3 mr-3">
                         <a href="post.php">
                             <svg class="h-6 ml-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">
@@ -108,35 +85,69 @@
             </div>
         </nav>
     </header>
-<!--<h3>--><?php //print_r($uploadOk); ?><!--</h3>-->
-    <section class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
-    <div class="flex flex-col gap-8 items-center justify-center ">
+    <section class="w-full bg-white rounded-b shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
+        <div class="flex justify-center items-center">
+            <div class="flex w-1/3 justify-center">
+                <img class="rounded-full w-28 h-28"
+                     src="images/profilePics/<?php echo htmlspecialchars($profileUser['profilePic']); ?>"
+                     alt="profile pic">
+            </div>
+            <div class="grid grid-cols-3 grid-rows-3 items-center justify-items-stretch mr-5">
+                <p class="col-start-1 col-end-2 row-start-1 row-end-2">
+                    <b><?php echo htmlspecialchars($profileUser['username']); ?></b></p>
+                <form class="w-5/6 col-start-2 col-end-3 row-start-1 row-end-2 justify-self-center" action="index.php"
+                      method="post">
+                    <input class="h-8 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1 px-2"
+                           name="btnFollow"
+                           type="submit" value="FOLLOWING">
+                </form>
 
-        <div class="w-full bg-black p-2 rounded shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg px-16 bg-white">
-            <h2 class="text-xl text-center px-2 pt-2 pt-6 pb-6 uppercase">Post</h2>
-            <form method="POST" action="" enctype="multipart/form-data">
+                <?php if ($profileUser['username'] == $_SESSION['username']): ?>
+                    <a class="flex items-center col-start-3 col-end-4 row-start-1 row-end-2 h-8 align-center bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1 justify-self-end px-2"
+                       href="editProfile.php">SETTINGS</a>
+                <?php endif; ?>
 
-                <div class="grid grid-rows-6 justify-items-center gap-y-1">
-                    <?php if(!empty($error)): ?>
-                        <div class="flex items-center gap-3 w-full h-10 border border-red-300 rounded px-4 bg-red-200">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                        aria-hidden="true">&times;</span></button>
-                            <ul>
-                                <li><?php echo $error ?></li>
-                            </ul>
-                        </div>
-                    <?php endif; ?>
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="description" type="text" placeholder="Description" required>
-
-                    <label class="w-full flex flex-col items-center border border-gray-300 rounded px-4 cursor-pointer uppercase bg-gray-100">
-                        <span class="py-3 text-gray-400 text-center"><?php echo $filename ?></span>
-                        <input class = "hidden" type="file" name="image" id="image">
-                    </label>
-                    <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="submit" type="submit" value="Post">
-                </div>
-            </form>
+                <p class="col-start-1 col-end-4 row-start-2 row-end-3"><?php echo htmlspecialchars($profileUser['bio']) ?></p>
+                <p class="col-start-1 col-end-2 row-start-3 row-end-4"><b><?php echo sizeof($profilePosts); ?></b> posts
+                </p>
+                <p class="col-start-2 col-end-3 row-start-3 row-end-4 justify-self-center"><b>111k</b> followers</p>
+                <p class="col-start-3 col-end-4 row-start-3 row-end-4 justify-self-end"><b>111</b> following</p>
+            </div>
         </div>
-    </div>
-</section>
+
+        <div class="flex flex-wrap justify-start rounded-b bg-gray-200">
+            <?php if (!empty($profilePosts)): ?>
+                <?php foreach ($profilePosts as $post): ?>
+                    <div class="w-1/3 object-cover h-40">
+                        <?php if ($profileUser['username'] == $_SESSION['username']): ?>
+                            <?php
+//                          if (isset($_POST['deletePost'])){
+//                              Post::deletePost($post['id'], $post['image']);
+//                          }
+                            ?>
+                            <form action="" method="post">
+                                <button name="deletePost" class="absolute text-lg text-white hover:text-red-200 bg-blue-500 rounded-full h-6 w-6  cursor-pointer ml-2 flex items-center justify-center m-2">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+
+                                </button>
+                            </form>
+                        <?php endif; ?>
+                        <a href="#">
+                            <img class="h-full w-full" src="images/upload/<?php echo $post['image']; ?>"
+                                 alt="post picture">
+                        </a>
+
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="w-screen flex text-center justify-center">
+                    <p class="w-1/3 my-5 text-base font-semibold ">This user doesn't have any posts yet.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+
+    </section>
+</div>
+<script src="https://use.fontawesome.com/2dd2522a24.js"></script>
 </body>
 </html>
