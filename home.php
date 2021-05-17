@@ -135,8 +135,7 @@ $profilePic = $pic['profilePic'];
                     </a>
                 </div>
                 <div class="w-1/2 flex justify-end">
-                        <button onclick="refresh()" class="wpO6b btnReport
-                                                "
+                        <button onclick="refresh()" class="btnReport"
                                 type="button">
 
 
@@ -154,7 +153,7 @@ $profilePic = $pic['profilePic'];
                 <img class="w-screen" src="images/upload/<?php echo $post['image']; ?>" alt="post picture">
 
                 <div class="flex w-1/2 mx-4 my-2 gap-2">
-                    <button class="wpO6b btnLike" type="button">
+                    <button class="btnLike" type="button">
 
                         <?php if (Post::isLiked($userId, $post['id'])): ?>
                             <i class="fa fa-heart btnIcon" data-postid="<?php echo $post['id']; ?>"
