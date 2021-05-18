@@ -17,11 +17,11 @@ class User{
      * @param $username
      * @param $password
      */
-    public function __construct($email, $fullname, $username, $password, $profilePic = NULL, $bio= NULL)
+    public function __construct($email, $fullname, $username, $password, $profilePic='default.jpg', $bio= NULL)
     {
-        $this->email = $email;
-        $this->fullname = $fullname;
-        $this->username = $username;
+        $this->setEmail($email);
+        $this->setFullname($fullname);
+        $this->setUsername($username);
         $this->password = $password;
         $this->profilePic = $profilePic;
         $this->bio = $bio;
@@ -105,7 +105,7 @@ class User{
     {
         if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
         } else {
-            if ($_FILES["image"]["size"] > 500000) {
+            if ($_FILES["image"]["size"] > 700000) {
             } else {
                 $fileName = $profilePic;
                 $tempname = $_FILES["image"]["tmp_name"];
@@ -127,12 +127,15 @@ class User{
 
     public function delete($username){
 //        unlink($_FILES['image']['name']);
-        unlink("images/profilePics/" . $this->getProfilePic());
+        if ($this->getProfilePic() != "default.jpg") {
+            unlink("images/profilePics/" . $this->getProfilePic());
+        }
         $conn = Db::getConnection();
-        $statement = $conn->prepare("update users set profilePic = NULL where username = :username");
+        $statement = $conn->prepare("update users set profilePic = :profilePic where username = :username");
         $statement->bindValue(":username", $username);
+        $statement->bindValue(":profilePic", "default.jpg");
         $statement->execute();
-        $this->profilePic = NULL;
+//        $this->profilePic = NULL;
     }
 
     public static function getUser($username): User

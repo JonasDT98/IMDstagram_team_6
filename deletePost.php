@@ -34,8 +34,13 @@ $profilePic = $pic['profilePic'];
             <div class="w-full bg-white rounded-t shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
                 <div class="flex items-center">
                     <a href="home.php" class="object-contain h-10 w-1/3">
-                        <img class="object-contain w-4/6 ml-4 mt-2" src="images/logo_moooov.png" alt="Logo">
+                        <img class="object-contain  w-4/6 ml-4"
+                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
+                             alt="Logo">
                     </a>
+                    <!--                    <form action = "" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">-->
+                    <!--                        <input class="text-center rounded-md bg-gray-200" type="text" name="search" placeholder="Search">-->
+                    <!--                    </form>-->
                     <div class="flex items-center justify-end w-2/3 gap-3 mr-3">
                         <a href="post.php">
                             <svg class="h-6 ml-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">
@@ -102,7 +107,7 @@ $profilePic = $pic['profilePic'];
                        href="editProfile.php">SETTINGS</a>
                 <?php endif; ?>
 
-                <p class="col-start-1 col-end-4 row-start-2 row-end-3 w-80"><?php echo htmlspecialchars($profileUser['bio']) ?></p>
+                <p class="col-start-1 col-end-4 row-start-2 row-end-3"><?php echo htmlspecialchars($profileUser['bio']) ?></p>
                 <p class="col-start-1 col-end-2 row-start-3 row-end-4"><b><?php echo sizeof($profilePosts); ?></b> posts
                 </p>
                 <p class="col-start-2 col-end-3 row-start-3 row-end-4 justify-self-center"><b>111k</b> followers</p>
@@ -115,16 +120,16 @@ $profilePic = $pic['profilePic'];
                 <?php foreach ($profilePosts as $post): ?>
                     <div class="w-1/3 object-cover h-40">
                         <?php if ($profileUser['username'] == $_SESSION['username']): ?>
-                        <?php
+                            <?php
 //                          if (isset($_POST['deletePost'])){
 //                              Post::deletePost($post['id'], $post['image']);
 //                          }
-                        ?>
+                            ?>
                             <form action="" method="post">
-                            <button name="deletePost" class="absolute text-lg text-white hover:text-red-200 bg-blue-500 rounded-full h-6 w-6  cursor-pointer ml-2 flex items-center justify-center m-2">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                <button name="deletePost" class="absolute text-lg text-white hover:text-red-200 bg-blue-500 rounded-full h-6 w-6  cursor-pointer ml-2 flex items-center justify-center m-2">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
 
-                            </button>
+                                </button>
                             </form>
                         <?php endif; ?>
                         <a href="#">
@@ -140,7 +145,7 @@ $profilePic = $pic['profilePic'];
                 </div>
             <?php endif; ?>
         </div>
-      
+
     </section>
 </div>
 <script src="https://use.fontawesome.com/2dd2522a24.js"></script>

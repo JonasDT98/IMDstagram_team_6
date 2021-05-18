@@ -1,10 +1,8 @@
 <?php
-
 include_once (__DIR__ . "/Db.php");
 
 class Post{
 
-    private $title;
     private $description;
     private $username;
     private $image;
@@ -33,7 +31,7 @@ class Post{
 
         if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
         } else {
-            if ($_FILES["image"]["size"] > 500000) {
+            if ($_FILES["image"]["size"] > 700000) {
             } else {
                 $fileName = $filename;
                 $tempname = $_FILES["image"]["tmp_name"];
@@ -41,13 +39,11 @@ class Post{
                 move_uploaded_file($tempname, $folder);
                 $conn = Db::getConnection();
 
-                $statement = $conn->prepare("insert into post (title, description, image, user_id) values (:title, :description, :image, :user_id)");
+                $statement = $conn->prepare("insert into post (description, image, user_id) values (:description, :image, :user_id)");
 
-                $title = $this->getTitle();
                 $description = $this->getDescription();
                 $image = $this->getImage();
 
-                $statement->bindValue(":title", $title);
                 $statement->bindValue(":description", $description);
                 $statement->bindValue(":image", $image);
                 $statement->bindValue(":user_id", $userId);
@@ -207,19 +203,6 @@ class Post{
     /**
      * @return mixed
      */
-
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param mixed $title
-     */
-    public function setTitle($title): void
-        {
-            $this->title = $title;
-        }
 
     public function getImage()
     {

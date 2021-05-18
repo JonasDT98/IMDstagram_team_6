@@ -1,7 +1,7 @@
 <?php
     session_start();
     if (!isset($_SESSION['username'])){
-        header("Location: login.php");
+        header("Location: index.php");
     }
 
     include_once (__DIR__ . "/classes/Post.php");
@@ -28,7 +28,6 @@
 
         try {
             $post = new Post($_SESSION['username'], NULL, $_FILES['image'],$_POST['description'],NULL,array(),array(), NULL);
-            $post->setTitle($_POST['title']);
             $post->setDescription($_POST['description']);
             $post->setImage($filename);
             $post->setUserId($userId);
@@ -61,13 +60,8 @@
             <div class="w-full bg-white rounded-t shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
                 <div class="flex items-center">
                     <a href="home.php" class="object-contain h-10 w-1/3">
-                        <img class="object-contain  w-4/6 ml-4"
-                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
-                             alt="Logo">
+                        <img class="object-contain w-4/6 ml-4 mt-2" src="images/logo_moooov.png" alt="Logo">
                     </a>
-<!--                    <form action = "" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">-->
-<!--                        <input class="text-center rounded-md bg-gray-200" type="text" name="search" placeholder="Search">-->
-<!--                    </form>-->
                     <div class="flex items-center justify-end w-2/3 gap-3 mr-3">
                         <a href="post.php">
                             <svg class="h-6 ml-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">
@@ -113,7 +107,7 @@
         </nav>
     </header>
 <!--<h3>--><?php //print_r($uploadOk); ?><!--</h3>-->
-    <section class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
+    <section class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg rounded-b">
     <div class="flex flex-col gap-8 items-center justify-center ">
 
         <div class="w-full bg-black p-2 rounded shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg px-16 bg-white">
@@ -130,8 +124,8 @@
                             </ul>
                         </div>
                     <?php endif; ?>
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="title" type="text" placeholder="Title" required>
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="description" type="text" placeholder="Description" required>
+                    <label class="pt-3 pl-1 justify-self-start" for="description">Description</label>
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" id="description" name="description" type="text" placeholder="Description" required>
 
                     <label class="w-full flex flex-col items-center border border-gray-300 rounded px-4 cursor-pointer uppercase bg-gray-100">
                         <span class="py-3 text-gray-400 text-center"><?php echo $filename ?></span>
