@@ -95,9 +95,7 @@
             <div class="w-full bg-white rounded-t shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
                 <div class="flex items-center">
                     <a href="home.php" class="object-contain h-10 w-1/3">
-                        <img class="object-contain  w-4/6 ml-4"
-                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
-                             alt="Logo">
+                        <img class="object-contain w-4/6 ml-4 mt-2" src="images/logo_moooov.png" alt="Logo">
                     </a>
                     <div class="flex items-center justify-end w-2/3 gap-3 mr-3">
                         <a href="post.php">
@@ -143,16 +141,16 @@
             </div>
         </nav>
     </header>
-    <section class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
+    <section class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg rounded-b">
         <div class="flex flex-col gap-8 items-center justify-center ">
-            <div class="w-full bg-black p-2 rounded shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg px-16 bg-white">
+            <div class="w-full bg-black p-2 rounded-b shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg px-16 bg-white">
                 <h2 class="text-xl text-center px-2 pt-2 pt-6 pb-6 uppercase">Edit Profile</h2>
                 <form action="editProfile.php" method="post">
                     <div class="grid grid-rows-3 justify-items-center gap-y-1">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" value="<?php  echo $user->getUsername()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullname" type="text" value="<?php  echo $user->getFullname()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" value="<?php  echo $user->getEmail()    ?>">
-                        <input class="text-align-center w-full h-40 border border-gray-300 rounded px-4 bg-gray-100" name="bio" type="text" placeholder="Bio" value="<?php  echo $user->getBio()    ?>">
+                        <input class="text-align-center w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="bio" type="text" placeholder="Bio" value="<?php  echo $user->getBio()    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="oPassword" type="password" placeholder="Old Password" required>
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="nPassword" type="password" placeholder="New Password" >
                         <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="btnSave" type="submit" value="Save">
@@ -176,7 +174,7 @@
                             <input class = "hidden" type="file" name="image" id="image">
                         </label>
                         <input class="mt-2 w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="submit" type="submit" value="Save">
-                        <input class="mt-2 w-full h-10 bg-red-400 hover:bg-red-500 text-white font-bold rounded mt-1" name="delete" type="submit" value="Delete">
+                        <input class="mt-2 w-full h-10 bg-red-400 hover:bg-red-500 text-white font-bold rounded mt-1 mb-4" name="delete" type="submit" value="Delete">
                     </div>
                 </form>
             </div>

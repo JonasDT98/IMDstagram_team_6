@@ -19,9 +19,9 @@ class User{
      */
     public function __construct($email, $fullname, $username, $password, $profilePic='default.jpg', $bio= NULL)
     {
-        $this->email = $email;
-        $this->fullname = $fullname;
-        $this->username = $username;
+        $this->setEmail($email);
+        $this->setFullname($fullname);
+        $this->setUsername($username);
         $this->password = $password;
         $this->profilePic = $profilePic;
         $this->bio = $bio;

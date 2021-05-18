@@ -1,23 +1,27 @@
 <?php
-    include_once (__DIR__ . "/classes/User.php");
+include_once (__DIR__ . "/classes/User.php");
 
-    session_start();
-    session_destroy();
+session_start();
+session_destroy();
 
-    if(!empty($_POST)){
-
-            try {
+if(!empty($_POST)){
+        try {
+            if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                 $user = new User($_POST['email'], $_POST['fullname'], $_POST['username'], $_POST['password']);
                 $user->setPassword($_POST['password']);
-                $user->save();
-                header("Location: index.php");
-                if (!$user->save()){
+                $saved = $user->save();
+                if (!$saved) {
                     $error = "";
+                } else {
+                    header("Location: index.php");
                 }
-            } catch (\Throwable $th){
-                $error = $th->getMessage();
+            }else{
+                $error2 = "";
             }
+        } catch (\Throwable $th) {
+            $error = $th->getMessage();
         }
+}
 ?>
 
 <!doctype html>
@@ -35,7 +39,7 @@
 <body>
     <div class="flex flex-col gap-8 min-h-screen items-center justify-center bg-blue-400">
         <div class="w-full bg-white p-6 rounded shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg lg:bg-white px-16">
-            <img class="object-contain h-16 w-full" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png" alt="Instagram">
+            <img class="object-contain h-16 w-full" src="images/logo_moooov.png" alt="moooov">
             <h2 class="text-xl text-center px-2 pt-2">Sign up to see photos and videos from your friends.</h2>
             <a class="block text-center bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 mt-3 rounded" href="https://www.facebook.com/">Log in with Facebook</a>
             <div class="flex my-4">
@@ -54,10 +58,23 @@
                             </ul>
                         </div>
                     <?php endif; ?>
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" placeholder="Email address" required>
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullname" type="text" placeholder="Full name" required>
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" placeholder="Username" required>
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="password" type="password" placeholder="Password" required>
+                    <?php if(isset($error2)): ?>
+                        <div class="flex items-center gap-3 w-full h-10 border border-red-300 rounded px-4 bg-red-200">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            <ul>
+                                <li>Invalid email!</li>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                    <label class="pt-3 pl-1 justify-self-start" for="email">Email</label>
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" id="email" name="email" type="email" placeholder="Email address" required>
+                    <label class="pt-3 pl-1 justify-self-start" for="fullname">Fullname</label>
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" id="fullname" name="fullname" type="text" placeholder="Full name" required>
+                    <label class="pt-3 pl-1 justify-self-start" for="username">Username</label>
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" id="username" name="username" type="text" placeholder="Username" required>
+                    <label class="pt-3 pl-1 justify-self-start" for="password">Password</label>
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" id="password" name="password" type="password" placeholder="Password" required>
                     <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="btnRegister" type="submit" value="Register">
                 </div>
                 <p class="mt-5 text-sm font-normal text-center">By signing up, you agree to our <b>Terms & Privacy Policy.</b></p>
@@ -68,4 +85,5 @@
         </div>
     </div>
 </body>
+
 </html>

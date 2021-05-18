@@ -60,9 +60,7 @@
             <div class="w-full bg-white rounded-t shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
                 <div class="flex items-center">
                     <a href="home.php" class="object-contain h-10 w-1/3">
-                        <img class="object-contain  w-4/6 ml-4"
-                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
-                             alt="Logo">
+                        <img class="object-contain w-4/6 ml-4 mt-2" src="images/logo_moooov.png" alt="Logo">
                     </a>
                     <div class="flex items-center justify-end w-2/3 gap-3 mr-3">
                         <a href="post.php">
@@ -109,7 +107,7 @@
         </nav>
     </header>
 <!--<h3>--><?php //print_r($uploadOk); ?><!--</h3>-->
-    <section class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
+    <section class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg rounded-b">
     <div class="flex flex-col gap-8 items-center justify-center ">
 
         <div class="w-full bg-black p-2 rounded shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg px-16 bg-white">
@@ -126,7 +124,8 @@
                             </ul>
                         </div>
                     <?php endif; ?>
-                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="description" type="text" placeholder="Description" required>
+                    <label class="pt-3 pl-1 justify-self-start" for="description">Description</label>
+                    <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" id="description" name="description" type="text" placeholder="Description" required>
 
                     <label class="w-full flex flex-col items-center border border-gray-300 rounded px-4 cursor-pointer uppercase bg-gray-100">
                         <span class="py-3 text-gray-400 text-center"><?php echo $filename ?></span>

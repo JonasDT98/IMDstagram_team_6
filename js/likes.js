@@ -30,7 +30,7 @@ for (let i = 0; i < btnLike.length; i++) {
 
                     if(result.liked === true){
                         //btnLike[i].className = "fa fa-heart-o btnIcon";
-                        btnLike[i].className = "fa fa-heart btnIcon";
+                        btnLike[i].className = "fa fa-heart btnIcon text-red-500";
                     }
                     else{
                         btnLike[i].className = "fa fa-heart-o btnIcon";
