@@ -2,28 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2d9bb3c1-8f68-4463-96ab-3d8eaf50644a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/IMDstagram_team_6.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/96CAF2D0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/favicon.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/upload/brian20210520153741.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/upload/brian20210520160659.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings/settings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/Post.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Post.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deletePost.php" beforeDir="false" afterPath="$PROJECT_DIR$/deletePost.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/favicon.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/favicon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/upload/login20210516132135.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/upload/login20210516132152.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/upload/login20210516132203.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/upload/login20210516132225.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/post.php" beforeDir="false" afterPath="$PROJECT_DIR$/post.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/userProfile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,6 +106,7 @@
       <workItem from="1621328195272" duration="14677000" />
       <workItem from="1621416098897" duration="262000" />
       <workItem from="1621525006226" duration="7716000" />
+      <workItem from="1621546127611" duration="1887000" />
     </task>
     <servers />
   </component>
