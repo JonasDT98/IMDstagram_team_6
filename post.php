@@ -27,7 +27,7 @@
         $filename = $_SESSION['username'].date('YmdHis'). "." . $imageFileType;
 
         try {
-            $post = new Post($_SESSION['username'], NULL, $_FILES['image'],$_POST['description'],NULL,array(),array(), NULL);
+            $post = new Post($_SESSION['username'], NULL, $_FILES['image'],$_POST['description'],NULL,array(), NULL);
             $post->setDescription($_POST['description']);
             $post->setImage($filename);
             $post->setUserId($userId);

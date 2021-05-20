@@ -14,14 +14,13 @@ class Post{
     private $postsAmount;
     private $userId;
 
-    public function __construct($username, $profilePic, $image, $description, $time_posted, $comments, $likes, $postId)
+    public function __construct($username, $profilePic, $image, $description, $time_posted, $comments, $postId)
     {
         $this->setUsername($username);
         $this->setImage($image);
         $this->setDescription($description);
         $this->setComments($comments);
         $this->setTimePosted($time_posted);
-        $this->setLikes($likes);
         $this->setPostId($postId);
         $this->setProfilePic($profilePic);
     }
@@ -63,15 +62,15 @@ class Post{
         return $fetchedProfile;
     }
 
-//    public static function deletePost($postId, $image){
+    public static function deletePost($postId, $image){
 //        unlink("images/upload/" . $this->getProfilePic());
-
-//        unlink("images/upload/" . $image);
-//        $conn = Db::getConnection();
-//        $statement = $conn->prepare("DELETE FROM post WHERE post.id = :postId;");
-//        $statement->bindValue(":postId", $postId);
-//        $statement->execute();
-//    }
+//            echo $postId,  $image;
+        unlink("images/upload/" . $image);
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("DELETE FROM post WHERE post.id = :postId;");
+        $statement->bindValue(":postId", $postId);
+        $statement->execute();
+    }
 
     public static function showPosts($offset): array
     {
@@ -107,8 +106,8 @@ class Post{
                         array_push($likes, $fetchedLike['username']);
                     }
                 }
-                $newPost = new Post($post['username'], $post['profilePic'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']);
-                array_push($fullPosts,array("username" => $newPost->getUsername(), "profilePic" =>  $newPost->getProfilePic(), "image" => $newPost->getImage(), "description" => $newPost->getDescription(), "time_posted" => Comment::showTime($newPost->time_posted), "comments" => $comments, "likes" => $likes, "id" => $newPost->getPostId()));
+                $newPost = new Post($post['username'], $post['profilePic'], $post['image'], $post['description'], $post['time_posted'], $comments, $post['id']);
+                array_push($fullPosts,array("username" => $newPost->getUsername(), "profilePic" =>  $newPost->getProfilePic(), "image" => $newPost->getImage(), "description" => $newPost->getDescription(), "time_posted" => Comment::showTime($newPost->time_posted), "comments" => $comments, "id" => $newPost->getPostId()));
                 $comments = array();
                 $likes = array();
             }
@@ -182,6 +181,16 @@ class Post{
         $query->bindValue(":hidden", $hidden);
         $query->bindValue(":postId", $postId);
         $query->execute();
+    }
+
+    public static function getPostById($postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("select * from post where id = :postId");
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetchAll();
+        return $result;
+//        return new Post($result['username'], $result['profilePic'], $result['image'], $result['description'], $result['time_posted'], $result['comments'], $result['postId']);
     }
 
     /**

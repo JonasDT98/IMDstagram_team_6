@@ -58,7 +58,6 @@ class User{
         if (!$user){
             return false;
         }
-
         $hash = $user["password"];
         if(password_verify($password, $hash)){
             return true;

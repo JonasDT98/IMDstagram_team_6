@@ -8,11 +8,19 @@ if (!isset($_SESSION['username'])) {
     header("Location: index.php");
 }
 
+
+
 $user = $_GET['id'];
 $profilePosts = Post::profilePosts($user);
 $profileUser = User::getProfileData($user);
 $pic = User::getImage($_SESSION['username']);
 $profilePic = $pic['profilePic'];
+$post = Post::getPostById($_GET['pid']);
+
+if (!empty($_POST['deletePost'])){
+    Post::deletePost($_GET['pid'], $post[0]['image']);
+    header("Location: userProfile.php?id=" . $_SESSION['username']);
+}
 ?>
 
 <!doctype html>
@@ -38,9 +46,6 @@ $profilePic = $pic['profilePic'];
                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1024px-Instagram_logo.svg.png"
                              alt="Logo">
                     </a>
-                    <!--                    <form action = "" method="post" class="flex w-1/3 h-6 align-center justify-center inline-block">-->
-                    <!--                        <input class="text-center rounded-md bg-gray-200" type="text" name="search" placeholder="Search">-->
-                    <!--                    </form>-->
                     <div class="flex items-center justify-end w-2/3 gap-3 mr-3">
                         <a href="post.php">
                             <svg class="h-6 ml-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9.9 10.1">
@@ -87,64 +92,16 @@ $profilePic = $pic['profilePic'];
     </header>
     <section class="w-full bg-white rounded-b shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
         <div class="flex justify-center items-center">
-            <div class="flex w-1/3 justify-center">
-                <img class="rounded-full w-28 h-28"
-                     src="images/profilePics/<?php echo htmlspecialchars($profileUser['profilePic']); ?>"
-                     alt="profile pic">
-            </div>
-            <div class="grid grid-cols-3 grid-rows-3 items-center justify-items-stretch mr-5">
-                <p class="col-start-1 col-end-2 row-start-1 row-end-2">
-                    <b><?php echo htmlspecialchars($profileUser['username']); ?></b></p>
-                <form class="w-5/6 col-start-2 col-end-3 row-start-1 row-end-2 justify-self-center" action="index.php"
-                      method="post">
-                    <input class="h-8 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1 px-2"
-                           name="btnFollow"
-                           type="submit" value="FOLLOWING">
-                </form>
+            <img src="images/upload/<?php echo $post[0]['image'];?>" alt="img">
 
-                <?php if ($profileUser['username'] == $_SESSION['username']): ?>
-                    <a class="flex items-center col-start-3 col-end-4 row-start-1 row-end-2 h-8 align-center bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1 justify-self-end px-2"
-                       href="editProfile.php">SETTINGS</a>
-                <?php endif; ?>
-
-                <p class="col-start-1 col-end-4 row-start-2 row-end-3"><?php echo htmlspecialchars($profileUser['bio']) ?></p>
-                <p class="col-start-1 col-end-2 row-start-3 row-end-4"><b><?php echo sizeof($profilePosts); ?></b> posts
-                </p>
-                <p class="col-start-2 col-end-3 row-start-3 row-end-4 justify-self-center"><b>111k</b> followers</p>
-                <p class="col-start-3 col-end-4 row-start-3 row-end-4 justify-self-end"><b>111</b> following</p>
-            </div>
         </div>
-
-        <div class="flex flex-wrap justify-start rounded-b bg-gray-200">
-            <?php if (!empty($profilePosts)): ?>
-                <?php foreach ($profilePosts as $post): ?>
-                    <div class="w-1/3 object-cover h-40">
-                        <?php if ($profileUser['username'] == $_SESSION['username']): ?>
-                            <?php
-//                          if (isset($_POST['deletePost'])){
-//                              Post::deletePost($post['id'], $post['image']);
-//                          }
-                            ?>
-                            <form action="" method="post">
-                                <button name="deletePost" class="absolute text-lg text-white hover:text-red-200 bg-blue-500 rounded-full h-6 w-6  cursor-pointer ml-2 flex items-center justify-center m-2">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-
-                                </button>
-                            </form>
-                        <?php endif; ?>
-                        <a href="#">
-                            <img class="h-full w-full" src="images/upload/<?php echo $post['image']; ?>"
-                                 alt="post picture">
-                        </a>
-
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="w-screen flex text-center justify-center">
-                    <p class="w-1/3 my-5 text-base font-semibold ">This user doesn't have any posts yet.</p>
-                </div>
-            <?php endif; ?>
-        </div>
+        <p class="text-sm mx-4 mb-2 text-center">
+            <b><?php echo htmlspecialchars($_SESSION['username']); ?></b> <?php echo htmlspecialchars($post[0]['description']); ?>
+        </p>
+        <p class="text-center">Are you sure you want to delete this post?</p>
+        <form method="post" class="pb-4 text-center">
+            <input type="submit" name="deletePost" value="Delete Post" class=" h-8 align-center bg-red-400 hover:bg-red-500 text-white font-bold rounded mt-1 justify-self-end px-2">
+        </form>
 
     </section>
 </div>

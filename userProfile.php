@@ -113,19 +113,11 @@ $profilePic = $pic['profilePic'];
         <div class="flex flex-wrap justify-start rounded-b bg-gray-200">
             <?php if (!empty($profilePosts)): ?>
                 <?php foreach ($profilePosts as $post): ?>
-                    <div class="w-1/3 object-cover h-40">
+                    <div class="w-1/3 object-cover h-40 border-2">
                         <?php if ($profileUser['username'] == $_SESSION['username']): ?>
-                        <?php
-//                          if (isset($_POST['deletePost'])){
-//                              Post::deletePost($post['id'], $post['image']);
-//                          }
-                        ?>
-                            <form action="" method="post">
-                            <button name="deletePost" class="absolute text-lg text-white hover:text-red-200 bg-blue-500 rounded-full h-6 w-6  cursor-pointer ml-2 flex items-center justify-center m-2">
+                            <a href="./deletePost.php?<?php echo "pid=" . $post['id'] ?>" class="absolute text-lg text-white bg-blue-500 rounded-full h-6 w-6  cursor-pointer ml-2 flex items-center justify-center m-2">
                                 <i class="fa fa-trash" aria-hidden="true"></i>
-
-                            </button>
-                            </form>
+                            </a>
                         <?php endif; ?>
                         <a href="#">
                             <img class="h-full w-full" src="images/upload/<?php echo $post['image']; ?>"
