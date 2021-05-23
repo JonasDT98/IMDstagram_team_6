@@ -25,9 +25,14 @@ if (!empty($_POST['search'])) {
 }
 
 $user = User::getId($_SESSION['username']);
+<<<<<<< HEAD
 $pic = User::getImage($_SESSION['username']);
 $userId = $user;
 $profilePic = $pic['profilePic'];
+=======
+$userId = $user['id'];
+
+>>>>>>> b8a5cd67452c220bd07c77b552ca061c03ceaa9b
 ?>
 <!doctype html>
 <html lang="en">
@@ -133,6 +138,7 @@ $profilePic = $pic['profilePic'];
                     </a>
                 </div>
                 <div class="w-1/2 flex justify-end">
+<<<<<<< HEAD
                         <button onclick="refresh()" class="btnReport"
                                 type="button">
 
@@ -144,6 +150,18 @@ $profilePic = $pic['profilePic'];
                             <?php endif; ?>
 
                         </button>
+=======
+
+                    <?php   if(!empty($_POST['btnReport'])): ?>
+                    <?php  $post->report($post->getPostId());  ?>
+                    <?php endif; ?>
+
+                    <form action="home.php" method="post">
+                        <button type="submit"  name="btnReport">
+                            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                        </button>
+                    </form>
+>>>>>>> b8a5cd67452c220bd07c77b552ca061c03ceaa9b
                 </div>
             </div>
             <div>
