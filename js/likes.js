@@ -1,8 +1,3 @@
-$(function (){
-    let btnLike = document.querySelectorAll(".btnLike .btnIcon")
-    let likes = document.querySelectorAll(".likes");
-})
-
 btnLike = document.querySelectorAll(".btnLike .btnIcon")
 likes = document.querySelectorAll(".likes");
 
@@ -14,8 +9,6 @@ for (let i = 0; i < btnLike.length; i++) {
 
             let postId = this.dataset.postid;
 
-            console.log();
-            console.log(postId);
             let formData = new FormData();
 
             formData.append('postId', postId);

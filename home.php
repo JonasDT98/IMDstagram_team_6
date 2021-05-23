@@ -26,7 +26,7 @@ if (!empty($_POST['search'])) {
 
 $user = User::getId($_SESSION['username']);
 $pic = User::getImage($_SESSION['username']);
-$userId = $user['id'];
+$userId = $user;
 $profilePic = $pic['profilePic'];
 ?>
 <!doctype html>
@@ -154,7 +154,7 @@ $profilePic = $pic['profilePic'];
                     <button class="btnLike" type="button">
 
                         <?php if (Post::isLiked($userId, $post['id'])): ?>
-                            <i class="fa fa-heart btnIcon" data-postid="<?php echo $post['id']; ?>"
+                            <i class="fa fa-heart btnIcon text-red-500" data-postid="<?php echo $post['id']; ?>"
                                data-username="<?php echo $_SESSION['username']; ?>" aria-hidden="true"></i>
                         <?php else: ?>
                             <i class="fa fa-heart-o btnIcon" data-postid="<?php echo $post['id']; ?>"
@@ -163,15 +163,13 @@ $profilePic = $pic['profilePic'];
 
                     </button>
                 </div>
-                <?php if (!empty($post['likes'])): ?>
-                    <?php if (is_array($post['likes']) && sizeof($post['likes']) == 1): ?>
-                        <p class="mx-4 likes"> <?php echo sizeof($post['likes']); ?> like </p>
-                    <?php else: ?>
-                        <p class="mx-4 likes"> <?php echo sizeof($post['likes']); ?> likes </p>
-                    <?php endif; ?>
+                <?php if (Post::getAmountOfLikes($post['id']) != 1) : ?>
+                    <p class="mx-4 likes"> <?php echo Post::getAmountOfLikes($post['id']) . " likes" ; ?></p>
                 <?php else: ?>
-                    <p class="mx-4 likes"> 0 likes </p>
+                    <p class="mx-4 likes"> <?php echo Post::getAmountOfLikes($post['id']) . " like" ; ?></p>
                 <?php endif; ?>
+
+
                 <p class="text-sm mx-4 mb-2">
                     <b><?php echo htmlspecialchars($post['username']); ?></b> <?php echo htmlspecialchars($post['description']); ?>
                 </p>

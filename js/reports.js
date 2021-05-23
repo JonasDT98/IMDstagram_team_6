@@ -19,7 +19,7 @@ for (let i = 0; i < btnReport.length; i++) {
         })
             .then(response => response.json())
             .then(result => {
-                console.log('Success:', result);
+
 
                 if(result.reported === true){
                     btnReport[i].className = "fa fa-flag btnIcon";

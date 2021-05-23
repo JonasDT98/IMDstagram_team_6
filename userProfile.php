@@ -8,11 +8,13 @@ if (!isset($_SESSION['username'])) {
     header("Location: index.php");
 }
 
-$user = $_GET['id'];
-$profilePosts = Post::profilePosts($user);
-$profileUser = User::getProfileData($user);
+$username = $_GET['id'];
+$profilePosts = Post::profilePosts($username);
+$profileUser = User::getProfileData($username);
 $pic = User::getImage($_SESSION['username']);
 $profilePic = $pic['profilePic'];
+$followedId = User::getId($_GET['id']);
+$userId = User::getId($_SESSION['username']);
 ?>
 
 <!doctype html>
@@ -90,12 +92,18 @@ $profilePic = $pic['profilePic'];
             <div class="grid grid-cols-3 grid-rows-3 items-center justify-items-stretch mr-5">
                 <p class="col-start-1 col-end-2 row-start-1 row-end-2">
                     <b><?php echo htmlspecialchars($profileUser['username']); ?></b></p>
-                <form class="w-5/6 col-start-2 col-end-3 row-start-1 row-end-2 justify-self-center" action="index.php"
-                      method="post">
-                    <input class="h-8 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1 px-2"
-                           name="btnFollow"
-                           type="submit" value="FOLLOWING">
-                </form>
+
+
+                <?php if ($_GET['id'] != $_SESSION['username']): ?>
+                <button class="w-5/6 col-start-2 col-end-3 row-start-1 row-end-2 justify-self-center">
+                    <?php if (User::isFollowed($userId, $followedId)): ?>
+                        <i class="fa fa-user-times" id="btnFollow" data-id="<?php echo $followedId ?>" aria-hidden="true"></i>
+                    <?php else: ?>
+                        <i class="fa fa-user-plus" id="btnFollow" data-id="<?php echo $followedId ?>" aria-hidden="true"></i>
+                    <?php endif; ?>
+                </button>
+                <?php endif; ?>
+
 
                 <?php if ($profileUser['username'] == $_SESSION['username']): ?>
                     <a class="flex items-center col-start-3 col-end-4 row-start-1 row-end-2 h-8 align-center bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1 justify-self-end px-2"
@@ -103,10 +111,10 @@ $profilePic = $pic['profilePic'];
                 <?php endif; ?>
 
                 <p class="col-start-1 col-end-4 row-start-2 row-end-3 w-80"><?php echo htmlspecialchars($profileUser['bio']) ?></p>
-                <p class="col-start-1 col-end-2 row-start-3 row-end-4"><b><?php echo sizeof($profilePosts); ?></b> posts
-                </p>
-                <p class="col-start-2 col-end-3 row-start-3 row-end-4 justify-self-center"><b>111k</b> followers</p>
-                <p class="col-start-3 col-end-4 row-start-3 row-end-4 justify-self-end"><b>111</b> following</p>
+
+                <p class="col-start-1 col-end-2 row-start-3 row-end-4"><b><?php echo sizeof($profilePosts); ?></b> posts</p>
+
+                <!--<p class="col-start-2 col-end-3 row-start-3 row-end-4 justify-self-center" id="followerCount"><?php echo User::getAmountOfFollowers($followedId = $_GET['id']); ?> followers</p>-->
             </div>
         </div>
 
@@ -135,6 +143,7 @@ $profilePic = $pic['profilePic'];
       
     </section>
 </div>
+<script class="scripts" src="js/follows.js"></script>
 <script src="https://use.fontawesome.com/2dd2522a24.js"></script>
 </body>
 </html>
