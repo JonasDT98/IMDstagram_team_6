@@ -8,7 +8,6 @@
     include_once (__DIR__ . "/classes/User.php");
 
     $user = User::getId($_SESSION['username']);
-    $userId = $user['id'];
     $pic = User::getImage($_SESSION['username']);
     $profilePic = $pic['profilePic'];
 

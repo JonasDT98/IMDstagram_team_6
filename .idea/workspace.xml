@@ -2,20 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2d9bb3c1-8f68-4463-96ab-3d8eaf50644a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ajax/saveFollow.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/classes/Follow.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/follows.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ajax/saveLikes.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax/saveLikes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ajax/saveReports.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax/saveReports.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/Post.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Post.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/Search.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Search.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/home.php" beforeDir="false" afterPath="$PROJECT_DIR$/home.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/likes.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/likes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/reports.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/reports.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings/settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/settings/settings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/userProfile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post.php" beforeDir="false" afterPath="$PROJECT_DIR$/post.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +123,7 @@
       <workItem from="1621525006226" duration="7716000" />
       <workItem from="1621578667060" duration="7846000" />
       <workItem from="1621699630938" duration="125000" />
-      <workItem from="1621725677289" duration="12870000" />
+      <workItem from="1621725677289" duration="13886000" />
     </task>
     <servers />
   </component>

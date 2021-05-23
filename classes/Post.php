@@ -10,14 +10,11 @@ class Post{
     private $comments;
     public $time_posted;
     private $postId;
-<<<<<<< HEAD
     private $profilePic;
     private $postsAmount;
     private $userId;
-=======
     private $timesReported;
     private $hidden = false;
->>>>>>> b8a5cd67452c220bd07c77b552ca061c03ceaa9b
 
     public function __construct($username, $profilePic, $image, $description, $time_posted, $comments, $postId)
     {
@@ -389,10 +386,8 @@ class Post{
     {
         $this->postsAmount = $postsAmount;
     }
-<<<<<<< HEAD
 
 
-=======
     public function report($postId){
         $report = $this->timesReported;
         $report = $report + 1;
@@ -416,5 +411,4 @@ class Post{
         $result = $query->fetch();
         echo $result;
     }
->>>>>>> b8a5cd67452c220bd07c77b552ca061c03ceaa9b
 }
