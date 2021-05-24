@@ -87,7 +87,7 @@ class User{
         $query->bindValue(":username", $username);
         $query->execute();
         $userId = $query->fetch();
-        return $userId;
+        return $userId[0];
     }
 
     public static function getImage($username)
@@ -155,7 +155,29 @@ class User{
         $result = $statement->fetch();
         return $result;
     }
-
+    public static function isFollowed($userId, $followedId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT * FROM follows WHERE user_id =:userId AND followed_id =:followedId");
+        $query->bindValue(":userId", $userId);
+        $query->bindValue(":followedId", $followedId);
+        $query->execute();
+        $result = $query->fetchAll();
+        if($result != NULL)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public static function getAmountOfFollowers($followedId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT user_id FROM follows WHERE followed_id = :followedId");
+        $query->bindValue(":followedId", $followedId);
+        $query->execute();
+        $result = $query->fetchAll();
+        return count($result);
+    }
     /**
      * @return mixed
      */

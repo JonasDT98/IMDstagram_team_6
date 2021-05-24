@@ -12,6 +12,13 @@
   <component name="ComposerSettings">
     <execution />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -23,7 +30,11 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.4.1" />
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.4.12">
+    <include_path>
+      <path value="C:/MAMP/bin/php/php7.4.1" />
+    </include_path>
+  </component>
   <component name="ProjectId" id="1q1DjUewuMXB56oE6XMo0G0kfek" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -35,10 +46,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="C:/MAMP/bin/php/php7.4.1" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="project.propDebugger" />
+    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
@@ -106,7 +117,6 @@
       <workItem from="1621328195272" duration="14677000" />
       <workItem from="1621416098897" duration="262000" />
       <workItem from="1621525006226" duration="7716000" />
-      <workItem from="1621546127611" duration="1887000" />
     </task>
     <servers />
   </component>

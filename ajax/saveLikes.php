@@ -7,7 +7,6 @@ if (!empty($_POST)) {
 //    new Like
     session_start();
     $userId = User::getId($_SESSION['username']);
-    $userId = $userId['id'];
     $postId = $_POST['postId'];
     $l = new Like();
     $l->setPostId($postId);

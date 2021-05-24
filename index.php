@@ -1,5 +1,4 @@
 <?php
-
     include_once (__DIR__ . "/classes/User.php");
 
     session_start();

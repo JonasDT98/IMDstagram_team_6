@@ -1,9 +1,33 @@
 <?php
 
+<<<<<<< HEAD
     include_once (__DIR__ . "/classes/User.php");
     session_start();
     if (!isset($_SESSION['username'])) {
         header("Location: index.php");
+=======
+include_once (__DIR__ . "/classes/User.php");
+session_start();
+//$username = $_SESSION["username"];
+//$user = User::getUser($username);
+if(!empty($_POST['btnSave'])){
+    $username = $_SESSION['username'];
+    $user = User::getUser($username);
+    $email = $_POST['email'];
+    $nPassword = $_POST['nPassword'];
+    $oPassword = $_POST['oPassword'];
+    $nUsername = $_POST['username'];
+    $fullname = $_POST['fullname'];
+    if(empty($nPassword)){
+        $user->setPassword($oPassword);
+        $hPassword = $user->getPassword();
+        User::updateUser($username, $nUsername, $email, $hPassword, $fullname);
+    }
+    elseif(!empty($nPassword) && $nPassword != $oPassword){
+        $user->setPassword($nPassword);
+        $hPassword = $user->getPassword();
+        User::updateUser($username, $nUsername, $email, $hPassword, $fullname);
+>>>>>>> b8a5cd67452c220bd07c77b552ca061c03ceaa9b
     }
     //$username = $_SESSION["username"];
     //$user = User::getUser($username);

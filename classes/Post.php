@@ -13,6 +13,8 @@ class Post{
     private $profilePic;
     private $postsAmount;
     private $userId;
+    private $timesReported;
+    private $hidden = false;
 
     public function __construct($username, $profilePic, $image, $description, $time_posted, $comments, $postId)
     {
@@ -386,4 +388,27 @@ class Post{
     }
 
 
+    public function report($postId){
+        $report = $this->timesReported;
+        $report = $report + 1;
+        $this->timesReported = $report;
+        echo $report;
+        $conn = Db::getConnection();
+        $query = $conn->prepare("UPDATE post SET reports =:report WHERE id =:postId");
+        $query->bindValue(":report", $report);
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        if($report >= 3){
+            $this->hidden = true;
+        }
+    }
+    public function getReports($postId){
+        $conn = Db::getConnection();
+        $query = $conn->prepare("SELECT reports FROM post WHERE post_id = :postId");
+
+        $query->bindValue(":postId", $postId);
+        $query->execute();
+        $result = $query->fetch();
+        echo $result;
+    }
 }

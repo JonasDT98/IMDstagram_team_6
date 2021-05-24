@@ -45,7 +45,7 @@ class Search{
                     array_push($likes, $fetchedLike['username']);
                 }
             }
-            $newPost = new Post($post['username'], $post['profilePic'], $post['image'], $post['description'], $post['time_posted'], $comments, $likes, $post['id']);
+            $newPost = new Post($post['username'], $post['profilePic'], $post['image'], $post['description'], $post['time_posted'], $comments, $post['id']);
             array_push($fullPosts,array("username" => $newPost->getUsername(), "profilePic" =>  $newPost->getProfilePic(), "image" => $newPost->getImage(), "description" => $newPost->getDescription(), "time_posted" => $newPost->time_posted, "comments" => $comments, "likes" => $likes, "id" => $newPost->getPostId()));
             $comments = array();
             $likes = array();
@@ -65,7 +65,7 @@ class Search{
 
         foreach ($users as $user) {
             $statementPost = $conn->prepare("SELECT users.username, comments.description, comments.time_comment FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
-            $statementPost->bindValue(":post_id", $user['id']);
+            $statementPost->bindValue(":post_id", User::getId($user));
             $statementPost->execute();
         }
         return $users;

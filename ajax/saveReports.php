@@ -8,7 +8,6 @@ if (!empty($_POST)) {
 //    new Report
     session_start();
     $userId = User::getId($_SESSION['username']);
-    $userId = $userId['id'];
     $postId = $_POST['postId'];
     $r = new Report();
     $r->setPostId($postId);
