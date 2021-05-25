@@ -121,7 +121,7 @@ $profilePic = $pic['profilePic'];
 
     <?php foreach ($posts as $post) : ?>
     <?php if(!Post::isHidden($post['id'])) : ?>
-        <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg article">
+        <article class="w-full bg-white shadow-2xl max-w-md sm:max-w-lg md:max-w-lg lg:max-w-lg">
             <div class="my-2 mx-4 flex items-center gap-2">
                 <div class="flex items-center w-1/2">
 
@@ -228,7 +228,7 @@ $profilePic = $pic['profilePic'];
     <?php endif; ?>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script class="scripts" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script class="scripts" src="js/liveComments.js"></script>
 <script src="js/loadMorePosts.js"></script>
 <script class="scripts" src="js/likes.js"></script>

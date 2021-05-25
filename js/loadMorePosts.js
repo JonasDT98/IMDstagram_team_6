@@ -29,24 +29,27 @@ button.addEventListener("click", function (e) {
             let isHidden = result.isHidden;
             loader.dataset.postsamount = parseInt(loader.dataset.postsamount) + result.body.length;
             if (result.body.length !== 0) {
+                let scripts = document.querySelectorAll('.scripts');
+
                 for (let i = 0; i < posts.length; i++) {
                     createPost(posts[i]['username'], posts[i]['profilePic'], posts[i]['image'], posts[i]['description'], posts[i]['time_posted'], posts[i]['comments'], posts[i]['likes'].length, posts[i]['id'], result.username, isLiked[i], isReported[i], isHidden[i]);
                 }
-                let scripts = document.querySelectorAll('.scripts');
-                body.removeChild(scripts[0]);
-                body.removeChild(scripts[1]);
+
                 //scripts
-                let liveComments = document.createElement('script');
-                liveComments.setAttribute('src', 'js/liveComments.js');
-                body.appendChild(liveComments);
-
-                let liveLikes = document.createElement('script');
-                liveLikes.setAttribute('src', 'js/likes.js');
-                body.appendChild(liveLikes);
-
-                let fontAwesome = document.createElement('script');
-                fontAwesome.setAttribute('src', 'https://use.fontawesome.com/2dd2522a24.js');
-                body.appendChild(liveLikes);
+                // let liveComments = document.createElement('script');
+                // liveComments.setAttribute('src', 'js/liveComments.js');
+                // liveComments.className = "scripts";
+                // body.appendChild(liveComments);
+                //
+                // let liveLikes = document.createElement('script');
+                // liveLikes.setAttribute('src', 'js/likes.js');
+                // liveLikes.className = "scripts";
+                // body.appendChild(liveLikes);
+                //
+                // let liveReports = document.createElement('script');
+                // liveReports.setAttribute('src', 'js/reports.js');
+                // liveReports.className = "scripts";
+                // body.appendChild(liveReports);
 
                 content.removeChild(loader);
             }

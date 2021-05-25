@@ -247,8 +247,14 @@ class Post{
      * @param mixed $description
      */
     public function setDescription($description): void
+
     {
-        $this->description = $description;
+        if(!empty($description)) {
+            $this->description = $description;
+        }
+        else {
+            throw new Exception("Description can not be empty!");
+        }
     }
 
     /**

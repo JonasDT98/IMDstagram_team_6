@@ -15,7 +15,7 @@ for (let i = 0; i < btnLike.length; i++) {
             let postId = this.dataset.postid;
 
             console.log();
-            console.log(postId);
+            console.log('postid is: ' + postId);
             let formData = new FormData();
 
             formData.append('postId', postId);
@@ -26,11 +26,15 @@ for (let i = 0; i < btnLike.length; i++) {
             })
                 .then(response => response.json())
                 .then(result => {
+                    console.log('teller is: ' + i);
+                    console.log(likes[i].innerHTML);
+                    console.log(result.body);
+                    console.log('like script runt');
                     likes[i].innerHTML = result.body;
 
                     if(result.liked === true){
                         //btnLike[i].className = "fa fa-heart-o btnIcon";
-                        btnLike[i].className = "fa fa-heart btnIcon";
+                        btnLike[i].className = "fa fa-heart btnIcon bg-red-500";
                     }
                     else{
                         btnLike[i].className = "fa fa-heart-o btnIcon";
