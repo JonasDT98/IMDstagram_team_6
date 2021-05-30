@@ -190,8 +190,7 @@ class Post{
         $query->execute();
         $result = $query->fetchAll();
         return $result;
-//        return new Post($result['username'], $result['profilePic'], $result['image'], $result['description'], $result['time_posted'], $result['comments'], $result['postId']);
-    }
+}
 
     /**
      * @return mixed

@@ -9,7 +9,6 @@ likes = document.querySelectorAll(".likes");
 for (let i = 0; i < btnLike.length; i++) {
     btnLike[i].addEventListener("click", function (e) {
 
-
             e.preventDefault();
 
             let postId = this.dataset.postid;

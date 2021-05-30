@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2d9bb3c1-8f68-4463-96ab-3d8eaf50644a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/Post.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Post.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/likes.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/likes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/liveComments.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/liveComments.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +38,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Dev_adv_webtech_frontend/virtual_currency_app_frontend" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="project.propDebugger" />
@@ -106,7 +109,14 @@
       <workItem from="1621328195272" duration="14677000" />
       <workItem from="1621416098897" duration="262000" />
       <workItem from="1621525006226" duration="7716000" />
-      <workItem from="1621546127611" duration="1887000" />
+      <workItem from="1621546127611" duration="3275000" />
+      <workItem from="1621580051475" duration="4278000" />
+      <workItem from="1621586465572" duration="1267000" />
+      <workItem from="1621618271059" duration="101000" />
+      <workItem from="1621698846052" duration="17000" />
+      <workItem from="1621930174079" duration="2961000" />
+      <workItem from="1621945214493" duration="21000" />
+      <workItem from="1622391159156" duration="742000" />
     </task>
     <servers />
   </component>
