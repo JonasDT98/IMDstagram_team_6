@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2d9bb3c1-8f68-4463-96ab-3d8eaf50644a" name="Default Changelist" comment="Several bugfixes pertaining to the same User['id'] fiasco">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ajax/saveComment.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax/saveComment.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/editProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/editProfile.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/userProfile.php" afterDir="false" />
-    </list>
+    <list default="true" id="2d9bb3c1-8f68-4463-96ab-3d8eaf50644a" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -123,7 +118,7 @@
       <workItem from="1621816810683" duration="15000" />
       <workItem from="1621938804313" duration="2353000" />
       <workItem from="1622302440143" duration="3182000" />
-      <workItem from="1622395309121" duration="3204000" />
+      <workItem from="1622395309121" duration="3992000" />
     </task>
     <task id="LOCAL-00001" summary="Several bugfixes pertaining to the same User['id'] fiasco">
       <created>1622395663708</created>
@@ -132,7 +127,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622395663708</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Several bugfixes pertaining to the same User['id'] fiasco">
+      <created>1622399434640</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1622399434640</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -127,7 +127,7 @@
                     <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" id="description" name="description" type="text" placeholder="Description" required>
 
                     <label class="w-full flex flex-col items-center border border-gray-300 rounded px-4 cursor-pointer uppercase bg-gray-100">
-                        <span class="py-3 text-gray-400 text-center"><?php echo $filename ?></span>
+                        <span class="py-3 text-gray-400 text-center"><?php echo htmlspecialchars($filename); ?></span>
                         <input class = "hidden" type="file" name="image" id="image">
                     </label>
                     <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="submit" type="submit" value="Post">

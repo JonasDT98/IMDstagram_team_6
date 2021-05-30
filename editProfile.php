@@ -147,10 +147,10 @@ if (!isset($_SESSION['username'])) {
                 <h2 class="text-xl text-center px-2 pt-2 pt-6 pb-6 uppercase">Edit Profile</h2>
                 <form action="editProfile.php" method="post">
                     <div class="grid grid-rows-3 justify-items-center gap-y-1">
-                        <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" value="<?php  echo $user->getUsername()    ?>">
-                        <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullname" type="text" value="<?php  echo $user->getFullname()    ?>">
-                        <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" value="<?php  echo $user->getEmail()    ?>">
-                        <input class="text-align-center w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="bio" type="text" placeholder="Bio" value="<?php  echo $user->getBio()    ?>">
+                        <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="username" type="text" value="<?php  echo htmlspecialchars($user->getUsername());    ?>">
+                        <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="fullname" type="text" value="<?php  echo htmlspecialchars($user->getFullname());    ?>">
+                        <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="email" type="email" value="<?php  echo htmlspecialchars($user->getEmail());    ?>">
+                        <input class="text-align-center w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="bio" type="text" placeholder="Bio" value="<?php  echo htmlspecialchars($user->getBio());    ?>">
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="oPassword" type="password" placeholder="Old Password" required>
                         <input class="w-full h-10 border border-gray-300 rounded px-4 bg-gray-100" name="nPassword" type="password" placeholder="New Password" >
                         <input class="w-full h-10 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1" name="btnSave" type="submit" value="Save">
@@ -167,7 +167,7 @@ if (!isset($_SESSION['username'])) {
                                 </ul>
                             </div>
                         <?php endif; ?>
-                        <img class="rounded-full border-4 border-red-100 align-center w-52 h-52" src="<?php   echo  "images/profilePics/" . $user->getProfilePic() ?>"
+                        <img class="rounded-full border-4 border-red-100 align-center w-52 h-52" src="<?php   echo  "images/profilePics/" . htmlspecialchars($user->getProfilePic()); ?>"
                              alt="profile picture">
                         <label class="h-12 w-full flex flex-col items-center border border-gray-300 rounded px-4 cursor-pointer uppercase bg-gray-100">
                             <span class="py-3 text-gray-400">Select a Profile Picture</span>

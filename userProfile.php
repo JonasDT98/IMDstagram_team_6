@@ -133,7 +133,7 @@ $userId = User::getId($_SESSION['username']);
                             </a>
                         <?php endif; ?>
                         <a href="#">
-                            <img class="h-full w-full" src="images/upload/<?php echo $post['image']; ?>"
+                            <img class="h-full w-full" src="images/upload/<?php echo htmlspecialchars($post['image']); ?>"
                                  alt="post picture">
                         </a>
 
