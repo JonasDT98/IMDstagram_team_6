@@ -15,7 +15,7 @@ if (!empty($_POST)) {
     $c = new Comment();
     $c->setPostId($_POST['postId']);
     $c->setDescription($_POST['text']);
-    $c->setUserId($userId['id']);
+    $c->setUserId($userId);
 
     //save comment in Db
     $c->save();

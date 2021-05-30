@@ -102,11 +102,16 @@ $userId = User::getId($_SESSION['username']);
                         <i class="fa fa-user-plus" id="btnFollow" data-id="<?php echo $followedId ?>" aria-hidden="true"></i>
                     <?php endif; ?>
                 </button>
+                <?php else: ?>
+                <button class="w-5/6 col-start-2 col-end-3 row-start-1 row-end-2 justify-self-center hidden">        <i class="fa fa-user-times" id="btnFollow" data-id="<?php echo $followedId ?>" aria-hidden="true"></i>        </button>
                 <?php endif; ?>
 
 
                 <?php if ($profileUser['username'] == $_SESSION['username']): ?>
                     <a class="flex items-center col-start-3 col-end-4 row-start-1 row-end-2 h-8 align-center bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1 justify-self-end px-2"
+                       href="editProfile.php">SETTINGS</a>
+                <?php else: ?>
+                    <a class="flex items-center col-start-3 col-end-4 row-start-1 row-end-2 h-8 align-center bg-blue-400 hover:bg-blue-500 text-white font-bold rounded mt-1 justify-self-end px-2 hidden"
                        href="editProfile.php">SETTINGS</a>
                 <?php endif; ?>
 
