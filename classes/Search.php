@@ -65,7 +65,7 @@ class Search{
 
         foreach ($users as $user) {
             $statementPost = $conn->prepare("SELECT users.username, comments.description, comments.time_comment FROM comments JOIN users on users.id = comments.user_id WHERE comments.post_id = :post_id");
-            $statementPost->bindValue(":post_id", User::getId($user));
+            $statementPost->bindValue(":post_id", $user['id']);
             $statementPost->execute();
         }
         return $users;

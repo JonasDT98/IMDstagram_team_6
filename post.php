@@ -7,7 +7,7 @@
     include_once (__DIR__ . "/classes/Post.php");
     include_once (__DIR__ . "/classes/User.php");
 
-    $user = User::getId($_SESSION['username']);
+    $userId = User::getId($_SESSION['username']);
     $pic = User::getImage($_SESSION['username']);
     $profilePic = $pic['profilePic'];
 

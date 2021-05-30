@@ -223,7 +223,7 @@ class User{
      */
     public function setUsername($username): void
     {
-        $this->username = $username;
+            $this->username = $username;
     }
 
     /**

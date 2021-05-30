@@ -13,8 +13,6 @@ if (!isset($_SESSION['username'])) {
 
 if (!empty($_POST['search'])) {
     try {
-//        $posts = new Search($_POST['search']);
-//        $posts->setSearch($_POST['search']);
         $posts = Search::searchPost($_POST['search']);
         $users = Search::searchUser($_POST['search']);
     } catch (throwable $th) {
