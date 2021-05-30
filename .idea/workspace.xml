@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2d9bb3c1-8f68-4463-96ab-3d8eaf50644a" name="Default Changelist" comment="Several bugfixes pertaining to the same User['id'] fiasco">
+    <list default="true" id="2d9bb3c1-8f68-4463-96ab-3d8eaf50644a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ajax/saveComment.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax/saveComment.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/editProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/editProfile.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userProfile.php" beforeDir="false" afterPath="$PROJECT_DIR$/userProfile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings/settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/settings/settings.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +31,7 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.4.12">
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.4.1">
     <include_path>
       <path value="C:/MAMP/bin/php/php7.4.1" />
     </include_path>
@@ -49,7 +47,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="C:/MAMP/bin/php/php7.4.1" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Dev_adv_webtech_frontend/virtual_currency_app_team_14" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
